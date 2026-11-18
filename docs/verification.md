@@ -1,6 +1,35 @@
 # Portfolio Review Checkpoint
 
-## Map Selection And Header Refinements
+## Hero Alignment, Signature Frames, And Pointer Lighting
+
+Verified on the published [home section](https://pstar80.github.io/#home) on
+**November 18, 2026 (Toronto)**.
+
+- Implementation: [0857dea](https://github.com/PStar80/PStar80.github.io/commit/0857dea657636a49b08caff7e26fa5003f0a4a9f)
+- GitHub Pages build and deployment: [successful run](https://github.com/PStar80/PStar80.github.io/actions/runs/44371862792)
+- The hero copy and portrait start at the same top coordinate (162px in the 1348px desktop viewport). Their top edges also matched in the 899px layout. The portrait's offset outline decorations now surround the image alone, leaving the quote in its own card.
+- Pointer movement activated the portrait reflection and a restrained 3D tilt. Moving from the portrait to the quote removed the portrait's active state and returned both tilt values to zero. The quote's local reflection and emphasized phrase brightened, while its transform remained `none`.
+- The portrait, process diagram, and map are the only three surfaces with the shared silver-blue rim and cyan corner brackets. The map and process panel have no transforms, and their trim reports `pointer-events: none`.
+- Selecting Brazil from the chooser, then clicking Brazil on the map, cleared the chooser. A second map click selected Brazil again. Pause and Play changed the map's motion state correctly. The three desktop contact cards remained 400px wide.
+- Selecting Cloud Agent in the process diagram set its pressed state and displayed its description. Escape cleared the pressed state. The diagram's existing hover/focus feedback continued to work.
+- At 337px, the hero stacked in one column, the portrait frame was 271px square, and the complete quote stayed within its card. The map used its regional crop, its rim reduced to 2px, and all three contact cards measured 297px wide. The mobile menu opened, navigated to Contact, and closed.
+- Document scroll width equalled client width at 1348px, 899px, and 337px. Browser zoom was restored to 100%, and the home view was left open for review.
+- TypeScript and Vite passed locally and in GitHub Actions. The production JavaScript is 165.11 KB gzip and CSS is 14.54 KB gzip. Focused independent source review found no blockers. No dependencies or test files were added.
+
+Previews: [desktop hero](previews/hero-polish-desktop-20261118.jpg) ·
+[narrow hero](previews/hero-polish-mobile-20261118.jpg) ·
+[process frame](previews/signature-frame-process-20261118.jpg) ·
+[map frame](previews/signature-frame-map-20261118.jpg) ·
+[narrow map](previews/signature-frame-map-mobile-20261118.jpg).
+
+Narrow layouts were checked with Chromium browser zoom, not a physical phone.
+Reduced-motion preference changes, touch/coarse-pointer gating, cancellation,
+hidden-tab cleanup, and unmount cleanup were reviewed in source; operating-system
+motion settings and Safari were not exercised. The portrait and quote remain
+noninteractive content semantically: the decorative hover response adds no fake
+buttons or keyboard focus stops. Earlier checkpoints describe their releases.
+
+## Previous Map Selection And Header Refinements
 
 Verified on the published [contact section](https://pstar80.github.io/#contact)
 on **November 18, 2026 (Toronto)**.
