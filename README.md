@@ -13,8 +13,8 @@ A personal portfolio for full-stack applications, agentic automation, data engin
 - The development process is an interactive SVG with directional traces, selectable node descriptions, keyboard exploration, and separate desktop/mobile layouts. Motion can be paused, respects reduced-motion preferences, and stops while the diagram is offscreen or the tab is hidden.
 - Project sections use actual application captures, with a screenshot lightbox and captions describing the visible state.
 - Experience is available in the main navigation and presents a brief, dated career timeline. The site does not serve a downloadable résumé.
-- Contact cards are full-surface native links, stacked beside a curved North American location map. The email copy button remains separate; success is shown by its checkmark with a screen-reader announcement, and copy errors alone display a message.
-- The map uses real geographic outlines, a Toronto city marker, subtle motion, pointer depth, and Toronto local time. Its motion can be paused, respects reduced-motion preferences, and stops offscreen or while the tab is hidden.
+- A full-width, flat world map leads the contact area, with three full-surface contact links in a horizontal row below it. Narrow screens use a North American map crop and stack the cards. The email copy button remains separate; success is shown by its checkmark with a screen-reader announcement, and copy errors alone display a message.
+- The map uses real geographic outlines, a rectangular latitude/longitude grid, a Toronto city beacon, subtle motion, and Toronto local time. Its motion can be paused, respects reduced-motion preferences, and stops offscreen or while the tab is hidden.
 - The personal site stays blue/cyan; SkyCommand retains its charcoal/gold product identity.
 - GitHub Activity sits over the neural scene, with its calendar and labels on a dark foreground panel.
 
@@ -43,7 +43,7 @@ npm run preview
 | `src/App.tsx` | Page sections, project galleries, navigation, and card interaction |
 | `src/styles.css` | Visual system and responsive layouts |
 | `src/ProcessFlow.tsx`, `src/process-flow.css` | Shared architecture data, responsive SVG layouts, directional motion, and accessible node exploration |
-| `src/LocationMap.tsx`, `src/location-map.css` | Toronto globe, restrained motion, accessible pause control, responsive framing, and local time |
+| `src/LocationMap.tsx`, `src/location-map.css` | Flat location map, Toronto beacon, restrained motion, accessible pause control, responsive framing, and local time |
 | `src/location-map-data.ts`, `scripts/build_location_map.py` | Committed geographic SVG paths and an optional reproducible generator |
 | `src/GitHubActivity.tsx` | Contribution calendar and guarded source refresh |
 | `src/github-activity.css` | Calendar styles, scoped with `gh-` classes |

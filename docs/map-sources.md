@@ -1,9 +1,14 @@
 # Contact Map Sources
 
-The contact panel uses a fixed orthographic view centred at **95°W, 35°N**. Its
-640 × 440 coordinate space places the sphere at (320, 220), with a 194-unit
-radius. Toronto is the only location marker. The marker represents the city,
-not a home, office, or tracked position.
+The contact panel uses a conventional, north-up **equirectangular world map**.
+Its 1200 × 480 coordinate space covers **180°W to 180°E** and **80°N to 64°S**.
+Latitude and longitude form straight grid lines. The compact view crops the
+same map to North America, the Caribbean, northern South America, and the
+western Atlantic, keeping Toronto and its label readable without stretching
+the projection.
+
+Toronto is the only location marker. The marker represents the city, not a
+home, office, or tracked position.
 
 ## Geographic data
 
@@ -24,17 +29,17 @@ document the rights. Made with Natural Earth.
 
 The [City of Toronto's geography overview](https://www.toronto.ca/city-government/data-research-maps/toronto-at-a-glance/)
 places Toronto at **43°39′N, 79°23′W**. Those city-level coordinates become
-43.65, −79.383333… and project to **(357.788, 187.851)** in this view.
+43.65, −79.383333… and project to **(335.389, 121.167)** in this view.
 The data and official source pages were checked on November 18, 2026.
 
 ## Generation
 
 `src/location-map-data.ts` contains preprojected SVG path strings. The application
 does not request geographic data at runtime and does not import a mapping
-library. The optional generator uses **d3-geo 3.1.1** for adaptive geographic
-sampling and spherical clipping at the visible hemisphere. This handles
-polygons that cross the horizon without drawing straight chords through the
-front of the globe. D3's
+library. The optional generator uses **d3-geo 3.1.1** for geographic projection,
+adaptive sampling, antimeridian clipping, and the rectangular latitude crop.
+Polygons that cross the 180° meridian are split at the left and
+right map edges. D3's
 [projection documentation](https://d3js.org/d3-geo/projection) and
 [spherical winding guidance](https://d3js.org/d3-geo) explain those operations.
 

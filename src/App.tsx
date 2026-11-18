@@ -341,6 +341,7 @@ export default function App() {
         <div className="container">
           <div className="contact-heading"><Eyebrow number="07">Start A Conversation</Eyebrow><h2 id="contact-title">Let’s Build<br /><span className="text-accent">Something That Matters.</span></h2><p>Have a role, a project, or a system worth improving?<br />I’d like to hear about it.</p></div>
           <div className="contact-layout">
+            <Metal className="location-panel"><LocationMap /></Metal>
             <div className="contact-methods">
               <div className="contact-grid">
                 <Metal className="contact-card"><Mail className="contact-icon" size={22} aria-hidden="true" /><a className="contact-card-link" href={'mailto:' + email} aria-label={'Email ' + email}><span>{email}</span></a><button className="icon-button contact-copy" type="button" aria-label={copied ? 'Email copied' : 'Copy email address'} onClick={copyEmail}>{copied ? <Check size={17} /> : <Copy size={17} />}</button></Metal>
@@ -350,7 +351,6 @@ export default function App() {
               <span className="sr-only" role="status" aria-live="polite" aria-atomic="true">{copied ? 'Email address copied.' : ''}</span>
               {copyFailed && <p className="copy-error" role="alert">Please select and copy this address: {email}</p>}
             </div>
-            <Metal className="location-panel"><LocationMap /></Metal>
           </div>
         </div>
       </section>

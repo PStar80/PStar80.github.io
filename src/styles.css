@@ -300,9 +300,9 @@ a.card-foot:focus-visible { outline-offset: -4px; }
 .contact-heading .eyebrow { justify-content: center; }
 .contact-heading h2 { font-size: clamp(2.5rem, 4.9vw, 4.4rem); }
 .contact-heading > p { font-size: 13px; margin-top: 24px; }
-.contact-layout { display: grid; grid-template-columns: minmax(0, .8fr) minmax(0, 1.2fr); align-items: center; gap: 28px; margin-top: 48px; }
+.contact-layout { display: grid; grid-template-columns: minmax(0, 1fr); gap: 22px; margin-top: 48px; }
 .contact-methods { min-width: 0; }
-.contact-grid { display: grid; grid-template-columns: minmax(0, 1fr); gap: 16px; }
+.contact-grid { display: grid; grid-template-columns: minmax(0, 1.25fr) repeat(2, minmax(0, 1fr)); gap: 18px; }
 .contact-card { display: grid; grid-template-columns: 44px minmax(0, 1fr) 44px; align-items: center; min-height: 96px; gap: 16px; padding: 23px; border-radius: 9px; background: linear-gradient(125deg, #152238, #0d1828); }
 .contact-card::before { background: radial-gradient(ellipse 190px 130px at var(--mx, 50%) var(--my, 50%), rgba(94,200,229,.23), transparent 75%); }
 .contact-icon, .contact-arrow { justify-self: center; pointer-events: none; }
@@ -368,8 +368,8 @@ a.card-foot:focus-visible { outline-offset: -4px; }
   .activity-grid { grid-template-columns: 235px minmax(0, 1fr); }
   .activity-panel { padding: 23px; }
   .experience-grid { gap: 45px; }
-  .contact-layout { gap: 22px; }
   .contact-card { padding: 20px 15px; gap: 11px; }
+  .contact-card-link { font-size: 12px; }
 }
 @media (max-width: 900px) {
   .container { width: calc(100% - 56px); }
@@ -440,8 +440,9 @@ a.card-foot:focus-visible { outline-offset: -4px; }
   .experience-grid { grid-template-columns: 1fr; gap: 39px; }
   .experience-grid h2 br { display: none; }
   .experience-intro { max-width: 100%; font-size: 12px; margin-top: 20px; }
-  .contact-layout { grid-template-columns: minmax(0, 1fr); gap: 26px; max-width: 720px; margin-left: auto; margin-right: auto; }
+  .contact-grid { grid-template-columns: minmax(0, 1fr); }
   .contact-card { padding: 23px; gap: 17px; }
+  .contact-card-link { font-size: 13px; }
   .footer-inner { gap: 22px; }
   .footer-inner > span { margin-left: 0; }
   .footer-inner p { display: none; }
