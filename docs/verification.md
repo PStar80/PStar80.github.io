@@ -1,11 +1,43 @@
 # Portfolio Review Checkpoint
 
+The contact-card and experience-timeline update was verified on the published [portfolio](https://pstar80.github.io/) on **November 18, 2026 (Toronto)**.
+
+- Main changes: [beaafce](https://github.com/PStar80/PStar80.github.io/commit/beaafced611a73d8dbe14da0e162acc24a75ad3a)
+- Short-viewport navigation fix: [ddf8f47](https://github.com/PStar80/PStar80.github.io/commit/ddf8f4738124274312a7c50fb212418ba93482b0)
+- Final GitHub Pages build and deployment: [successful run](https://github.com/PStar80/PStar80.github.io/actions/runs/44256868248)
+
+## Contact And Experience Release Checks
+
+| Area | Observed result |
+| --- | --- |
+| Production build | TypeScript and Vite passed after the final CSS fix. JavaScript is 79.49 KB gzip and CSS is 12.20 KB gzip. No new dependencies. |
+| Contact targets | A point near the outer top-left corner of every card resolved to its native email, LinkedIn, or GitHub anchor. The copy-button center resolved to the separate button; there are no buttons nested inside anchors. |
+| Contact alignment | Redundant service-name labels are removed. Text and icon centers align within one CSS pixel on desktop, and all three cards render cleanly in the single-column narrow layout. |
+| Copy email | Clicking Copy displayed the success message and left the current page in place. Pasting into the browser address field visibly produced the expected email address; no email or search was sent. |
+| Keyboard controls | Shift+Tab from Copy reached the email link and its 2px inset full-card focus outline. Tab returned to Copy as a separate control. |
+| Experience navigation | The new link reaches #experience and becomes the active navigation item. The tablet-width header has room for the added link without overlap. |
+| Timeline | Four entries use the supplied year ranges: independent development 2025–Present, CAAT 2022–2025, The RecordKeeper 2014–2019, CPAS 2011–2013. All role-title/icon centers align on desktop and narrow layouts. Three connectors join the four markers, with no trailing connector. |
+| Responsive layout | Document scroll width matched client width at 1348px, 674px, and 337px. Narrow layouts were checked using ordinary browser zoom. |
+| Short-screen menu | At a 337px content width and 234px viewport height, the expanded menu initially extended below the viewport. It now scrolls within the available height. Experience and Let's Talk were both selected successfully, and each selection closed the menu. |
+| Resume removal | Both resume links and the separate professional-background link are removed. The public PDF and its generator are removed from the current source. The old PDF URL returned GitHub Pages 404 / File not found. |
+| Source documents | Supplied career files were used to ground concise summaries and dates. Neither the DOCX nor the info module was copied into the repository or production build. |
+
+Screenshots:
+
+- [Contact cards and navigation](previews/contact-refined-20261118.jpg)
+- [Four-entry experience timeline](previews/experience-timeline-20261118.jpg)
+- [Narrow experience and contact layout](previews/experience-contact-mobile-20261118.jpg)
+
+The narrow checks used Chromium zoom, not a physical phone or Safari. Resume removal applies to the current source and deployed site; historical Git commits were not rewritten. Earlier release checks below are retained as dated checkpoints and were not all repeated for this update.
+
+## Previous Visual Release
+
 The interactive process and capability-card release was verified on the published [pstar80.github.io](https://pstar80.github.io/) site on **November 18, 2026 (Toronto)**.
 
 - Implementation: [602a8c7](https://github.com/PStar80/PStar80.github.io/commit/602a8c73694349a4240e8d2b2830854a5c567cc0)
 - GitHub Pages: [successful build and deployment](https://github.com/PStar80/PStar80.github.io/actions/runs/44245916629)
 
-## Current Release Checks — November 18, 2026
+### Visual Release Checks — November 18, 2026
 
 | Area | Observed Result |
 | --- | --- |
@@ -18,7 +50,7 @@ The interactive process and capability-card release was verified on the publishe
 | Process motion | Directional trace offsets changed while running. Pause stopped the offsets across separate observations, and Play resumed them. Motion paused after scrolling the diagram offscreen. |
 | Keyboard controls | Tab entered the current diagram node; ArrowRight moved to Local Agent and updated the details; Enter selected it. Clearing the selection returned focus to the same visible node. |
 | Narrow layout and zoom | Chromium at 400% browser zoom produced a 337px content viewport. The home cards became one column and the vertical process SVG appeared. Scroll width equaled client width at 337px. Selecting Operator in the narrow layout displayed its details and three connected routes. Zoom was restored afterward. |
-| Supporting improvements | The hero exposes the existing résumé PDF; the architecture link has an outlined button treatment; project-image enlargement labels remain visible. |
+| Supporting improvements | At this checkpoint, the hero linked to a résumé PDF (removed in the subsequent contact/experience release). The architecture link has an outlined button treatment and project-image enlargement labels remain visible. |
 
 Current screenshots:
 
@@ -26,7 +58,7 @@ Current screenshots:
 - [Desktop process](previews/process-desktop-20261118.jpg)
 - [Narrow process](previews/process-mobile-20261118.jpg)
 
-## Current Limits
+### Limits Of That Review
 
 - The narrow layout was reviewed through browser zoom, not device emulation. Physical touch devices and Safari were not tested.
 - Reduced-motion handling and hidden-tab pausing were reviewed in source. The operating-system preference was not emulated in this pass. Visible pause/play and offscreen pausing were tested directly.
