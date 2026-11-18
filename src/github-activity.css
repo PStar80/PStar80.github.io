@@ -4,9 +4,7 @@
   color: #f3f6fb;
 }
 
-.gh-heading-row,
-.gh-chart-footer,
-.gh-source-row {
+.gh-chart-footer {
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -19,21 +17,6 @@
   font-weight: 600;
   letter-spacing: -.02em;
 }
-
-.gh-profile-link,
-.gh-source-row a {
-  display: inline-flex;
-  align-items: center;
-  gap: 3px;
-  flex-shrink: 0;
-  color: #83c9ff;
-  font-size: .77rem;
-  font-weight: 500;
-  text-decoration: none;
-}
-
-.gh-profile-link:hover,
-.gh-source-row a:hover { color: #b5e9ff; text-decoration: underline; }
 
 .gh-summary {
   display: flex;
@@ -60,8 +43,7 @@
   outline-offset: 5px;
 }
 
-.gh-calendar-scroll:focus-visible,
-.gh-activity a:focus-visible { outline: 2px solid #70cfff; outline-offset: 5px; }
+.gh-calendar-scroll:focus-visible { outline: 2px solid #70cfff; outline-offset: 5px; }
 .gh-calendar { display: block; width: 100%; min-width: 670px; height: auto; overflow: visible; }
 .gh-month-label { font-size: 10px; fill: #afbed2; }
 .gh-weekday-label { font-size: 9px; fill: #829ab5; }
@@ -76,7 +58,6 @@
 .gh-source-row { padding-top: 15px; border-top: 1px solid rgba(144, 175, 207, .14); }
 .gh-source-row p { margin: 0; color: #8ea5be; font-size: .65rem; line-height: 1.6; }
 .gh-source-row time { color: #b9c6d8; white-space: nowrap; }
-.gh-source-row a { font-size: .65rem; }
 .gh-source-note { margin: 8px 0 0; color: #8ea5be; font-size: .63rem; line-height: 1.6; }
 .gh-load-state { min-height: 180px; display: flex; align-items: center; color: #b9c6d8; font-size: .85rem; }
 .gh-sr-only { position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip: rect(0, 0, 0, 0); white-space: nowrap; border: 0; }
@@ -84,12 +65,10 @@
 @media (max-width: 600px) {
   .gh-heading-row { gap: 12px; }
   .gh-heading-row h3 { font-size: .95rem; }
-  .gh-profile-link { font-size: .7rem; }
   .gh-summary { gap: 22px; margin: 24px 0 20px; flex-wrap: wrap; }
   .gh-summary strong { font-size: 1.8rem; }
   .gh-date-range { font-size: .65rem; }
   .gh-chart-footer { align-items: flex-start; flex-direction: column; gap: 12px; }
-  .gh-source-row { align-items: flex-start; }
 }
 
 @media (prefers-reduced-motion: reduce) {

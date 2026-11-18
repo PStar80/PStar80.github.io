@@ -1,6 +1,5 @@
 import { useEffect, useId, useMemo, useRef, useState } from 'react';
 import type { KeyboardEvent } from 'react';
-import { ArrowUpRight } from 'lucide-react';
 import './github-activity.css';
 
 type Day = { date: string; count: number; level: number };
@@ -13,8 +12,6 @@ type Snapshot = {
   days: Day[];
 };
 
-const PROFILE = 'https://github.com/PStar80';
-const SOURCE = 'https://github.com/PStar80/PStar80/tree/output';
 const RAW_SOURCE = 'https://raw.githubusercontent.com/PStar80/PStar80/output';
 const COLORS = ['#14263a', '#17436b', '#2368ad', '#309be0', '#51d8ed'];
 const SOURCE_LEVELS: Record<string, number> = {
@@ -106,8 +103,8 @@ export default function GitHubActivity() {
       const timeout = window.setTimeout(cancel, 4500);
       try {
         const [svgResponse, metadataResponse] = await Promise.all([
-          fetch(`${RAW_SOURCE}/engineering-activity-static.svg`, { signal: refresh.signal }),
-          fetch(`${RAW_SOURCE}/engineering-activity.json`, { signal: refresh.signal }),
+          fetch(`${RAW_SOURCE}/engineering-activity-static.svg`, { signal: refresh.signal, cache: 'no-store' }),
+          fetch(`${RAW_SOURCE}/engineering-activity.json`, { signal: refresh.signal, cache: 'no-store' }),
         ]);
         if (!svgResponse.ok || !metadataResponse.ok) throw new Error('Activity refresh unavailable');
         const [svg, metadata] = await Promise.all([svgResponse.text(), metadataResponse.json()]);
@@ -181,9 +178,6 @@ export default function GitHubActivity() {
     <div className="gh-activity">
       <div className="gh-heading-row">
         <h3>Contribution Activity</h3>
-        <a className="gh-profile-link" href={PROFILE} target="_blank" rel="noreferrer">
-          View GitHub <ArrowUpRight size={14} aria-hidden="true" />
-        </a>
       </div>
 
       {!snapshot && (
@@ -212,7 +206,14 @@ export default function GitHubActivity() {
             aria-describedby={`${id}-instructions ${id}-selection`}
             tabIndex={0}
             onKeyDown={exploreCalendar}
-            onFocus={() => setActiveIndex(index => index ?? snapshot.days.length - 1)}
+            onPointerLeave={() => setActiveIndex(null)}
+            onBlur={() => setActiveIndex(null)}
+            onFocus={event => {
+              // Reveal the last day for keyboard focus, not for a mouse click.
+              if (event.currentTarget.matches(':focus-visible')) {
+                setActiveIndex(index => index ?? snapshot.days.length - 1);
+              }
+            }}
           >
             <svg className="gh-calendar" viewBox={`0 0 ${layout.width} 132`} role="img" aria-labelledby={`${id}-title ${id}-description`}>
               <title id={`${id}-title`}>PStar80 GitHub Contribution Calendar</title>
@@ -259,7 +260,6 @@ export default function GitHubActivity() {
 
           <div className="gh-source-row">
             <p>Snapshot Updated <time dateTime={`${snapshot.updated_utc.replace(' ', 'T')}:00Z`}>{snapshot.updated_utc} UTC</time></p>
-            <a href={SOURCE} target="_blank" rel="noreferrer">Activity Source <ArrowUpRight size={13} aria-hidden="true" /></a>
           </div>
           <p className="gh-source-note">GitHub-reported aggregate counts. Visibility and refresh timing can differ from the native profile calendar.</p>
         </>
