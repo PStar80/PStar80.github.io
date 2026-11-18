@@ -20,7 +20,7 @@ const macroShots: Shot[] = [
   { image: '11-dashboard-presentation.png', title: 'Dashboard Presentation', caption: 'The chart-focused presentation view for exploring macroeconomic indicators.' },
 ];
 const nav = [
-  ['Home', 'home'], ['Projects', 'projects'], ['Process', 'process'], ['Activity', 'activity'], ['About', 'about'],
+  ['Home', 'home'], ['About', 'about'], ['Projects', 'projects'], ['Process', 'process'], ['Activity', 'activity'],
 ];
 
 function Metal({ children, className = '', id, style }: { children: ReactNode; className?: string; id?: string; style?: CSSProperties }) {
