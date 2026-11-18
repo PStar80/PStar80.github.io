@@ -43,7 +43,7 @@ npm run preview
 | `src/GitHubActivity.tsx` | Contribution calendar and guarded source refresh |
 | `src/github-activity.css` | Calendar styles, scoped with `gh-` classes |
 | `public/assets/` | Portrait, original decorative scenes, reviewed screenshots, process diagram, and dated activity data |
-| `public/assets/paul-sattaur-resume.pdf` | Public résumé linked from the Engineering Background section |
+| `public/assets/paul-sattaur-resume.pdf` | Public résumé linked from the hero and Engineering Background section |
 | `scripts/build_resume.py` | Rebuilds the public résumé with ReportLab and Open Sans; `RESUME_FONT_DIR` can select the font directory |
 | `.github/workflows/pages.yml` | Prepared GitHub Pages build/deployment workflow |
 
