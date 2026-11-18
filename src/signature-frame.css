@@ -1,6 +1,6 @@
 .signature-frame {
-  --frame-rim-size: 3px;
-  --frame-corner-size: 25px;
+  --frame-rim-size: 8px;
+  --frame-corner-size: 22px;
   position: relative;
   isolation: isolate;
 }
@@ -97,10 +97,6 @@
     filter: drop-shadow(0 0 3px rgba(116, 221, 248, .4));
     opacity: 1;
   }
-}
-
-@media (max-width: 640px) {
-  .signature-frame { --frame-rim-size: 2px; --frame-corner-size: 22px; }
 }
 
 @media (prefers-reduced-motion: reduce) {

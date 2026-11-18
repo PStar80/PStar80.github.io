@@ -9,8 +9,8 @@ A personal portfolio for full-stack applications, agentic automation, data engin
 - Opaque graphite/navy sections use a faint grid. Alternating scenic sections reveal stationary artwork while foreground content scrolls.
 - Two original backgrounds extend the existing blue cybernetic portrait and neural/workflow profile imagery. [Generation prompts and references](docs/artwork-prompts.md) are retained.
 - Metallic pointer lighting is confined to the hovered card or panel. The regular cursor remains visible; there is no cursor trail or page-wide mouse spotlight.
-- The hero copy and portrait share a top edge. The portrait has a restrained pointer-responsive reflection and up to 1.2 degrees of tilt; its decorative backdrop is scoped to the image. The engineering philosophy quote below uses stationary text with local lighting and a brighter key phrase.
-- A shared silver-blue rim and cyan corner brackets are reserved for the portrait, development process, and contact map. Decorative trim never intercepts their controls. Pointer effects respect reduced motion and reset on exit, cancellation, tab hiding, or window blur.
+- The hero copy and portrait share a top edge. The portrait stays stationary, with a pointer-responsive reflection and fixed-position eye and forehead-node glows that brighten on hover anywhere over its frame; its decorative backdrop is scoped to the image. The engineering philosophy quote below uses stationary text with local lighting and a brighter key phrase.
+- A matching 8px silver-blue rim and cyan corner brackets are reserved for the portrait, development process, and contact map, including narrow layouts. Decorative trim never intercepts their controls. Pointer reflections respect reduced motion and reset on exit, cancellation, tab hiding, or window blur.
 - The four home capability cards link to the relevant work, with illuminated icons, compact descriptions, and the shared metallic reflection.
 - The development process is an interactive SVG with directional traces, selectable node descriptions, keyboard exploration, and separate desktop/mobile layouts. Motion can be paused, respects reduced-motion preferences, and stops while the diagram is offscreen or the tab is hidden.
 - Project sections use actual application captures, with a screenshot lightbox and captions describing the visible state.
@@ -46,7 +46,7 @@ npm run preview
 | `src/App.tsx` | Page sections, project galleries, navigation, and card interaction |
 | `src/styles.css` | Visual system and responsive layouts |
 | `src/FrameAccents.tsx`, `src/signature-frame.css` | Shared metallic rim and cyan corner accents for the three featured surfaces |
-| `src/usePointerLighting.ts` | Frame-smoothed local reflection, optional portrait tilt, motion preferences, and cleanup |
+| `src/usePointerLighting.ts` | Frame-smoothed local reflection, motion preferences, and cleanup; no physical portrait tilt |
 | `src/ProcessFlow.tsx`, `src/process-flow.css` | Shared architecture data, responsive SVG layouts, directional motion, and accessible node exploration |
 | `src/LocationMap.tsx`, `src/location-map.css` | Flat location map, country highlighting and selection, Toronto beacon, restrained motion, accessible controls, responsive framing, and local time |
 | `src/location-map-data.ts`, `scripts/build_location_map.py` | Committed geographic SVG paths and an optional reproducible generator |
@@ -78,7 +78,7 @@ The reference portfolios informed layout and interaction patterns; their artwork
 
 `public/assets/contributions.json` contains a dated local fallback extracted from the public contribution SVG: **367 days, 2,569 contributions, and 166 active days**, covering **2025-11-16 through 2026-11-17**, updated **2026-11-17 07:41 UTC**.
 
-After loading that fallback, the component attempts a 4.5-second refresh from the public `engineering-activity-static.svg` and `engineering-activity.json` files. It parses only date/count titles and known metadata, verifies the date sequence and aggregate totals, and accepts a valid newer or equal snapshot. It never inserts remote SVG markup. Failed, older, or inconsistent refreshes retain the local snapshot and its timestamp.
+After loading that fallback, the component attempts a 4.5-second refresh once per page load from the public `engineering-activity-static.svg` and `engineering-activity.json` files (there is no in-tab polling). The upstream profile repository is intended to regenerate these files daily through GitHub Actions; if that upstream update is delayed, a successful browser refresh still displays the previous timestamp. It parses only date/count titles and known metadata, verifies the date sequence and aggregate totals, and accepts a valid newer or equal snapshot. It never inserts remote SVG markup. Failed, older, or inconsistent refreshes retain the local snapshot and its timestamp.
 
 Counts come from the public generated contribution assets. Visibility and refresh timing can differ from the native GitHub profile. This is a dated contribution snapshot, not live operational telemetry.
 

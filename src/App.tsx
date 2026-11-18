@@ -74,12 +74,17 @@ function Metal({ children, className = '', id, style }: { children: ReactNode; c
 }
 
 function HeroPortrait() {
-  const portraitLighting = usePointerLighting<HTMLDivElement>(1.2);
+  const portraitLighting = usePointerLighting<HTMLDivElement>();
   const quoteLighting = usePointerLighting<HTMLQuoteElement>();
   return <div className="portrait-composition">
     <div className="portrait-visual">
       <div {...portraitLighting} className="portrait-frame signature-frame">
         <img className="portrait-image" src="/assets/portrait-current.png" alt="Paul Sattaur's blue cybernetic profile portrait" width="460" height="460" fetchPriority="high" />
+        <span className="portrait-energy" aria-hidden="true">
+          <span className="portrait-energy-spot portrait-energy-left-eye" />
+          <span className="portrait-energy-spot portrait-energy-right-eye" />
+          <span className="portrait-energy-spot portrait-energy-forehead" />
+        </span>
         <span className="portrait-reflection" aria-hidden="true" />
         <div className="portrait-caption"><span><span className="tiny-square" /> HUMAN IN THE LOOP</span><Code2 size={20} /></div>
         <FrameAccents />

@@ -1,7 +1,7 @@
 import { useEffect, useRef, type PointerEvent } from 'react';
 
-/** Local surface lighting; only the portrait opts into a small physical tilt. */
-export default function usePointerLighting<T extends HTMLElement>(maxTilt = 0) {
+/** Local pointer reflection only; the surface itself remains stationary. */
+export default function usePointerLighting<T extends HTMLElement>() {
   const ref = useRef<T>(null);
   const animation = useRef(0);
   const enabled = useRef(false);
@@ -13,8 +13,6 @@ export default function usePointerLighting<T extends HTMLElement>(maxTilt = 0) {
     const element = ref.current;
     if (!element) return;
     delete element.dataset.pointerActive;
-    element.style.setProperty('--tilt-x', '0deg');
-    element.style.setProperty('--tilt-y', '0deg');
   }
 
   useEffect(() => {
@@ -44,10 +42,6 @@ export default function usePointerLighting<T extends HTMLElement>(maxTilt = 0) {
     p.y += (p.ty - p.y) * .16;
     element.style.setProperty('--mx', `${p.x}%`);
     element.style.setProperty('--my', `${p.y}%`);
-    if (maxTilt) {
-      element.style.setProperty('--tilt-x', `${(50 - p.y) / 50 * maxTilt}deg`);
-      element.style.setProperty('--tilt-y', `${(p.x - 50) / 50 * maxTilt}deg`);
-    }
     animation.current = Math.abs(p.tx - p.x) > .08 || Math.abs(p.ty - p.y) > .08
       ? requestAnimationFrame(update) : 0;
   }
