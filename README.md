@@ -9,9 +9,11 @@ A personal portfolio for full-stack applications, agentic automation, data engin
 - Opaque graphite/navy sections use a faint grid. Alternating scenic sections reveal stationary artwork while foreground content scrolls.
 - Two original backgrounds extend the existing blue cybernetic portrait and neural/workflow profile imagery. [Generation prompts and references](docs/artwork-prompts.md) are retained.
 - Metallic pointer lighting is confined to the hovered card or panel. The regular cursor remains visible; there is no cursor trail or page-wide mouse spotlight.
-- The four home capability cards link to the relevant work, with illuminated icons, compact descriptions, and the shared metallic reflection. The hero also offers direct access to the public résumé.
+- The four home capability cards link to the relevant work, with illuminated icons, compact descriptions, and the shared metallic reflection.
 - The development process is an interactive SVG with directional traces, selectable node descriptions, keyboard exploration, and separate desktop/mobile layouts. Motion can be paused, respects reduced-motion preferences, and stops while the diagram is offscreen or the tab is hidden.
 - Project sections use actual application captures, with a screenshot lightbox and captions describing the visible state.
+- Experience is available in the main navigation and presents a brief, dated career timeline. The site does not serve a downloadable résumé.
+- Contact cards are full-surface native links. The email copy button is a separate control, with visible keyboard focus and live copy feedback.
 - The personal site stays blue/cyan; SkyCommand retains its charcoal/gold product identity.
 - GitHub Activity sits over the neural scene, with its calendar and labels on a dark foreground panel.
 
@@ -43,8 +45,6 @@ npm run preview
 | `src/GitHubActivity.tsx` | Contribution calendar and guarded source refresh |
 | `src/github-activity.css` | Calendar styles, scoped with `gh-` classes |
 | `public/assets/` | Portrait, original decorative scenes, reviewed screenshots, process diagram, and dated activity data |
-| `public/assets/paul-sattaur-resume.pdf` | Public résumé linked from the hero and Engineering Background section |
-| `scripts/build_resume.py` | Rebuilds the public résumé with ReportLab and Open Sans; `RESUME_FONT_DIR` can select the font directory |
 | `.github/workflows/pages.yml` | Prepared GitHub Pages build/deployment workflow |
 
 ## Content And Asset Sources
@@ -59,7 +59,7 @@ npm run preview
 | MacroAnalyzer screenshots | `02-macro-dashboard.png` and `11-dashboard-presentation.png` from [the public screenshot set](https://github.com/PStar80/MacroAnalyzer/tree/main/docs/assets/screenshots) |
 | SkyDataStudio illustration and copy | A conceptual lineage illustration, not an application screenshot; product scope from [its README](https://github.com/PStar80/SkyDataStudio/blob/main/README.md) |
 | Engineering highlights | Implementation decisions documented in [SkyCommand architecture](https://github.com/PStar80/SkyCommand-Demo/blob/main/docs/architecture.md), [SkyDataStudio](https://github.com/PStar80/SkyDataStudio/blob/main/README.md), and [MacroAnalyzer](https://github.com/PStar80/MacroAnalyzer/blob/main/README.md) |
-| Professional background and public résumé | Owner-approved career details, adapted for this portfolio; uses public contact information |
+| Experience timeline | Owner-supplied career details, summarized as four dated software-related entries from CPAS onward; source documents are not published |
 | `portfolio-cover.png` | Original approved portfolio artwork, used for Open Graph and Twitter sharing previews |
 | Activity data | [Public generated contribution assets](https://github.com/PStar80/PStar80/tree/output), described below |
 

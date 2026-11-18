@@ -81,8 +81,6 @@ p { color: var(--muted); line-height: 1.85; }
 .hero-social { display: flex; flex-wrap: wrap; align-items: center; gap: 5px 22px; margin-top: 22px; color: #a9bed5; }
 .social-link { display: flex; align-items: center; min-height: 32px; gap: 7px; font-size: 12px; transition: color .2s; }
 .social-link:hover { color: #77cffa; }
-.resume-link { color: #a9d9f4; }
-.resume-format { font-family: var(--mono); font-size: 8px; color: #90a8c0; margin-left: 3px; }
 .location { flex-basis: 100%; font-size: 11px; display: flex; align-items: center; gap: 6px; white-space: nowrap; }
 .portrait-composition { position: relative; width: 100%; max-width: 435px; margin: 12px 0 0 auto; }
 .portrait-composition::before { content: ''; position: absolute; inset: -17px 20px 40px -17px; border: 1px solid rgba(83,141,189,.17); border-radius: 17px; pointer-events: none; }
@@ -282,22 +280,19 @@ a.card-foot:focus-visible { outline-offset: -4px; }
 .experience-grid { display: grid; grid-template-columns: 1fr 1.18fr; gap: 90px; }
 .experience-grid h2 { font-size: clamp(2.3rem, 3.4vw, 3.1rem); }
 .experience-intro { max-width: 290px; font-size: 13px; margin-top: 23px; }
-.experience-list { padding-top: 7px; }
-.experience-entry { display: flex; gap: 22px; position: relative; padding-bottom: 37px; }
-.experience-entry:first-child::before { content: ''; position: absolute; top: 45px; bottom: 0; left: 20px; width: 1px; background: #2a3f58; }
-.experience-marker { height: 42px; width: 42px; flex-shrink: 0; border: 1px solid #35516d; display: flex; align-items: center; justify-content: center; color: #86c3ef; border-radius: 9px; background: #14253a; }
-.experience-entry .micro { font-size: 8px; color: #7aa1c0; }
-.experience-entry h3 { margin: 9px 0 12px; font-size: 20px; }
+.experience-list { list-style: none; margin: 0; padding: 0; }
+.experience-entry { position: relative; padding-bottom: 37px; }
+.experience-entry:not(:last-child)::before { content: ''; position: absolute; top: 21px; bottom: -21px; left: 20px; width: 1px; background: linear-gradient(#35516d, #263d55); }
+.experience-entry:last-child { padding-bottom: 0; }
+.experience-entry-heading { display: grid; grid-template-columns: 42px minmax(0, 1fr); align-items: center; gap: 22px; min-height: 42px; }
+.experience-marker { position: relative; z-index: 1; height: 42px; width: 42px; border: 1px solid #35516d; display: flex; align-items: center; justify-content: center; color: #86c3ef; border-radius: 9px; background: #14253a; }
+.experience-entry h3 { margin: 0; font-size: 20px; line-height: 1.4; }
+.experience-body { margin: 6px 0 0 64px; min-width: 0; }
+.experience-meta { display: flex; flex-wrap: wrap; align-items: baseline; gap: 4px 14px; margin-bottom: 12px; }
+.experience-organization { color: #c7d7e8; font-size: 13px; font-weight: 600; line-height: 1.6; }
+.experience-dates { color: #8db9d7; font-family: var(--mono); font-size: 10px; letter-spacing: .03em; line-height: 1.6; white-space: nowrap; }
 .experience-entry p { font-size: 12px; }
 .experience-tech { font-family: var(--mono); font-size: 8px; line-height: 1.9; color: #688eac; margin-top: 15px; }
-.experience-link { margin-left: 64px; }
-.experience-entry > div { min-width: 0; }
-.experience-entry .experience-role { display: block; margin: 0 0 6px; color: #c7d7e8; font-size: 13px; font-weight: 600; line-height: 1.6; }
-.experience-entry .experience-dates { display: block; margin: 0 0 12px; color: #8da7c2; font-family: var(--mono); font-size: 10px; letter-spacing: .03em; line-height: 1.6; }
-.experience-actions { display: flex; flex-wrap: wrap; align-items: center; gap: 16px 24px; margin-left: 64px; }
-.experience-actions > a { max-width: 100%; }
-.experience-actions .experience-link { margin-left: 0; min-height: 44px; }
-.experience-actions .button { min-height: 44px; padding: 12px 16px; gap: 10px; font-size: 12px; }
 .contact-section { padding: 66px 0 48px; }
 .contact-section .container { border-top: 1px solid var(--line); padding-top: 83px; }
 .contact-heading { text-align: center; }
@@ -306,17 +301,20 @@ a.card-foot:focus-visible { outline-offset: -4px; }
 .contact-heading > p { font-size: 13px; margin-top: 24px; }
 .contact-heading .button { margin-top: 28px; }
 .contact-grid { display: grid; grid-template-columns: 1.25fr 1fr 1fr; gap: 18px; margin-top: 60px; }
-.contact-card { display: flex; align-items: center; gap: 16px; padding: 23px; border-radius: 9px; background: linear-gradient(125deg, #152238, #0d1828); }
+.contact-card { display: grid; grid-template-columns: 44px minmax(0, 1fr) 44px; align-items: center; gap: 16px; padding: 23px; border-radius: 9px; background: linear-gradient(125deg, #152238, #0d1828); }
 .contact-card::before { background: radial-gradient(ellipse 190px 130px at var(--mx, 50%) var(--my, 50%), rgba(94,200,229,.23), transparent 75%); }
-.contact-card > svg:first-child { color: #7eabcf; stroke-width: 1.5; }
-.contact-card > div { flex: 1; min-width: 0; }
-.contact-card .micro { display: block; font-size: 7px; margin-bottom: 6px; }
-.contact-card a { font-size: 11px; color: #d7e4f3; overflow-wrap: anywhere; }
-.contact-card a:hover { color: #8ed6fb; }
-.contact-card > svg:last-child { color: #6d91b1; }
+.contact-icon, .contact-arrow { justify-self: center; pointer-events: none; }
+.contact-icon { color: #7eabcf; stroke-width: 1.5; }
+.contact-arrow { color: #6d91b1; }
+.contact-card-link { position: static; min-width: 0; font-size: 13px; line-height: 1.5; color: #d7e4f3; text-align: center; overflow-wrap: anywhere; }
+.contact-card-link::after { content: ''; position: absolute; inset: 0; z-index: 1; border-radius: inherit; }
+.contact-card-link > span { position: relative; z-index: 2; }
+.contact-card:hover .contact-card-link, .contact-card-link:focus-visible { color: #8ed6fb; }
+.contact-card-link:focus-visible { outline: none; }
+.contact-card-link:focus-visible::after { outline: 2px solid #72dbf3; outline-offset: -4px; }
 .icon-button { display: inline-flex; align-items: center; justify-content: center; flex-shrink: 0; padding: 0; height: 44px; width: 44px; min-width: 44px; min-height: 44px; border: 1px solid rgba(121,154,186,.2); border-radius: 7px; background: rgba(40,65,95,.11); color: #a5bed8; transition: background .2s, color .2s, border-color .2s; }
 .icon-button:hover { background: rgba(60,115,163,.2); color: #e8f7ff; border-color: #486b8b; }
-.contact-card .icon-button { width: 44px; height: 44px; min-width: 44px; border: 0; }
+.contact-card .contact-copy { position: relative; z-index: 3; width: 44px; height: 44px; min-width: 44px; border: 0; }
 .copy-status { min-height: 25px; color: #80cbbd; font-size: 11px; padding-top: 10px; text-align: center; }
 .site-footer { background: #060c15; border-top: 1px solid var(--line); padding: 28px 0; }
 .footer-inner { display: flex; align-items: center; gap: 30px; }
@@ -368,12 +366,11 @@ a.card-foot:focus-visible { outline-offset: -4px; }
   .experience-grid { gap: 45px; }
   .contact-grid { gap: 13px; }
   .contact-card { padding: 20px 15px; gap: 11px; }
-  .contact-card a { font-size: 10px; }
 }
 @media (max-width: 900px) {
   .container { width: calc(100% - 56px); }
   .brand-name { display: none; }
-  .navigation { gap: 18px; }
+  .navigation { gap: 12px; }
   .hero-grid { gap: 37px; grid-template-columns: 1.1fr 1fr; padding-top: 60px; }
   .hero-copy h1 { font-size: 72px; }
   .hero-statement { font-size: 20px; }
@@ -442,8 +439,6 @@ a.card-foot:focus-visible { outline-offset: -4px; }
   .contact-grid { grid-template-columns: 1fr 1fr; gap: 18px; }
   .contact-card:first-child { grid-column: 1 / -1; }
   .contact-card { padding: 23px; gap: 17px; }
-  .contact-card a { font-size: 13px; }
-  .contact-card .micro { font-size: 8px; }
   .footer-inner { gap: 22px; }
   .footer-inner > span { margin-left: 0; }
   .footer-inner p { display: none; }
@@ -563,15 +558,15 @@ a.card-foot:focus-visible { outline-offset: -4px; }
   .experience-section { padding: 73px 0 45px; }
   .experience-grid h2 { font-size: 34px; }
   .experience-grid { gap: 34px; }
-  .experience-entry { gap: 17px; padding-bottom: 33px; }
+  .experience-entry { padding-bottom: 33px; }
+  .experience-entry-heading { grid-template-columns: 36px minmax(0, 1fr); gap: 17px; min-height: 36px; }
   .experience-marker { width: 36px; height: 36px; }
-  .experience-entry:first-child::before { left: 17px; top: 41px; }
-  .experience-entry h3 { font-size: 19px; line-height: 1.4; margin-top: 8px; }
-  .experience-entry .micro { font-size: 7px; }
+  .experience-entry:not(:last-child)::before { left: 17px; top: 18px; bottom: -18px; }
+  .experience-entry h3 { font-size: 19px; }
+  .experience-body { margin-left: 53px; }
+  .experience-meta { gap: 4px 10px; }
   .experience-entry p { font-size: 11px; }
   .experience-tech { font-size: 7px; }
-  .experience-link { margin-left: 53px; font-size: 10px; }
-  .experience-actions { margin-left: 53px; gap: 12px 18px; }
   .contact-section { padding: 25px 0 25px; }
   .contact-section .container { padding-top: 65px; }
   .contact-heading h2 { font-size: 36px; }
@@ -579,7 +574,7 @@ a.card-foot:focus-visible { outline-offset: -4px; }
   .contact-heading .eyebrow { font-size: 7px; gap: 8px; }
   .contact-grid { grid-template-columns: 1fr; gap: 14px; margin-top: 39px; }
   .contact-card { padding: 22px 20px; gap: 17px; }
-  .contact-card a { font-size: 12px; }
+  .contact-card-link { font-size: 12px; }
   .contact-card:first-child { grid-column: auto; }
   .site-footer { padding: 23px 0; }
   .footer-inner { flex-wrap: wrap; gap: 18px; }
@@ -635,7 +630,6 @@ a.card-foot:focus-visible { outline-offset: -4px; }
 .experience-entry p { font-size: 14px; }
 .experience-tech { font-size: 10px; }
 .contact-heading > p { font-size: 15px; }
-.contact-card a { font-size: 13px; }
 .lightbox-bottom p { font-size: 12px; }
 @media (max-width: 900px) and (min-width: 641px) {
   .expertise-grid { grid-template-columns: 1fr; }
@@ -654,7 +648,6 @@ a.card-foot:focus-visible { outline-offset: -4px; }
   .process-notes p { font-size: 13px; }
   .contact-heading > p { font-size: 14px; }
   .contact-card:first-child { padding-left: 16px; padding-right: 16px; gap: 11px; }
-  .contact-card:first-child a { font-size: 12px; }
   .experience-tech { font-size: 9px; }
 }
 @media (hover: none) {

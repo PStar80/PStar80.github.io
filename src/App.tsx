@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState, type ReactNode, type CSSProperties } from 'react';
-import { ArrowUpRight, ArrowRight, ArrowDown, ArrowUp, Menu, X, Github, Linkedin, Mail, MapPin, Workflow, Database, ChartNoAxesCombined, BrainCircuit, Layers3, Code2, Cpu, Network, ShieldCheck, Expand, ChevronLeft, ChevronRight, Check, Copy, Box, ExternalLink, FileText } from 'lucide-react';
+import { ArrowUpRight, ArrowRight, ArrowDown, ArrowUp, Menu, X, Github, Linkedin, Mail, MapPin, Workflow, Database, ChartNoAxesCombined, BrainCircuit, Layers3, Code2, Cpu, Network, ShieldCheck, Expand, ChevronLeft, ChevronRight, Check, Copy, Box, ExternalLink } from 'lucide-react';
 import GitHubActivity from './GitHubActivity';
 import ProcessFlow from './ProcessFlow';
 
@@ -21,7 +21,30 @@ const macroShots: Shot[] = [
   { image: '11-dashboard-presentation.png', title: 'Dashboard Presentation', caption: 'The chart-focused presentation view for exploring macroeconomic indicators.' },
 ];
 const nav = [
-  ['Home', 'home'], ['About', 'about'], ['Projects', 'projects'], ['Process', 'process'], ['Activity', 'activity'],
+  ['Home', 'home'], ['About', 'about'], ['Projects', 'projects'], ['Process', 'process'], ['Activity', 'activity'], ['Experience', 'experience'],
+];
+
+const experience = [
+  {
+    icon: Layers3, title: 'Full-Stack Applications & Agentic AI', organization: 'Independent Development', start: '2025', end: 'Present',
+    summary: 'Building SkyCommand, SkyDataStudio, and MacroAnalyzer, connecting interactive interfaces with APIs, data services, workflow automation, and agentic AI.',
+    technologies: 'React / TypeScript / Node.js / Python / C# / PostgreSQL',
+  },
+  {
+    icon: Database, title: 'Senior Programmer Analyst', organization: 'CAAT Pension Plan', start: '2022', end: '2025',
+    summary: 'Led backend and data-workflow development for GROWTHplus, improving Oracle PL/SQL processing and batch automation while working with business and QA teams through testing, release, and production support.',
+    technologies: 'Oracle / PL/SQL / Java / Azure DevOps',
+  },
+  {
+    icon: Code2, title: 'Programmer Analyst', organization: 'The RecordKeeper Ltd', start: '2014', end: '2019',
+    summary: 'Developed and supported financial applications with Java and Oracle PL/SQL, creating C# utilities and automating batch processing, deployments, and production support.',
+    technologies: 'Java / PL/SQL / C# / Automation',
+  },
+  {
+    icon: Network, title: 'Business Analyst', organization: 'CPAS Systems Inc.', start: '2011', end: '2013',
+    summary: 'Supported pension administration software through SQL analysis, production diagnostics, and defect resolution, working with clients and development teams to clarify requirements, test changes, and validate fixes.',
+    technologies: 'Oracle / SQL / Systems Analysis / Production Support',
+  },
 ];
 
 const capabilities = [
@@ -148,7 +171,7 @@ export default function App() {
       const progress = max > 0 ? Math.min(1, Math.max(0, window.scrollY / max)) : 0;
       if (progressRef.current) progressRef.current.style.transform = `scaleX(${progress})`;
       let current = 'home';
-      for (const id of ['home', 'about', 'projects', 'process', 'activity', 'contact']) {
+      for (const id of [...nav.map(([, id]) => id), 'contact']) {
         const el = document.getElementById(id);
         if (el && el.getBoundingClientRect().top < window.innerHeight * .35) current = id;
       }
@@ -197,7 +220,7 @@ export default function App() {
               <p className="hero-statement">Connected Systems.<br />Intelligent Experiences.</p>
               <p className="hero-description">I build applications that bring automation, data, and AI together—from the interface to the infrastructure.</p>
               <div className="hero-actions"><a href="#projects" className="button button-primary">Explore My Work <ArrowUpRight size={19} /></a><a href="#contact" className="button button-quiet">Get In Touch <ArrowRight size={18} /></a></div>
-              <div className="hero-social"><OutLink href={github} className="social-link"><Github size={18} /><span>GitHub</span></OutLink><OutLink href={linkedin} className="social-link"><Linkedin size={18} /><span>LinkedIn</span></OutLink><OutLink href="/assets/paul-sattaur-resume.pdf" className="social-link resume-link"><FileText size={18} /><span>View Résumé <span className="resume-format">PDF</span></span></OutLink><span className="location"><MapPin size={15} /> Greater Toronto Area, Canada</span></div>
+              <div className="hero-social"><OutLink href={github} className="social-link"><Github size={18} /><span>GitHub</span></OutLink><OutLink href={linkedin} className="social-link"><Linkedin size={18} /><span>LinkedIn</span></OutLink><span className="location"><MapPin size={15} /> Greater Toronto Area, Canada</span></div>
             </div>
             <div className="portrait-composition">
               <div className="portrait-frame">
@@ -298,14 +321,18 @@ export default function App() {
         </div>
       </section>
 
-      <section className="opaque experience-section" aria-labelledby="experience-title">
+      <section className="opaque experience-section" id="experience" aria-labelledby="experience-title">
         <div className="container experience-grid">
           <div><Eyebrow number="06">Engineering Background</Eyebrow><h2 id="experience-title">Built On{' '}<br /><span className="text-accent">Real Experience.</span></h2><p className="experience-intro">Enterprise problem solving meets independent product development.</p></div>
-          <div className="experience-list">
-            <div className="experience-entry"><span className="experience-marker"><Layers3 size={19} /></span><div><span className="micro">INDEPENDENT DEVELOPMENT</span><h3>Full-Stack Applications & Agentic AI</h3><p>Designing and building SkyCommand, SkyDataStudio, and MacroAnalyzer—from interactive interfaces to APIs, data services, and containerized infrastructure.</p><div className="experience-tech">React / TypeScript / Node.js / Python / C# / PostgreSQL</div></div></div>
-            <div className="experience-entry"><span className="experience-marker"><Database size={19} /></span><div><span className="micro">ENTERPRISE FOUNDATION</span><h3>Senior Programmer Analyst</h3><p className="experience-role">CAAT Pension Plan · Toronto <span className="experience-dates">2022–2025</span></p><p>Led systems analysis and data-workflow delivery for GROWTHplus, translating pension business rules into Oracle PL/SQL processing and integrations. Worked with business, development, and QA teams through validation, release, and production support.</p><div className="experience-tech">Oracle / SQL & PL/SQL / Java / Systems Analysis</div></div></div>
-            <div className="experience-actions"><OutLink href={linkedin} className="text-link experience-link">View My Professional Background <ArrowUpRight size={17} /></OutLink><OutLink href="/assets/paul-sattaur-resume.pdf" className="button button-quiet"><FileText size={17} /> View Résumé (PDF) <ArrowUpRight size={16} /></OutLink></div>
-          </div>
+          <ol className="experience-list" aria-label="Career timeline">
+            {experience.map(({ icon: Icon, title, organization, start, end, summary, technologies }) => <li className="experience-entry" key={organization}>
+              <div className="experience-entry-heading"><span className="experience-marker" aria-hidden="true"><Icon size={19} /></span><h3>{title}</h3></div>
+              <div className="experience-body">
+                <div className="experience-meta"><span className="experience-organization">{organization}</span><span className="experience-dates"><time dateTime={start}>{start}</time>–{end === 'Present' ? end : <time dateTime={end}>{end}</time>}</span></div>
+                <p>{summary}</p><div className="experience-tech">{technologies}</div>
+              </div>
+            </li>)}
+          </ol>
         </div>
       </section>
 
@@ -313,11 +340,11 @@ export default function App() {
         <div className="container">
           <div className="contact-heading"><Eyebrow number="07">Start A Conversation</Eyebrow><h2 id="contact-title">Let’s Build<br /><span className="text-accent">Something That Matters.</span></h2><p>Have a role, a project, or a system worth improving?<br />I’d like to hear about it.</p><a href={'mailto:' + email} className="button button-primary">Get In Touch <ArrowUpRight size={20} /></a></div>
           <div className="contact-grid">
-            <Metal className="contact-card"><Mail size={22} /><div><span className="micro">EMAIL</span><a href={'mailto:' + email}>{email}</a></div><button className="icon-button" aria-label={copied ? 'Email copied' : 'Copy email address'} onClick={copyEmail}>{copied ? <Check size={17} /> : <Copy size={17} />}</button></Metal>
-            <Metal className="contact-card"><Linkedin size={22} /><div><span className="micro">LINKEDIN</span><OutLink href={linkedin}>Let’s Connect</OutLink></div><ArrowUpRight size={18} /></Metal>
-            <Metal className="contact-card"><Github size={22} /><div><span className="micro">GITHUB</span><OutLink href={github}>Explore PStar80</OutLink></div><ArrowUpRight size={18} /></Metal>
+            <Metal className="contact-card"><Mail className="contact-icon" size={22} aria-hidden="true" /><a className="contact-card-link" href={'mailto:' + email} aria-label={'Email ' + email}><span>{email}</span></a><button className="icon-button contact-copy" type="button" aria-label={copied ? 'Email copied' : 'Copy email address'} onClick={copyEmail}>{copied ? <Check size={17} /> : <Copy size={17} />}</button></Metal>
+            <Metal className="contact-card"><Linkedin className="contact-icon" size={22} aria-hidden="true" /><a className="contact-card-link" href={linkedin} target="_blank" rel="noreferrer" aria-label="Let’s Connect on LinkedIn"><span>Let’s Connect</span></a><ArrowUpRight className="contact-arrow" size={18} aria-hidden="true" /></Metal>
+            <Metal className="contact-card"><Github className="contact-icon" size={22} aria-hidden="true" /><a className="contact-card-link" href={github} target="_blank" rel="noreferrer" aria-label="Explore PStar80 on GitHub"><span>Explore PStar80</span></a><ArrowUpRight className="contact-arrow" size={18} aria-hidden="true" /></Metal>
           </div>
-          <div className="copy-status" aria-live="polite">{copied ? 'Email address copied.' : copyFailed ? 'Please select and copy the email address above.' : ''}</div>
+          <div className="copy-status" aria-live="polite">{copied ? 'Email address copied.' : copyFailed ? 'Please select and copy this address: ' + email : ''}</div>
         </div>
       </section>
     </main>
