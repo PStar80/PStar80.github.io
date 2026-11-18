@@ -2,6 +2,7 @@ import { useEffect, useRef, useState, type ReactNode, type CSSProperties } from 
 import { ArrowUpRight, ArrowRight, ArrowDown, ArrowUp, Menu, X, Github, Linkedin, Mail, MapPin, Workflow, Database, ChartNoAxesCombined, BrainCircuit, Layers3, Code2, Cpu, Network, ShieldCheck, Expand, ChevronLeft, ChevronRight, Check, Copy, Box, ExternalLink } from 'lucide-react';
 import GitHubActivity from './GitHubActivity';
 import ProcessFlow from './ProcessFlow';
+import LocationMap from './LocationMap';
 
 const github = 'https://github.com/PStar80';
 const linkedin = 'https://www.linkedin.com/in/paulsattaur/';
@@ -193,7 +194,7 @@ export default function App() {
       await navigator.clipboard.writeText(email);
       setCopied(true); setCopyFailed(false);
       clearTimeout(copyTimer.current); copyTimer.current = setTimeout(() => setCopied(false), 2600);
-    } catch { setCopyFailed(true); }
+    } catch { setCopied(false); setCopyFailed(true); }
   }
 
   return <>
@@ -338,13 +339,19 @@ export default function App() {
 
       <section className="opaque contact-section" id="contact" aria-labelledby="contact-title">
         <div className="container">
-          <div className="contact-heading"><Eyebrow number="07">Start A Conversation</Eyebrow><h2 id="contact-title">Let’s Build<br /><span className="text-accent">Something That Matters.</span></h2><p>Have a role, a project, or a system worth improving?<br />I’d like to hear about it.</p><a href={'mailto:' + email} className="button button-primary">Get In Touch <ArrowUpRight size={20} /></a></div>
-          <div className="contact-grid">
-            <Metal className="contact-card"><Mail className="contact-icon" size={22} aria-hidden="true" /><a className="contact-card-link" href={'mailto:' + email} aria-label={'Email ' + email}><span>{email}</span></a><button className="icon-button contact-copy" type="button" aria-label={copied ? 'Email copied' : 'Copy email address'} onClick={copyEmail}>{copied ? <Check size={17} /> : <Copy size={17} />}</button></Metal>
-            <Metal className="contact-card"><Linkedin className="contact-icon" size={22} aria-hidden="true" /><a className="contact-card-link" href={linkedin} target="_blank" rel="noreferrer" aria-label="Let’s Connect on LinkedIn"><span>Let’s Connect</span></a><ArrowUpRight className="contact-arrow" size={18} aria-hidden="true" /></Metal>
-            <Metal className="contact-card"><Github className="contact-icon" size={22} aria-hidden="true" /><a className="contact-card-link" href={github} target="_blank" rel="noreferrer" aria-label="Explore PStar80 on GitHub"><span>Explore PStar80</span></a><ArrowUpRight className="contact-arrow" size={18} aria-hidden="true" /></Metal>
+          <div className="contact-heading"><Eyebrow number="07">Start A Conversation</Eyebrow><h2 id="contact-title">Let’s Build<br /><span className="text-accent">Something That Matters.</span></h2><p>Have a role, a project, or a system worth improving?<br />I’d like to hear about it.</p></div>
+          <div className="contact-layout">
+            <div className="contact-methods">
+              <div className="contact-grid">
+                <Metal className="contact-card"><Mail className="contact-icon" size={22} aria-hidden="true" /><a className="contact-card-link" href={'mailto:' + email} aria-label={'Email ' + email}><span>{email}</span></a><button className="icon-button contact-copy" type="button" aria-label={copied ? 'Email copied' : 'Copy email address'} onClick={copyEmail}>{copied ? <Check size={17} /> : <Copy size={17} />}</button></Metal>
+                <Metal className="contact-card"><Linkedin className="contact-icon" size={22} aria-hidden="true" /><a className="contact-card-link" href={linkedin} target="_blank" rel="noreferrer" aria-label="Let’s Connect on LinkedIn"><span>Let’s Connect</span></a><ArrowUpRight className="contact-arrow" size={18} aria-hidden="true" /></Metal>
+                <Metal className="contact-card"><Github className="contact-icon" size={22} aria-hidden="true" /><a className="contact-card-link" href={github} target="_blank" rel="noreferrer" aria-label="Explore PStar80 on GitHub"><span>Explore PStar80</span></a><ArrowUpRight className="contact-arrow" size={18} aria-hidden="true" /></Metal>
+              </div>
+              <span className="sr-only" role="status" aria-live="polite" aria-atomic="true">{copied ? 'Email address copied.' : ''}</span>
+              {copyFailed && <p className="copy-error" role="alert">Please select and copy this address: {email}</p>}
+            </div>
+            <Metal className="location-panel"><LocationMap /></Metal>
           </div>
-          <div className="copy-status" aria-live="polite">{copied ? 'Email address copied.' : copyFailed ? 'Please select and copy this address: ' + email : ''}</div>
         </div>
       </section>
     </main>

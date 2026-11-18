@@ -13,7 +13,8 @@ A personal portfolio for full-stack applications, agentic automation, data engin
 - The development process is an interactive SVG with directional traces, selectable node descriptions, keyboard exploration, and separate desktop/mobile layouts. Motion can be paused, respects reduced-motion preferences, and stops while the diagram is offscreen or the tab is hidden.
 - Project sections use actual application captures, with a screenshot lightbox and captions describing the visible state.
 - Experience is available in the main navigation and presents a brief, dated career timeline. The site does not serve a downloadable résumé.
-- Contact cards are full-surface native links. The email copy button is a separate control, with visible keyboard focus and live copy feedback.
+- Contact cards are full-surface native links, stacked beside a curved North American location map. The email copy button remains separate; success is shown by its checkmark with a screen-reader announcement, and copy errors alone display a message.
+- The map uses real geographic outlines, a Toronto city marker, subtle motion, pointer depth, and Toronto local time. Its motion can be paused, respects reduced-motion preferences, and stops offscreen or while the tab is hidden.
 - The personal site stays blue/cyan; SkyCommand retains its charcoal/gold product identity.
 - GitHub Activity sits over the neural scene, with its calendar and labels on a dark foreground panel.
 
@@ -42,6 +43,8 @@ npm run preview
 | `src/App.tsx` | Page sections, project galleries, navigation, and card interaction |
 | `src/styles.css` | Visual system and responsive layouts |
 | `src/ProcessFlow.tsx`, `src/process-flow.css` | Shared architecture data, responsive SVG layouts, directional motion, and accessible node exploration |
+| `src/LocationMap.tsx`, `src/location-map.css` | Toronto globe, restrained motion, accessible pause control, responsive framing, and local time |
+| `src/location-map-data.ts`, `scripts/build_location_map.py` | Committed geographic SVG paths and an optional reproducible generator |
 | `src/GitHubActivity.tsx` | Contribution calendar and guarded source refresh |
 | `src/github-activity.css` | Calendar styles, scoped with `gh-` classes |
 | `public/assets/` | Portrait, original decorative scenes, reviewed screenshots, process diagram, and dated activity data |
@@ -55,6 +58,7 @@ npm run preview
 | `portrait-current.png` | Current [PStar80 GitHub avatar](https://avatars.githubusercontent.com/u/225520620?v=4), retrieved during this build; the existing cybernetic portrait is used as supplied |
 | `cybernetic-scene.webp`, `neural-scene.webp` | Newly generated decorative backgrounds based on the existing avatar and profile hero; [full prompts](docs/artwork-prompts.md). This public repository contains the web-ready WebP versions; original generation PNGs are archived separately |
 | Development Process Flow | `src/ProcessFlow.tsx` presents the approved [profile architecture](https://github.com/PStar80/PStar80/tree/main/assets/profile) as an interactive diagram. The original derived static `process.svg` and `process-mobile.svg` files remain available as reference assets. |
+| Toronto location map | Natural Earth v5.1.2 land, borders, and lakes, with city coordinates from the City of Toronto; [sources and reproduction notes](docs/map-sources.md) |
 | SkyCommand screenshots | Reviewed public assets from [SkyCommand-Demo](https://github.com/PStar80/SkyCommand-Demo/tree/main/assets/screenshots); [gallery and captions](https://github.com/PStar80/SkyCommand-Demo/blob/main/docs/gallery.md) |
 | MacroAnalyzer screenshots | `02-macro-dashboard.png` and `11-dashboard-presentation.png` from [the public screenshot set](https://github.com/PStar80/MacroAnalyzer/tree/main/docs/assets/screenshots) |
 | SkyDataStudio illustration and copy | A conceptual lineage illustration, not an application screenshot; product scope from [its README](https://github.com/PStar80/SkyDataStudio/blob/main/README.md) |
