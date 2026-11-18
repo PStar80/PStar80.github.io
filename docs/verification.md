@@ -1,6 +1,37 @@
 # Portfolio Review Checkpoint
 
-## Flat Map And Contact Row Release
+## Country Hover And Map Exploration Release
+
+Verified on the published [contact section](https://pstar80.github.io/#contact)
+on **November 18, 2026 (Toronto)**.
+
+- Implementation: [bd04cd5](https://github.com/PStar80/PStar80.github.io/commit/bd04cd5dac625efb54ec9457a8273499d63a0dc0)
+- GitHub Pages build and deployment: [successful run](https://github.com/PStar80/PStar80.github.io/actions/runs/44268977108)
+- Country paths and source provenance: [map sources](map-sources.md)
+
+| Area | Observed result |
+| --- | --- |
+| Country hover | Canada, the United States, and Brazil showed their correct names and active country outlines. Canada's brighter fill and cyan outline were visually checked with Toronto's beacon still visible. |
+| Water and exit | Moving onto the Atlantic or a Great Lakes lake surface cleared the hover label and outline. Moving outside the map also cleared transient hover. |
+| Edge labels | New Zealand near the right edge and Argentina near the bottom edge retained their complete labels inside the map stage. |
+| Keyboard selection | Selecting Brazil and pressing ArrowDown changed the selection and docked label to Brunei. Escape cleared the selection and highlight. The native chooser is one keyboard stop. |
+| Responsive selection | A selected Japan was cleared when resizing into the regional crop. At 337px, the chooser remained 44px high, keyboard selection worked, and the selected-country label stayed inside the stage. |
+| Layout | Document scroll width equalled client width at 1348px, 674px, and 337px. The existing regional crop and stacked contact cards remained on narrow layouts. At desktop size, the three contact cards shared the same top edge and 96px height. |
+| Existing map controls | Pause and Play changed the map's motion state correctly with country selection present. Toronto's marker, permanent city label, and local clock remained visible. Browser zoom was restored to 100%. |
+| Native tooltip removal | The map SVG contains no title element; its accessible map name remains available through its ARIA label and description. The map-wide Toronto native hover tooltip is removed. |
+| Build and source review | TypeScript and Vite passed; JavaScript is 165.17 KB gzip and CSS is 13.81 KB gzip. No runtime dependencies were added. Focused independent review found no actionable issues in hit testing, tooltip positioning, selection state, touch cancellation, or cleanup. |
+
+Previews: [desktop hover](previews/country-hover-desktop-20261118.jpg) ·
+[narrow-screen selection](previews/country-hover-mobile-20261118.jpg).
+
+Narrow layouts were checked with Chromium browser zoom, not a physical phone or
+Safari. Touch tap/scroll cancellation, reduced-motion preferences, and hidden-tab
+handling were reviewed in source rather than exercised on a touch device or by
+changing operating-system preferences. Coverage follows the existing simplified
+map data; small islands and microstates are not guaranteed to be present or easy
+to target. Earlier checkpoints below describe their respective releases.
+
+## Previous Flat Map And Contact Row Release
 
 Verified on the published [contact section](https://pstar80.github.io/#contact)
 on **November 18, 2026 (Toronto)**.
