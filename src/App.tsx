@@ -202,7 +202,7 @@ export default function App() {
     <header className="site-header">
       <div ref={progressRef} className="scroll-progress" style={{ transform: 'scaleX(0)' }} aria-hidden="true" />
       <div className="container header-inner">
-        <a href="#home" className="brand" aria-label="Pstar80 home" onClick={() => setMenuOpen(false)}><span className="brand-mark">PS<span>.</span></span><span className="brand-name">Pstar80</span></a>
+        <a href="#home" className="brand" aria-label="PStar80 home" onClick={() => setMenuOpen(false)}><span className="brand-mark">PS</span><span className="brand-name">PStar80</span></a>
         <button ref={menuRef} className="menu-toggle icon-button" aria-expanded={menuOpen} aria-controls="main-navigation" aria-label={menuOpen ? 'Close navigation' : 'Open navigation'} onClick={() => setMenuOpen(!menuOpen)}>{menuOpen ? <X /> : <Menu />}</button>
         <nav id="main-navigation" className={menuOpen ? 'navigation is-open' : 'navigation'} aria-label="Main navigation">
           {nav.map(([label, id]) => <a key={id} href={'#' + id} className={active === id ? 'active' : ''} aria-current={active === id ? 'location' : undefined} onClick={() => setMenuOpen(false)}>{label}</a>)}
@@ -216,11 +216,10 @@ export default function App() {
           <div className="hero-grid">
             <div className="hero-copy">
               <div className="availability"><span /> FULL-STACK SOFTWARE ENGINEER</div>
-              <h1 id="hero-title">Paul{' '}<br /><span>Sattaur.</span></h1>
+              <h1 id="hero-title">Paul{' '}<br /><span>Sattaur</span></h1>
               <p className="hero-statement">Connected Systems.<br />Intelligent Experiences.</p>
               <p className="hero-description">I build applications that bring automation, data, and AI together—from the interface to the infrastructure.</p>
               <div className="hero-actions"><a href="#projects" className="button button-primary">Explore My Work <ArrowUpRight size={19} /></a><a href="#contact" className="button button-quiet">Get In Touch <ArrowRight size={18} /></a></div>
-              <div className="hero-social"><OutLink href={github} className="social-link"><Github size={18} /><span>GitHub</span></OutLink><OutLink href={linkedin} className="social-link"><Linkedin size={18} /><span>LinkedIn</span></OutLink><span className="location"><MapPin size={15} /> Greater Toronto Area, Canada</span></div>
             </div>
             <div className="portrait-composition">
               <div className="portrait-frame">
@@ -228,6 +227,10 @@ export default function App() {
                 <img className="portrait-image" src="/assets/portrait-current.png" alt="Paul Sattaur's blue cybernetic profile portrait" width="460" height="460" fetchPriority="high" />
                 <div className="portrait-caption"><span><span className="tiny-square" /> HUMAN IN THE LOOP</span><Code2 size={20} /></div>
               </div>
+              <blockquote className="portrait-quote">
+                <span className="portrait-quote-label">ENGINEERING PHILOSOPHY</span>
+                <p>Syntax is a tool. <strong>Creativity is the vision.</strong> And engineering is the art of turning that vision into something real.</p>
+              </blockquote>
               <div className="portrait-foot"><span>FULL STACK. FORWARD THINKING.</span><span>01 / PS</span></div>
             </div>
           </div>
