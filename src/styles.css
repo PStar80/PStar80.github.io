@@ -49,7 +49,8 @@ p { color: var(--muted); line-height: 1.85; }
 .scroll-progress { position: absolute; height: 2px; width: 100%; top: 0; left: 0; transform-origin: left; background: linear-gradient(90deg, #4376f5, #4ad7ed); }
 .header-inner { height: 100%; display: grid; grid-template-columns: minmax(0, 1fr) auto minmax(0, 1fr); align-items: center; gap: 24px; }
 .brand { grid-column: 1; grid-row: 1; justify-self: start; display: flex; gap: 13px; align-items: center; white-space: nowrap; }
-.brand-mark { font-family: var(--display); font-weight: 700; font-size: 23px; letter-spacing: -.06em; display: flex; align-items: center; justify-content: center; width: 47px; height: 47px; border: 1px solid #375571; background: linear-gradient(140deg, #1a3049, #0b1729 60%); border-radius: 12px; box-shadow: inset 0 1px 0 rgba(181,219,255,.1); }
+.brand-mark { display: flex; align-items: center; justify-content: center; width: 47px; height: 47px; border: 1px solid #375571; background: linear-gradient(140deg, #1a3049, #0b1729 60%); border-radius: 12px; box-shadow: inset 0 1px 0 rgba(181,219,255,.1); }
+.brand-avatar { display: block; width: calc(100% - 8px); height: calc(100% - 8px); flex: none; border: 1px solid rgba(137, 216, 243, .32); border-radius: 50%; object-fit: cover; box-shadow: 0 0 10px rgba(68, 190, 233, .14); }
 .brand-name { font-family: var(--display); font-size: 16px; font-weight: 600; line-height: 1.2; }
 .navigation { grid-column: 2; grid-row: 1; display: flex; align-items: center; justify-content: center; gap: 29px; font-size: 12px; font-weight: 500; letter-spacing: .08em; text-transform: uppercase; color: #a7b4c8; }
 .navigation > a { position: relative; display: inline-flex; align-items: center; justify-content: center; min-height: 44px; padding: 13px 0; white-space: nowrap; text-align: center; transition: color .2s; }
@@ -85,10 +86,11 @@ p { color: var(--muted); line-height: 1.85; }
 .portrait-reflection { position: absolute; inset: 8px; z-index: 1; border-radius: 7px; pointer-events: none; opacity: 0; background: radial-gradient(ellipse 270px 220px at var(--mx, 50%) var(--my, 50%), rgba(221,249,255,.16), rgba(93,192,232,.055) 42%, transparent 74%); transition: opacity .35s ease; }
 .portrait-energy { position: absolute; inset: 8px; z-index: 2; overflow: hidden; border-radius: 7px; pointer-events: none; }
 .portrait-energy-spot { position: absolute; display: block; pointer-events: none; opacity: 0; transform: translate(-50%, -50%); mix-blend-mode: screen; transition: opacity .3s ease; }
-.portrait-energy-left-eye, .portrait-energy-right-eye { top: 41.5%; width: 13%; height: 9%; border-radius: 50%; background: radial-gradient(ellipse at center, rgba(241,255,255,.95) 0%, rgba(137,251,255,.83) 12%, rgba(34,212,255,.57) 29%, rgba(17,157,250,.24) 52%, transparent 76%); filter: drop-shadow(0 0 6px rgba(40,215,255,.52)); }
-.portrait-energy-left-eye { left: 40.2%; }
-.portrait-energy-right-eye { left: 59.8%; }
-.portrait-energy-forehead { left: 50.2%; top: 29.6%; width: 15%; height: 15%; border-radius: 50%; background: radial-gradient(circle at center, rgba(242,255,255,.96) 0%, rgba(116,248,255,.82) 13%, rgba(31,205,255,.48) 30%, rgba(12,150,248,.18) 52%, transparent 75%); filter: drop-shadow(0 0 7px rgba(37,205,255,.48)); }
+/* Image-aligned light sources: each eye is independently positioned; the retina glow stays fixed. */
+.portrait-energy-left-eye, .portrait-energy-right-eye { width: 10.7%; height: 7.8%; border-radius: 50%; background: radial-gradient(ellipse at center, rgba(241,255,255,.95) 0%, rgba(137,251,255,.83) 12%, rgba(34,212,255,.57) 29%, rgba(17,157,250,.24) 52%, transparent 76%); filter: drop-shadow(0 0 6px rgba(40,215,255,.52)); }
+.portrait-energy-left-eye { left: 40.35%; top: 41.6%; }
+.portrait-energy-right-eye { left: 59.85%; top: 41.25%; }
+.portrait-energy-forehead { left: 50.3%; top: 29.85%; width: 12.2%; height: 12.2%; border-radius: 50%; background: radial-gradient(circle at center, rgba(242,255,255,.96) 0%, rgba(116,248,255,.82) 13%, rgba(31,205,255,.48) 30%, rgba(12,150,248,.18) 52%, transparent 75%); filter: drop-shadow(0 0 7px rgba(37,205,255,.48)); }
 .portrait-frame::after { content: ''; position: absolute; bottom: 9px; left: 9px; right: 9px; height: 130px; background: linear-gradient(transparent, rgba(4,14,23,.93)); border-radius: 0 0 7px 7px; pointer-events: none; }
 .portrait-caption { position: absolute; z-index: 2; bottom: 31px; left: 28px; right: 28px; display: flex; justify-content: space-between; align-items: center; color: #b8d9ec; font-family: var(--mono); font-size: 9px; letter-spacing: .16em; }
 .portrait-caption > span { display: flex; align-items: center; gap: 9px; }
@@ -469,7 +471,7 @@ a.card-foot:focus-visible { outline-offset: -4px; }
   html { scroll-padding-top: 80px; }
   .container { width: calc(100% - 40px); }
   .site-header { height: 72px; }
-  .brand-mark { width: 39px; height: 39px; font-size: 20px; border-radius: 10px; }
+  .brand-mark { width: 39px; height: 39px; border-radius: 10px; }
   .brand-name { font-size: 14px; }
   .navigation { max-height: calc(100dvh - 72px); }
   .navigation > a { font-size: 14px; padding: 13px 4px; }
@@ -485,6 +487,9 @@ a.card-foot:focus-visible { outline-offset: -4px; }
   .hero-actions .button { font-size: 11px; min-height: 48px; padding: 13px 16px; gap: 10px; }
   .portrait-composition { width: calc(100% - 26px); max-width: 360px; margin: 10px auto 0; }
   .portrait-image { aspect-ratio: 1 / 1; }
+  /* At the square mobile crop, the iris centers shift slightly toward the image edges. */
+  .portrait-energy-left-eye { left: 40.9%; }
+  .portrait-energy-right-eye { left: 59.35%; }
   .portrait-quote { padding: 16px 17px 18px; }
   .portrait-quote p { font-size: 15px; }
   .portrait-foot { font-size: 6px; padding-top: 12px; }

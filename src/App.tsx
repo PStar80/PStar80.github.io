@@ -206,7 +206,7 @@ export default function App() {
     <header className="site-header">
       <div ref={progressRef} className="scroll-progress" style={{ transform: 'scaleX(0)' }} aria-hidden="true" />
       <div className="container header-inner">
-        <a href="#home" className="brand" aria-label="PStar80 home" onClick={() => setMenuOpen(false)}><span className="brand-mark">PS</span><span className="brand-name">PStar80</span></a>
+        <a href="#home" className="brand" aria-label="PStar80 home" onClick={() => setMenuOpen(false)}><span className="brand-mark"><img className="brand-avatar" src="/assets/portrait-current.png" width="36" height="36" alt="" /></span><span className="brand-name">PStar80</span></a>
         <button ref={menuRef} className="menu-toggle icon-button" aria-expanded={menuOpen} aria-controls="main-navigation" aria-label={menuOpen ? 'Close navigation' : 'Open navigation'} onClick={() => setMenuOpen(!menuOpen)}>{menuOpen ? <X /> : <Menu />}</button>
         <nav id="main-navigation" className={menuOpen ? 'navigation is-open' : 'navigation'} aria-label="Main navigation">
           {nav.map(([label, id]) => <a key={id} href={'#' + id} className={active === id ? 'active' : ''} aria-current={active === id ? 'location' : undefined} onClick={() => setMenuOpen(false)}>{label}</a>)}
