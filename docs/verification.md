@@ -1,12 +1,46 @@
 # Portfolio Review Checkpoint
 
+## Curved Toronto Map Release
+
+The location-map and contact-cleanup update was verified on the published
+[contact section](https://pstar80.github.io/#contact) on **November 18, 2026 (Toronto)**.
+
+- Implementation: [7868f4f](https://github.com/PStar80/PStar80.github.io/commit/7868f4f7f7d438d76bbe26edbdd2c118e108f02e)
+- GitHub Pages build and deployment: [successful run](https://github.com/PStar80/PStar80.github.io/actions/runs/44263214687)
+- Geographic provenance and regeneration: [map sources](map-sources.md)
+
+| Area | Observed result |
+| --- | --- |
+| Production build | TypeScript and Vite passed. JavaScript is 106.46 KB gzip and CSS is 13.27 KB gzip. No runtime dependencies were added; geographic paths are bundled locally. |
+| Desktop presentation | Three contact cards form a single stack beside the curved North America map. Real coastlines, international borders, major lakes, the geographic grid, and the Toronto beacon render clearly in the existing navy/cyan theme. |
+| Contact cleanup | The extra contact-section Get In Touch button is removed. The hero contact link remains. Existing email, LinkedIn, and GitHub anchors retain their destinations, and the copy control remains a separate native button. |
+| Copy feedback | Clicking Copy changed the button to Email copied. The success announcement is an absolutely positioned, clipped 1px screen-reader status; no visible status row remains. Contact-layout height stayed at 471px before and after copying. Error feedback remains available in source; a clipboard failure was not injected. |
+| Motion controls | Pause changed the map state to paused, and all four animation transforms stayed identical across separate observations. Space on Play resumed motion and changed the beacon transforms. The compact-layout pause control also worked and retained its 44px height. |
+| Pointer motion | Moving over the map changed the shared globe transform by a small amount (observed 1.351px, -1.052px). Land, city marker, leader, and label share that transform. Returning home paused the offscreen map and reset the transform to zero. |
+| Local time | The footer displayed Toronto time with EST and updated from 3:00 to 3:01 a.m. during review. Returning to the map refreshed it to the current minute. |
+| Responsive layout | Document scroll width equalled client width at 1348px, 674px, and 337px. The contact stack moves above the map at narrower widths. At 337px the map uses its compact viewBox, keeps the Toronto label inside the stage, and fits both footer columns. |
+| Narrow navigation | The short-screen menu reached Let's Talk and closed after selection. Browser zoom was restored to 100% at the end of review. |
+| Source review | Independent read-only review found no actionable issues in observer cleanup, minute scheduling, unique SVG IDs, keyboard controls, or the shared map/marker transform. Reduced-motion and hidden-tab gates were reviewed in source. |
+
+Screenshots from the deployed release:
+
+- [Desktop contact map](previews/contact-map-desktop-20261118.jpg)
+- [Narrow contact map](previews/contact-map-mobile-20261118.jpg)
+
+Narrow layouts were tested with Chromium browser zoom, not a physical phone or
+Safari. The operating-system reduced-motion preference and hidden-tab behavior
+were not exercised directly in this pass. Earlier release checks below remain
+historical checkpoints and were not all repeated for this update.
+
+## Previous Contact And Experience Release
+
 The contact-card and experience-timeline update was verified on the published [portfolio](https://pstar80.github.io/) on **November 18, 2026 (Toronto)**.
 
 - Main changes: [beaafce](https://github.com/PStar80/PStar80.github.io/commit/beaafced611a73d8dbe14da0e162acc24a75ad3a)
 - Short-viewport navigation fix: [ddf8f47](https://github.com/PStar80/PStar80.github.io/commit/ddf8f4738124274312a7c50fb212418ba93482b0)
 - Final GitHub Pages build and deployment: [successful run](https://github.com/PStar80/PStar80.github.io/actions/runs/44256868248)
 
-## Contact And Experience Release Checks
+### Contact And Experience Release Checks
 
 | Area | Observed result |
 | --- | --- |
