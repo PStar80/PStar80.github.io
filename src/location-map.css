@@ -17,7 +17,7 @@
 .lm-land, .lm-borders, .lm-graticule, .lm-ambient, .lm-country-highlight, .lm-sweep, .lm-marker, .lm-city-label { pointer-events: none; }
 .lm-land { stroke: #6aa0b1; stroke-width: .65; stroke-linejoin: round; paint-order: fill stroke; }
 .lm-borders { fill: none; stroke: #8db7c4; stroke-width: .55; opacity: .4; }
-.lm-country-hit { fill: transparent; stroke: none; pointer-events: fill; cursor: crosshair; }
+.lm-country-hit { fill: transparent; stroke: none; pointer-events: fill; cursor: pointer; }
 .lm-country-highlight { fill: rgba(113, 226, 244, .17); stroke: #91e9fa; stroke-width: 1.5px; stroke-linejoin: round; filter: drop-shadow(0 0 3px rgba(81, 214, 243, .38)); }
 .lm-lakes { fill: #0d263b; stroke: #76aec0; stroke-width: .55; pointer-events: fill; }
 .lm-country-tooltip { position: absolute; z-index: 1; display: flex; align-items: center; gap: 8px; width: max-content; max-width: min(220px, calc(100% - 20px)); padding: 9px 12px; border: 1px solid rgba(125, 225, 247, .55); border-radius: 6px; background: rgba(6, 23, 38, .95); box-shadow: 0 4px 20px rgba(0, 0, 0, .24), 0 0 15px rgba(80, 200, 233, .08); color: #def8ff; font-family: var(--display); font-size: 13px; line-height: 1.4; overflow-wrap: anywhere; pointer-events: none; user-select: none; }

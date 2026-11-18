@@ -22,7 +22,7 @@ const macroShots: Shot[] = [
   { image: '11-dashboard-presentation.png', title: 'Dashboard Presentation', caption: 'The chart-focused presentation view for exploring macroeconomic indicators.' },
 ];
 const nav = [
-  ['Home', 'home'], ['About', 'about'], ['Projects', 'projects'], ['Process', 'process'], ['Activity', 'activity'], ['Experience', 'experience'],
+  ['Home', 'home'], ['About', 'about'], ['Projects', 'projects'], ['Process', 'process'], ['Activity', 'activity'], ['Experience', 'experience'], ['Contact', 'contact'],
 ];
 
 const experience = [
@@ -172,7 +172,7 @@ export default function App() {
       const progress = max > 0 ? Math.min(1, Math.max(0, window.scrollY / max)) : 0;
       if (progressRef.current) progressRef.current.style.transform = `scaleX(${progress})`;
       let current = 'home';
-      for (const id of [...nav.map(([, id]) => id), 'contact']) {
+      for (const [, id] of nav) {
         const el = document.getElementById(id);
         if (el && el.getBoundingClientRect().top < window.innerHeight * .35) current = id;
       }
@@ -202,11 +202,10 @@ export default function App() {
     <header className="site-header">
       <div ref={progressRef} className="scroll-progress" style={{ transform: 'scaleX(0)' }} aria-hidden="true" />
       <div className="container header-inner">
-        <a href="#home" className="brand" aria-label="Paul Sattaur home" onClick={() => setMenuOpen(false)}><span className="brand-mark">PS<span>.</span></span><span className="brand-name">Paul Sattaur<span>ENGINEER & BUILDER</span></span></a>
+        <a href="#home" className="brand" aria-label="Pstar80 home" onClick={() => setMenuOpen(false)}><span className="brand-mark">PS<span>.</span></span><span className="brand-name">Pstar80</span></a>
         <button ref={menuRef} className="menu-toggle icon-button" aria-expanded={menuOpen} aria-controls="main-navigation" aria-label={menuOpen ? 'Close navigation' : 'Open navigation'} onClick={() => setMenuOpen(!menuOpen)}>{menuOpen ? <X /> : <Menu />}</button>
         <nav id="main-navigation" className={menuOpen ? 'navigation is-open' : 'navigation'} aria-label="Main navigation">
           {nav.map(([label, id]) => <a key={id} href={'#' + id} className={active === id ? 'active' : ''} aria-current={active === id ? 'location' : undefined} onClick={() => setMenuOpen(false)}>{label}</a>)}
-          <a href="#contact" className="nav-contact" onClick={() => setMenuOpen(false)}>Let's Talk <ArrowUpRight size={15} /></a>
         </nav>
       </div>
     </header>

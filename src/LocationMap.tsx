@@ -12,7 +12,7 @@ const countryById = new Map(COUNTRIES.map(country => [country.id, country]));
 const countryOptions = [...COUNTRIES].sort((a, b) => a.name.localeCompare(b.name, 'en'));
 const regionalOptions = countryOptions.filter(country => country.regional);
 type PointerPosition = { x: number; y: number };
-type TouchGesture = PointerPosition & { pointerId: number; countryId: string | null; moved: boolean };
+type SelectionGesture = PointerPosition & { pointerId: number; countryId: string | null; moved: boolean };
 
 // These paths never change. Pointer movement only repositions the HTML label;
 // changing countries updates a single highlight, not the full map geometry.
@@ -31,7 +31,7 @@ export default function LocationMap() {
   const stage = useRef<HTMLDivElement>(null);
   const tooltip = useRef<HTMLDivElement>(null);
   const pointer = useRef<PointerPosition | null>(null);
-  const touchGesture = useRef<TouchGesture | null>(null);
+  const selectionGesture = useRef<SelectionGesture | null>(null);
   const id = 'location-' + useId().replace(/:/g, '');
   const [compact, setCompact] = useState(false);
   const [selectedId, setSelectedId] = useState<string | null>(null);
@@ -78,11 +78,9 @@ export default function LocationMap() {
   }, [activeId, hovering, positionTooltip]);
 
   function handlePointerMove(event: ReactPointerEvent<HTMLDivElement>) {
-    if (event.pointerType === 'touch') {
-      const gesture = touchGesture.current;
-      if (gesture?.pointerId === event.pointerId && Math.hypot(event.clientX - gesture.x, event.clientY - gesture.y) > 8) gesture.moved = true;
-      return;
-    }
+    const gesture = selectionGesture.current;
+    if (gesture?.pointerId === event.pointerId && Math.hypot(event.clientX - gesture.x, event.clientY - gesture.y) > 8) gesture.moved = true;
+    if (event.pointerType === 'touch') return;
     if (event.pointerType !== 'mouse' && event.pointerType !== 'pen') return;
     pointer.current = { x: event.clientX, y: event.clientY };
     setHovering(true);
@@ -91,22 +89,21 @@ export default function LocationMap() {
   }
 
   function handlePointerDown(event: ReactPointerEvent<HTMLDivElement>) {
-    if (event.pointerType !== 'touch') return;
-    if (!event.isPrimary) { touchGesture.current = null; return; }
-    clearHover();
-    touchGesture.current = { pointerId: event.pointerId, x: event.clientX, y: event.clientY, countryId: countryAt(event.target), moved: false };
+    if (!event.isPrimary || event.button !== 0) { selectionGesture.current = null; return; }
+    if (event.pointerType === 'touch') clearHover();
+    selectionGesture.current = { pointerId: event.pointerId, x: event.clientX, y: event.clientY, countryId: countryAt(event.target), moved: false };
   }
 
   function handlePointerUp(event: ReactPointerEvent<HTMLDivElement>) {
-    if (event.pointerType !== 'touch') return;
-    const gesture = touchGesture.current;
-    touchGesture.current = null;
-    if (!gesture || gesture.pointerId !== event.pointerId || gesture.moved || Math.hypot(event.clientX - gesture.x, event.clientY - gesture.y) > 8) return;
-    // Touch uses implicit pointer capture; hit-test the release position so a
-    // scroll or a release outside the original country cannot select it.
+    const gesture = selectionGesture.current;
+    selectionGesture.current = null;
+    if (!event.isPrimary || event.button !== 0 || !gesture || gesture.pointerId !== event.pointerId || gesture.moved || Math.hypot(event.clientX - gesture.x, event.clientY - gesture.y) > 8) return;
+    // A single pointer path handles clicks and taps. Hit-test the release to
+    // respect touch capture, and ignore synthesized click events entirely.
     const target = document.elementFromPoint(event.clientX, event.clientY);
     if (!stage.current?.contains(target) || countryAt(target) !== gesture.countryId) return;
-    setSelectedId(gesture.countryId);
+    clearHover();
+    setSelectedId(current => current === gesture.countryId ? null : gesture.countryId);
   }
 
   useEffect(() => {
@@ -115,10 +112,10 @@ export default function LocationMap() {
     const syncPage = () => {
       const isVisible = document.visibilityState === 'visible';
       setPageVisible(isVisible);
-      if (!isVisible) { clearHover(); touchGesture.current = null; }
+      if (!isVisible) { clearHover(); selectionGesture.current = null; }
     };
     const clearOnEscape = (event: KeyboardEvent) => {
-      if (event.key === 'Escape') { clearHover(); setSelectedId(null); touchGesture.current = null; }
+      if (event.key === 'Escape') { clearHover(); setSelectedId(null); selectionGesture.current = null; }
     };
     syncPreferences(); syncPage();
     motion.addEventListener('change', syncPreferences);
@@ -126,13 +123,13 @@ export default function LocationMap() {
     document.addEventListener('keydown', clearOnEscape);
     const intersection = new IntersectionObserver(([entry]) => {
       setVisible(entry.isIntersecting);
-      if (!entry.isIntersecting) { clearHover(); touchGesture.current = null; }
+      if (!entry.isIntersecting) { clearHover(); selectionGesture.current = null; }
     });
     const resize = new ResizeObserver(([entry]) => {
       const isCompact = entry.contentRect.width < 700;
       setCompact(isCompact);
       clearHover();
-      touchGesture.current = null;
+      selectionGesture.current = null;
       setSelectedId(current => isCompact && current && !countryById.get(current)?.regional ? null : current);
     });
     if (ref.current) intersection.observe(ref.current);
@@ -178,9 +175,9 @@ export default function LocationMap() {
         {paused ? <Play size={13} aria-hidden="true" /> : <Pause size={13} aria-hidden="true" />}<span>{paused ? 'Play motion' : 'Pause motion'}</span>
       </button>}
     </div>
-    <div ref={stage} className="lm-stage" onPointerEnter={handlePointerMove} onPointerMove={handlePointerMove} onPointerDown={handlePointerDown} onPointerUp={handlePointerUp} onPointerCancel={() => { touchGesture.current = null; clearHover(); }} onPointerLeave={event => { if (event.pointerType !== 'touch') clearHover(); }}>
+    <div ref={stage} className="lm-stage" onPointerEnter={handlePointerMove} onPointerMove={handlePointerMove} onPointerDown={handlePointerDown} onPointerUp={handlePointerUp} onPointerCancel={() => { selectionGesture.current = null; clearHover(); }} onPointerLeave={event => { if (event.pointerType !== 'touch') { selectionGesture.current = null; clearHover(); } }}>
       <svg id={id + '-map'} className="lm-svg" viewBox={compact ? MAP_COMPACT_VIEWBOX : MAP_VIEWBOX} role="img" aria-label={compact ? 'Map of North America highlighting Toronto, Canada' : 'World map highlighting Toronto, Canada'} aria-describedby={id + '-description'}>
-        <desc id={id + '-description'}>{compact ? 'A flat map of North America and the Great Lakes, with Toronto, Ontario, Canada highlighted.' : 'A flat world map with a latitude and longitude grid, highlighting Toronto, Ontario, Canada beside the Great Lakes.'} Hover or tap a country to see its name, or use the Explore countries selector above the map.</desc>
+        <desc id={id + '-description'}>{compact ? 'A flat map of North America and the Great Lakes, with Toronto, Ontario, Canada highlighted.' : 'A flat world map with a latitude and longitude grid, highlighting Toronto, Ontario, Canada beside the Great Lakes.'} Hover a country to see its name; click or tap to select it. Select it again to clear, or use the Explore countries selector above the map.</desc>
         <defs>
           <linearGradient id={id + '-ocean'} x1="0" y1="0" x2="1" y2="1"><stop stopColor="#0d2438" /><stop offset="1" stopColor="#071625" /></linearGradient>
           <linearGradient id={id + '-land'} x1="0" y1="0" x2=".7" y2="1"><stop stopColor="#326479" /><stop offset=".55" stopColor="#244c62" /><stop offset="1" stopColor="#18394f" /></linearGradient>
