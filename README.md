@@ -9,6 +9,8 @@ A personal portfolio for full-stack applications, agentic automation, data engin
 - Opaque graphite/navy sections use a faint grid. Alternating scenic sections reveal stationary artwork while foreground content scrolls.
 - Two original backgrounds extend the existing blue cybernetic portrait and neural/workflow profile imagery. [Generation prompts and references](docs/artwork-prompts.md) are retained.
 - Metallic pointer lighting is confined to the hovered card or panel. The regular cursor remains visible; there is no cursor trail or page-wide mouse spotlight.
+- The four home capability cards link to the relevant work, with illuminated icons, compact descriptions, and the shared metallic reflection. The hero also offers direct access to the public résumé.
+- The development process is an interactive SVG with directional traces, selectable node descriptions, keyboard exploration, and separate desktop/mobile layouts. Motion can be paused, respects reduced-motion preferences, and stops while the diagram is offscreen or the tab is hidden.
 - Project sections use actual application captures, with a screenshot lightbox and captions describing the visible state.
 - The personal site stays blue/cyan; SkyCommand retains its charcoal/gold product identity.
 - GitHub Activity sits over the neural scene, with its calendar and labels on a dark foreground panel.
@@ -37,6 +39,7 @@ npm run preview
 | --- | --- |
 | `src/App.tsx` | Page sections, project galleries, navigation, and card interaction |
 | `src/styles.css` | Visual system and responsive layouts |
+| `src/ProcessFlow.tsx`, `src/process-flow.css` | Shared architecture data, responsive SVG layouts, directional motion, and accessible node exploration |
 | `src/GitHubActivity.tsx` | Contribution calendar and guarded source refresh |
 | `src/github-activity.css` | Calendar styles, scoped with `gh-` classes |
 | `public/assets/` | Portrait, original decorative scenes, reviewed screenshots, process diagram, and dated activity data |
@@ -51,7 +54,7 @@ npm run preview
 | Identity, technology, contact, and project positioning | [PStar80 public profile README](https://github.com/PStar80/PStar80/blob/main/README.md) |
 | `portrait-current.png` | Current [PStar80 GitHub avatar](https://avatars.githubusercontent.com/u/225520620?v=4), retrieved during this build; the existing cybernetic portrait is used as supplied |
 | `cybernetic-scene.webp`, `neural-scene.webp` | Newly generated decorative backgrounds based on the existing avatar and profile hero; [full prompts](docs/artwork-prompts.md). This public repository contains the web-ready WebP versions; original generation PNGs are archived separately |
-| `process.svg`, `process-mobile.svg` | [Profile process assets](https://github.com/PStar80/PStar80/tree/main/assets/profile), preserving the approved Development Process Flow |
+| Development Process Flow | `src/ProcessFlow.tsx` presents the approved [profile architecture](https://github.com/PStar80/PStar80/tree/main/assets/profile) as an interactive diagram. The original derived static `process.svg` and `process-mobile.svg` files remain available as reference assets. |
 | SkyCommand screenshots | Reviewed public assets from [SkyCommand-Demo](https://github.com/PStar80/SkyCommand-Demo/tree/main/assets/screenshots); [gallery and captions](https://github.com/PStar80/SkyCommand-Demo/blob/main/docs/gallery.md) |
 | MacroAnalyzer screenshots | `02-macro-dashboard.png` and `11-dashboard-presentation.png` from [the public screenshot set](https://github.com/PStar80/MacroAnalyzer/tree/main/docs/assets/screenshots) |
 | SkyDataStudio illustration and copy | A conceptual lineage illustration, not an application screenshot; product scope from [its README](https://github.com/PStar80/SkyDataStudio/blob/main/README.md) |

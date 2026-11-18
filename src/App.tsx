@@ -1,6 +1,7 @@
 import { useEffect, useRef, useState, type ReactNode, type CSSProperties } from 'react';
 import { ArrowUpRight, ArrowRight, ArrowDown, ArrowUp, Menu, X, Github, Linkedin, Mail, MapPin, Workflow, Database, ChartNoAxesCombined, BrainCircuit, Layers3, Code2, Cpu, Network, ShieldCheck, Expand, ChevronLeft, ChevronRight, Check, Copy, Box, ExternalLink, FileText } from 'lucide-react';
 import GitHubActivity from './GitHubActivity';
+import ProcessFlow from './ProcessFlow';
 
 const github = 'https://github.com/PStar80';
 const linkedin = 'https://www.linkedin.com/in/paulsattaur/';
@@ -22,6 +23,22 @@ const macroShots: Shot[] = [
 const nav = [
   ['Home', 'home'], ['About', 'about'], ['Projects', 'projects'], ['Process', 'process'], ['Activity', 'activity'],
 ];
+
+const capabilities = [
+  { icon: Workflow, title: 'Workflow Automation', description: 'Reusable tools. Reliable execution.', href: '#project-skycommand', motif: 'workflow' },
+  { icon: Database, title: 'Data Engineering', description: 'Trusted data, shaped into useful products.', href: '#project-skydatastudio', motif: 'data' },
+  { icon: ChartNoAxesCombined, title: 'Data Visualization', description: 'Complex data, made clear and interactive.', href: '#project-macroanalyzer', motif: 'chart' },
+  { icon: BrainCircuit, title: 'AI-Native Applications', description: 'Intelligent agents connected to practical software.', href: '#process', motif: 'ai' },
+];
+
+function CapabilityMotif({ kind }: { kind: string }) {
+  return <svg className="focus-motif" viewBox="0 0 180 100" fill="none" aria-hidden="true">
+    {kind === 'workflow' && <><path d="M0 77H36V49H84V22H143V49H180" /><rect x="27" y="40" width="18" height="18" rx="4" /><rect x="75" y="13" width="18" height="18" rx="4" /><rect x="134" y="40" width="18" height="18" rx="4" /><path d="M84 31V77H151" /></>}
+    {kind === 'data' && <><ellipse cx="111" cy="25" rx="40" ry="12" /><path d="M71 25V73C71 89 151 89 151 73V25M71 41C71 57 151 57 151 41M71 57C71 73 151 73 151 57M0 69H37V41H62" /><circle cx="37" cy="69" r="4" /></>}
+    {kind === 'chart' && <><path d="M8 82H170M37 81V63M66 81V48M95 81V54M124 81V28M153 81V9" /><path d="M8 68L37 48L66 38L95 43L124 16L153 4" /></>}
+    {kind === 'ai' && <><path d="M44 53L84 21L125 49L163 16M44 53L91 83L125 49L165 83M84 21L91 83M125 49H179M3 25L44 53L3 88" /><circle cx="44" cy="53" r="6" /><circle cx="84" cy="21" r="5" /><circle cx="125" cy="49" r="7" /><circle cx="91" cy="83" r="5" /><circle cx="163" cy="16" r="4" /></>}
+  </svg>;
+}
 
 function Metal({ children, className = '', id, style }: { children: ReactNode; className?: string; id?: string; style?: CSSProperties }) {
   const ref = useRef<HTMLDivElement>(null);
@@ -180,7 +197,7 @@ export default function App() {
               <p className="hero-statement">Connected Systems.<br />Intelligent Experiences.</p>
               <p className="hero-description">I build applications that bring automation, data, and AI together—from the interface to the infrastructure.</p>
               <div className="hero-actions"><a href="#projects" className="button button-primary">Explore My Work <ArrowUpRight size={19} /></a><a href="#contact" className="button button-quiet">Get In Touch <ArrowRight size={18} /></a></div>
-              <div className="hero-social"><OutLink href={github} className="social-link"><Github size={18} /><span>GitHub</span></OutLink><OutLink href={linkedin} className="social-link"><Linkedin size={18} /><span>LinkedIn</span></OutLink><span className="social-divider" /><span className="location"><MapPin size={15} /> Greater Toronto Area, Canada</span></div>
+              <div className="hero-social"><OutLink href={github} className="social-link"><Github size={18} /><span>GitHub</span></OutLink><OutLink href={linkedin} className="social-link"><Linkedin size={18} /><span>LinkedIn</span></OutLink><OutLink href="/assets/paul-sattaur-resume.pdf" className="social-link resume-link"><FileText size={18} /><span>View Résumé <span className="resume-format">PDF</span></span></OutLink><span className="location"><MapPin size={15} /> Greater Toronto Area, Canada</span></div>
             </div>
             <div className="portrait-composition">
               <div className="portrait-frame">
@@ -191,9 +208,15 @@ export default function App() {
               <div className="portrait-foot"><span>FULL STACK. FORWARD THINKING.</span><span>01 / PS</span></div>
             </div>
           </div>
-          <div className="focus-strip" aria-label="Areas of focus">
-            {[{ icon: Workflow, title: 'Workflow Automation' }, { icon: Database, title: 'Data Engineering' }, { icon: ChartNoAxesCombined, title: 'Data Visualization' }, { icon: BrainCircuit, title: 'AI-Native Applications' }].map(({ icon: Icon, title }) => <div className="focus-item" key={title}><Icon size={20} /><span>{title}</span></div>)}
-          </div>
+          <nav className="focus-strip" aria-label="Explore my areas of focus">
+            {capabilities.map(({ icon: Icon, title, description, href, motif }) => <Metal className={'focus-card focus-card-' + motif} key={title}>
+              <a className="focus-card-link" href={href}>
+                <CapabilityMotif kind={motif} />
+                <span className="focus-card-top"><span className="focus-icon"><Icon size={21} /></span><ArrowUpRight className="focus-arrow" size={17} /></span>
+                <span className="focus-card-copy"><span className="focus-title">{title}</span><span className="focus-description">{description}</span></span>
+              </a>
+            </Metal>)}
+          </nav>
           <div className="hero-scroll"><a href="#about"><span>SCROLL TO EXPLORE</span><ArrowDown size={14} /></a><span>DESIGNED WITH PURPOSE · BUILT WITH PRECISION</span></div>
         </div>
       </section>
@@ -258,9 +281,9 @@ export default function App() {
         <div className="container">
           <div className="section-header"><div><Eyebrow number="04">How I Build</Eyebrow><h2 id="process-title">Development <span className="text-accent">Process Flow.</span></h2></div><p>Human direction. Connected agents.<br />Visible execution.</p></div>
           <Metal className="process-panel">
-            <picture><source media="(max-width: 680px)" srcSet="/assets/process-mobile.svg" /><img src="/assets/process.svg" alt="Development Process Flow: Cloud Agent connects to Operator and Dropbox. Dropbox connects to Local Agent, initiated by Operator. Operator and Local Agent access React UI / Node.js Core API. Execution Capabilities contain Registered Tools, Embedded AI Agents and Published Workflows. Automation Endpoints contain File System, Database, Git Repositories and Web APIs." loading="lazy" /></picture>
+            <ProcessFlow />
           </Metal>
-          <div className="process-notes"><p>Cloud planning and a local coding agent work through structured handoffs. I direct the work, define its scope, and follow the results across application services.</p><OutLink href={github + '/SkyCommand-Demo/blob/main/docs/architecture.md'} className="text-link">Explore The Architecture <ArrowUpRight size={17} /></OutLink></div>
+          <div className="process-notes"><p>Cloud planning and a local coding agent work through structured handoffs. I direct the work, define its scope, and follow the results across application services.</p><OutLink href={github + '/SkyCommand-Demo/blob/main/docs/architecture.md'} className="button button-quiet architecture-link">Explore The Architecture <ArrowUpRight size={17} /></OutLink></div>
         </div>
       </section>
 
