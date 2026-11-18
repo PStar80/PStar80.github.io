@@ -40,6 +40,8 @@ npm run preview
 | `src/GitHubActivity.tsx` | Contribution calendar and guarded source refresh |
 | `src/github-activity.css` | Calendar styles, scoped with `gh-` classes |
 | `public/assets/` | Portrait, original decorative scenes, reviewed screenshots, process diagram, and dated activity data |
+| `public/assets/paul-sattaur-resume.pdf` | Public résumé linked from the Engineering Background section |
+| `scripts/build_resume.py` | Rebuilds the public résumé with ReportLab and Open Sans; `RESUME_FONT_DIR` can select the font directory |
 | `.github/workflows/pages.yml` | Prepared GitHub Pages build/deployment workflow |
 
 ## Content And Asset Sources
@@ -53,6 +55,9 @@ npm run preview
 | SkyCommand screenshots | Reviewed public assets from [SkyCommand-Demo](https://github.com/PStar80/SkyCommand-Demo/tree/main/assets/screenshots); [gallery and captions](https://github.com/PStar80/SkyCommand-Demo/blob/main/docs/gallery.md) |
 | MacroAnalyzer screenshots | `02-macro-dashboard.png` and `11-dashboard-presentation.png` from [the public screenshot set](https://github.com/PStar80/MacroAnalyzer/tree/main/docs/assets/screenshots) |
 | SkyDataStudio illustration and copy | A conceptual lineage illustration, not an application screenshot; product scope from [its README](https://github.com/PStar80/SkyDataStudio/blob/main/README.md) |
+| Engineering highlights | Implementation decisions documented in [SkyCommand architecture](https://github.com/PStar80/SkyCommand-Demo/blob/main/docs/architecture.md), [SkyDataStudio](https://github.com/PStar80/SkyDataStudio/blob/main/README.md), and [MacroAnalyzer](https://github.com/PStar80/MacroAnalyzer/blob/main/README.md) |
+| Professional background and public résumé | Owner-approved career details, adapted for this portfolio; uses public contact information |
+| `portfolio-cover.png` | Original approved portfolio artwork, used for Open Graph and Twitter sharing previews |
 | Activity data | [Public generated contribution assets](https://github.com/PStar80/PStar80/tree/output), described below |
 
 The reference portfolios informed layout and interaction patterns; their artwork, source code, branding, and personal data are not part of this website.

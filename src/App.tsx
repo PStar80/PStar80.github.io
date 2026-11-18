@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState, type ReactNode, type CSSProperties } from 'react';
-import { ArrowUpRight, ArrowRight, ArrowDown, ArrowUp, Menu, X, Github, Linkedin, Mail, MapPin, Workflow, Database, ChartNoAxesCombined, BrainCircuit, Layers3, Code2, Cpu, Network, ShieldCheck, Expand, ChevronLeft, ChevronRight, Check, Copy, Box, ExternalLink } from 'lucide-react';
+import { ArrowUpRight, ArrowRight, ArrowDown, ArrowUp, Menu, X, Github, Linkedin, Mail, MapPin, Workflow, Database, ChartNoAxesCombined, BrainCircuit, Layers3, Code2, Cpu, Network, ShieldCheck, Expand, ChevronLeft, ChevronRight, Check, Copy, Box, ExternalLink, FileText } from 'lucide-react';
 import GitHubActivity from './GitHubActivity';
 
 const github = 'https://github.com/PStar80';
@@ -57,6 +57,9 @@ function Eyebrow({ children, number }: { children: ReactNode; number?: string })
   return <div className="eyebrow">{number && <span className="section-number">{number}</span>}<span className="eyebrow-line" />{children}</div>;
 }
 function Tag({ children }: { children: ReactNode }) { return <span className="tech-tag">{children}</span>; }
+function EngineeringHighlight({ children }: { children: ReactNode }) {
+  return <div className="engineering-highlight"><span className="micro">ENGINEERING HIGHLIGHT</span><p>{children}</p></div>;
+}
 function OutLink({ href, children, className = '' }: { href: string; children: ReactNode; className?: string }) {
   return <a className={className} href={href} target="_blank" rel="noreferrer">{children}</a>;
 }
@@ -105,7 +108,7 @@ function DataIllustration() {
 export default function App() {
   const [menuOpen, setMenuOpen] = useState(false);
   const [active, setActive] = useState('home');
-  const [progress, setProgress] = useState(0);
+  const progressRef = useRef<HTMLDivElement>(null);
   const [shotIndex, setShotIndex] = useState(0);
   const [gallery, setGallery] = useState<{ shots: Shot[]; index: number } | null>(null);
   const [copied, setCopied] = useState(false);
@@ -125,7 +128,8 @@ export default function App() {
     const update = () => {
       frame = 0;
       const max = document.documentElement.scrollHeight - window.innerHeight;
-      setProgress(max > 0 ? window.scrollY / max : 0);
+      const progress = max > 0 ? Math.min(1, Math.max(0, window.scrollY / max)) : 0;
+      if (progressRef.current) progressRef.current.style.transform = `scaleX(${progress})`;
       let current = 'home';
       for (const id of ['home', 'about', 'projects', 'process', 'activity', 'contact']) {
         const el = document.getElementById(id);
@@ -155,7 +159,7 @@ export default function App() {
   return <>
     <a className="skip-link" href="#main">Skip To Content</a>
     <header className="site-header">
-      <div className="scroll-progress" style={{ transform: 'scaleX(' + progress + ')' }} />
+      <div ref={progressRef} className="scroll-progress" style={{ transform: 'scaleX(0)' }} aria-hidden="true" />
       <div className="container header-inner">
         <a href="#home" className="brand" aria-label="Paul Sattaur home" onClick={() => setMenuOpen(false)}><span className="brand-mark">PS<span>.</span></span><span className="brand-name">Paul Sattaur<span>ENGINEER & BUILDER</span></span></a>
         <button ref={menuRef} className="menu-toggle icon-button" aria-expanded={menuOpen} aria-controls="main-navigation" aria-label={menuOpen ? 'Close navigation' : 'Open navigation'} onClick={() => setMenuOpen(!menuOpen)}>{menuOpen ? <X /> : <Menu />}</button>
@@ -206,9 +210,9 @@ export default function App() {
         <div className="container">
           <div className="scenic-heading"><Eyebrow number="02">Engineering Focus</Eyebrow><h2 id="expertise-title">Three Lanes.<br /><span className="text-accent">One Connected Vision.</span></h2><p>Full-stack thinking, from a single interaction<br className="desktop-break" /> to the systems working behind it.</p></div>
           <div className="expertise-grid">
-            <Metal className="expertise-card"><div className="card-icon"><Workflow /></div><span className="card-index">01</span><h3>Automation & AI</h3><p>Durable workflows, reusable tools, and AI agents connected through clear interfaces and observable execution.</p><div className="tags"><Tag>Node.js</Tag><Tag>Temporal</Tag><Tag>MCP</Tag></div><div className="card-foot">SkyCommand <ArrowUpRight size={15} /></div></Metal>
-            <Metal className="expertise-card"><div className="card-icon"><Database /></div><span className="card-index">02</span><h3>Data Engineering</h3><p>Trusted data shaped into analytical products through versioned pipelines, transformations, quality, and lineage.</p><div className="tags"><Tag>Python</Tag><Tag>Airflow</Tag><Tag>dbt</Tag></div><div className="card-foot">SkyDataStudio <ArrowUpRight size={15} /></div></Metal>
-            <Metal className="expertise-card"><div className="card-icon"><ChartNoAxesCombined /></div><span className="card-index">03</span><h3>Interactive Experiences</h3><p>Clear interfaces and explorable visualizations that make complex data useful to the person on the other side.</p><div className="tags"><Tag>React</Tag><Tag>ASP.NET Core</Tag><Tag>ECharts</Tag></div><div className="card-foot">MacroAnalyzer <ArrowUpRight size={15} /></div></Metal>
+            <Metal className="expertise-card"><div className="card-icon"><Workflow /></div><span className="card-index">01</span><h3>Automation & AI</h3><p>Durable workflows, reusable tools, and AI agents connected through clear interfaces and observable execution.</p><div className="tags"><Tag>Node.js</Tag><Tag>Temporal</Tag><Tag>MCP</Tag></div><a className="card-foot" href="#project-skycommand">SkyCommand <ArrowDown size={15} /></a></Metal>
+            <Metal className="expertise-card"><div className="card-icon"><Database /></div><span className="card-index">02</span><h3>Data Engineering</h3><p>Trusted data shaped into analytical products through versioned pipelines, transformations, quality, and lineage.</p><div className="tags"><Tag>Python</Tag><Tag>Airflow</Tag><Tag>dbt</Tag></div><a className="card-foot" href="#project-skydatastudio">SkyDataStudio <ArrowDown size={15} /></a></Metal>
+            <Metal className="expertise-card"><div className="card-icon"><ChartNoAxesCombined /></div><span className="card-index">03</span><h3>Interactive Experiences</h3><p>Clear interfaces and explorable visualizations that make complex data useful to the person on the other side.</p><div className="tags"><Tag>React</Tag><Tag>ASP.NET Core</Tag><Tag>ECharts</Tag></div><a className="card-foot" href="#project-macroanalyzer">MacroAnalyzer <ArrowDown size={15} /></a></Metal>
           </div>
           <div className="expertise-note"><BrainCircuit size={18} /><span>AI-Native Applications</span><span className="note-rule" /><p>Adaptive intelligence, connected to practical software.</p></div>
         </div>
@@ -217,9 +221,9 @@ export default function App() {
       <section className="opaque projects-section" id="projects" aria-labelledby="projects-title">
         <div className="container">
           <div className="section-header"><div><Eyebrow number="03">Selected Work</Eyebrow><h2 id="projects-title">Built To <span className="text-accent">Do More.</span></h2></div><p>Three applications. A connected ecosystem<br />for work, data, and insight.</p></div>
-          <Metal className="featured-project">
+          <Metal className="featured-project" id="project-skycommand">
             <div className="featured-overview">
-              <div className="project-copy"><span className="featured-label"><span /> FEATURED APPLICATION</span><h3>SkyCommand<span className="gold-dot">.</span></h3><p className="project-category">Workflow Automation & Agentic AI</p><p>Build workflows. Run agents.{' '}<br /><strong>Understand every result.</strong></p><p className="project-description">A full-stack platform bringing reusable tools, durable workflows, and AI agents into one operational interface. Coding agents can also use SkyCommand directly through MCP.</p><div className="tags"><Tag>React</Tag><Tag>Node.js</Tag><Tag>PostgreSQL</Tag><Tag>Temporal</Tag></div><OutLink href={github + '/SkyCommand-Demo'} className="text-link gold-link">Explore The Public Showcase <ArrowUpRight size={17} /></OutLink><span className="project-source-note">Public Showcase · Private Implementation</span></div>
+              <div className="project-copy"><span className="featured-label"><span /> FEATURED APPLICATION</span><h3>SkyCommand<span className="gold-dot">.</span></h3><p className="project-category">Workflow Automation & Agentic AI</p><p>Build workflows. Run agents.{' '}<br /><strong>Understand every result.</strong></p><p className="project-description">A full-stack platform bringing reusable tools, durable workflows, and AI agents into one operational interface. Coding agents can also use SkyCommand directly through MCP.</p><EngineeringHighlight>I built shared execution services for the React interface and MCP-connected coding agents, with embedded-agent capabilities scoped by project and agent version. Reusing registered tools and workflows keeps operations consistent and their results inspectable.</EngineeringHighlight><div className="tags"><Tag>React</Tag><Tag>Node.js</Tag><Tag>PostgreSQL</Tag><Tag>Temporal</Tag></div><OutLink href={github + '/SkyCommand-Demo'} className="text-link gold-link">Explore The Public Showcase <ArrowUpRight size={17} /></OutLink><span className="project-source-note">Public Showcase · Private Implementation</span></div>
               <div className="project-screen">
                 <div className="window-bar"><span className="window-dots"><i /><i /><i /></span><span>SKYCOMMAND / {skyShots[shotIndex].title.toUpperCase()}</span><button className="icon-button" aria-label="Enlarge SkyCommand screenshot" onClick={() => setGallery({ shots: skyShots, index: shotIndex })}><Expand size={15} /></button></div>
                 <button className="screenshot-button" onClick={() => setGallery({ shots: skyShots, index: shotIndex })} aria-label={'View ' + skyShots[shotIndex].title + ' screenshot'}><img src={'/assets/' + skyShots[shotIndex].image} alt={skyShots[shotIndex].title + ' — real SkyCommand interface'} loading="lazy" /><span className="image-expand"><Expand size={16} /> View Screenshot</span></button>
@@ -237,13 +241,13 @@ export default function App() {
             <div className="featured-bottom"><div><span><Workflow size={15} /> Durable Workflows</span><span><BrainCircuit size={15} /> AI Agents</span><span><Network size={15} /> MCP Access</span></div><button onClick={() => setGallery({ shots: skyShots, index: shotIndex })}>Browse The Gallery <ArrowRight size={16} /></button></div>
           </Metal>
           <div className="companion-grid">
-            <Metal className="companion-project data-project">
+            <Metal className="companion-project data-project" id="project-skydatastudio">
               <DataIllustration />
-              <div className="companion-body"><span className="project-kicker">DATA ENGINEERING</span><h3>SkyDataStudio</h3><p>A workbench for turning trusted data into governed analytical products, with versioned pipelines, dbt transformations, data quality, and traceable lineage.</p><div className="tags"><Tag>React</Tag><Tag>Python / FastAPI</Tag><Tag>Airflow</Tag><Tag>dbt</Tag></div><OutLink href={github + '/SkyDataStudio'} className="text-link">Explore The Repository <ArrowUpRight size={17} /></OutLink></div>
+              <div className="companion-body"><span className="project-kicker">DATA ENGINEERING</span><h3>SkyDataStudio</h3><p>A workbench for turning trusted data into governed analytical products, with versioned pipelines, dbt transformations, data quality, and traceable lineage.</p><EngineeringHighlight>I built versioned pipelines that consume SkyCommand’s data contracts, record evidence for each step, and reuse existing runs on replay. Airflow orchestrates the same execution engine, while dbt checks and lineage make transformations and downstream dependencies inspectable.</EngineeringHighlight><div className="tags"><Tag>React</Tag><Tag>Python / FastAPI</Tag><Tag>Airflow</Tag><Tag>dbt</Tag></div><OutLink href={github + '/SkyDataStudio'} className="text-link">Explore The Repository <ArrowUpRight size={17} /></OutLink></div>
             </Metal>
-            <Metal className="companion-project macro-project">
+            <Metal className="companion-project macro-project" id="project-macroanalyzer">
               <button className="screenshot-button macro-image" onClick={() => setGallery({ shots: macroShots, index: 0 })} aria-label="View MacroAnalyzer dashboard screenshot"><img src="/assets/02-macro-dashboard.png" alt="MacroAnalyzer's SkyWeb Analytics dashboard with macroeconomic time-series charts" loading="lazy" /><span className="image-expand"><Expand size={16} /> View Dashboard</span></button>
-              <div className="companion-body"><span className="project-kicker">INTERACTIVE ANALYTICS</span><h3>MacroAnalyzer</h3><p>A full-stack macroeconomic analytics application with interactive time-series charts, personalized dashboards, saved views, alert rules, and in-app signals.</p><div className="tags"><Tag>React</Tag><Tag>C# / ASP.NET Core</Tag><Tag>PostgreSQL</Tag><Tag>ECharts</Tag></div><OutLink href={github + '/MacroAnalyzer'} className="text-link">Explore The Repository <ArrowUpRight size={17} /></OutLink></div>
+              <div className="companion-body"><span className="project-kicker">INTERACTIVE ANALYTICS</span><h3>MacroAnalyzer</h3><p>A full-stack macroeconomic analytics application with interactive time-series charts, personalized dashboards, saved views, alert rules, and in-app signals.</p><EngineeringHighlight>I paired interactive React charts with a dedicated ASP.NET Core API, migrating analytics and account routes into native C# services. Alert evaluation remains in the operational control plane, keeping the analytics experience separate from ingestion and automation.</EngineeringHighlight><div className="tags"><Tag>React</Tag><Tag>C# / ASP.NET Core</Tag><Tag>PostgreSQL</Tag><Tag>ECharts</Tag></div><OutLink href={github + '/MacroAnalyzer'} className="text-link">Explore The Repository <ArrowUpRight size={17} /></OutLink></div>
             </Metal>
           </div>
           <div className="projects-footer"><OutLink href={github + '?tab=repositories'} className="text-link muted-link"><Github size={18} /> View All Repositories <ArrowUpRight size={16} /></OutLink></div>
@@ -276,8 +280,8 @@ export default function App() {
           <div><Eyebrow number="06">Engineering Background</Eyebrow><h2 id="experience-title">Built On{' '}<br /><span className="text-accent">Real Experience.</span></h2><p className="experience-intro">Enterprise problem solving meets independent product development.</p></div>
           <div className="experience-list">
             <div className="experience-entry"><span className="experience-marker"><Layers3 size={19} /></span><div><span className="micro">INDEPENDENT DEVELOPMENT</span><h3>Full-Stack Applications & Agentic AI</h3><p>Designing and building SkyCommand, SkyDataStudio, and MacroAnalyzer—from interactive interfaces to APIs, data services, and containerized infrastructure.</p><div className="experience-tech">React / TypeScript / Node.js / Python / C# / PostgreSQL</div></div></div>
-            <div className="experience-entry"><span className="experience-marker"><Database size={19} /></span><div><span className="micro">ENTERPRISE FOUNDATION</span><h3>Application Development & Integration</h3><p>Experience with Oracle SQL and PL/SQL, Java/J2EE, requirements analysis, integrations, and production troubleshooting. A practical foundation for designing maintainable systems.</p><div className="experience-tech">Oracle / SQL & PL/SQL / Java / Systems Analysis</div></div></div>
-            <OutLink href={linkedin} className="text-link experience-link">View My Professional Background <ArrowUpRight size={17} /></OutLink>
+            <div className="experience-entry"><span className="experience-marker"><Database size={19} /></span><div><span className="micro">ENTERPRISE FOUNDATION</span><h3>Senior Programmer Analyst</h3><p className="experience-role">CAAT Pension Plan · Toronto <span className="experience-dates">2022–2025</span></p><p>Led systems analysis and data-workflow delivery for GROWTHplus, translating pension business rules into Oracle PL/SQL processing and integrations. Worked with business, development, and QA teams through validation, release, and production support.</p><div className="experience-tech">Oracle / SQL & PL/SQL / Java / Systems Analysis</div></div></div>
+            <div className="experience-actions"><OutLink href={linkedin} className="text-link experience-link">View My Professional Background <ArrowUpRight size={17} /></OutLink><OutLink href="/assets/paul-sattaur-resume.pdf" className="button button-quiet"><FileText size={17} /> View Résumé (PDF) <ArrowUpRight size={16} /></OutLink></div>
           </div>
         </div>
       </section>
