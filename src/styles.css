@@ -452,7 +452,7 @@ a.card-foot:focus-visible { outline-offset: -4px; }
   .brand-name { display: flex; font-size: 12px; }
   .brand-name > span { font-size: 7px; }
   .menu-toggle { display: inline-flex !important; }
-  .navigation { display: none; position: absolute; top: 71px; left: 0; right: 0; background: #0a1422; padding: 15px 24px 24px; border-bottom: 1px solid #34475e; flex-direction: column; align-items: stretch; gap: 1px; box-shadow: 0 15px 20px rgba(0,0,0,.2); }
+  .navigation { display: none; position: absolute; top: 71px; left: 0; right: 0; max-height: calc(100dvh - 72px); overflow-y: auto; overscroll-behavior: contain; background: #0a1422; padding: 15px 24px 24px; border-bottom: 1px solid #34475e; flex-direction: column; align-items: stretch; gap: 1px; box-shadow: 0 15px 20px rgba(0,0,0,.2); }
   .navigation.is-open { display: flex; }
   .navigation > a { font-size: 14px; padding: 13px 4px; }
   .navigation > a:not(.nav-contact)::after { right: auto; width: 22px; bottom: 4px; }
