@@ -1,0 +1,110 @@
+.signature-frame {
+  --frame-rim-size: 3px;
+  --frame-corner-size: 25px;
+  position: relative;
+  isolation: isolate;
+}
+
+.frame-accents,
+.signature-rim,
+.frame-accents::before,
+.frame-accents::after {
+  position: absolute;
+  pointer-events: none;
+}
+
+.frame-accents {
+  inset: 0;
+  z-index: 4;
+  display: block;
+  border-radius: inherit;
+}
+
+.signature-rim {
+  inset: 0;
+  z-index: 0;
+  border: var(--frame-rim-size) solid #47677d;
+  border-radius: inherit;
+  opacity: .94;
+  transition: filter .28s ease, opacity .28s ease;
+}
+
+/* A real hollow rim, with a plain border fallback when composited masks are unavailable. */
+@supports (mask-composite: exclude) or (-webkit-mask-composite: xor) {
+  .signature-rim {
+    border: 0;
+    padding: var(--frame-rim-size);
+    background:
+      radial-gradient(ellipse 210px 160px at var(--mx, 50%) var(--my, 50%), rgba(214, 247, 255, .3), transparent 72%),
+      linear-gradient(135deg, #6d8798 0%, #294359 15%, #102235 47%, #315269 76%, #789aa9 100%);
+    -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+    mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+    -webkit-mask-composite: xor;
+    mask-composite: exclude;
+  }
+}
+
+.frame-accents::before,
+.frame-accents::after {
+  content: '';
+  z-index: 1;
+  width: var(--frame-corner-size);
+  height: var(--frame-corner-size);
+  border-color: #81d6ed;
+  border-style: solid;
+  border-width: 0;
+  opacity: .86;
+  transition: border-color .28s ease, filter .28s ease, opacity .28s ease;
+}
+
+.frame-accents::before {
+  top: 0;
+  left: 0;
+  border-top-width: 1px;
+  border-left-width: 1px;
+  border-top-left-radius: inherit;
+}
+
+.frame-accents::after {
+  right: 0;
+  bottom: 0;
+  border-right-width: 1px;
+  border-bottom-width: 1px;
+  border-bottom-right-radius: inherit;
+}
+
+.signature-frame:focus-within > .frame-accents .signature-rim {
+  filter: brightness(1.14);
+  opacity: 1;
+}
+
+.signature-frame:focus-within > .frame-accents::before,
+.signature-frame:focus-within > .frame-accents::after {
+  border-color: #b2f1ff;
+  filter: drop-shadow(0 0 3px rgba(116, 221, 248, .4));
+  opacity: 1;
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .signature-frame:hover > .frame-accents .signature-rim {
+    filter: brightness(1.14);
+    opacity: 1;
+  }
+
+  .signature-frame:hover > .frame-accents::before,
+  .signature-frame:hover > .frame-accents::after {
+    border-color: #b2f1ff;
+    filter: drop-shadow(0 0 3px rgba(116, 221, 248, .4));
+    opacity: 1;
+  }
+}
+
+@media (max-width: 640px) {
+  .signature-frame { --frame-rim-size: 2px; --frame-corner-size: 22px; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .signature-rim,
+  .frame-accents::before,
+  .frame-accents::after { transition: none; }
+}

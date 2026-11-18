@@ -3,6 +3,8 @@ import { ArrowUpRight, ArrowRight, ArrowDown, ArrowUp, Menu, X, Github, Linkedin
 import GitHubActivity from './GitHubActivity';
 import ProcessFlow from './ProcessFlow';
 import LocationMap from './LocationMap';
+import FrameAccents from './FrameAccents';
+import usePointerLighting from './usePointerLighting';
 
 const github = 'https://github.com/PStar80';
 const linkedin = 'https://www.linkedin.com/in/paulsattaur/';
@@ -65,32 +67,29 @@ function CapabilityMotif({ kind }: { kind: string }) {
 }
 
 function Metal({ children, className = '', id, style }: { children: ReactNode; className?: string; id?: string; style?: CSSProperties }) {
-  const ref = useRef<HTMLDivElement>(null);
-  const animation = useRef<number>(0);
-  const position = useRef({ x: 50, y: 50, tx: 50, ty: 50 });
-  const active = useRef(false);
-  useEffect(() => () => cancelAnimationFrame(animation.current), []);
-  function update() {
-    const p = position.current;
-    p.x += (p.tx - p.x) * 0.16;
-    p.y += (p.ty - p.y) * 0.16;
-    ref.current?.style.setProperty('--mx', p.x + '%');
-    ref.current?.style.setProperty('--my', p.y + '%');
-    if (active.current && (Math.abs(p.tx - p.x) > .08 || Math.abs(p.ty - p.y) > .08)) animation.current = requestAnimationFrame(update);
-    else animation.current = 0;
-  }
-  return <div ref={ref} id={id} style={style} className={'metal ' + className}
-    onPointerMove={event => {
-      if (event.pointerType !== 'mouse' || window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
-      const rect = event.currentTarget.getBoundingClientRect();
-      const p = position.current;
-      p.tx = (event.clientX - rect.left) / rect.width * 100;
-      p.ty = (event.clientY - rect.top) / rect.height * 100;
-      active.current = true;
-      if (!animation.current) animation.current = requestAnimationFrame(update);
-    }}
-    onPointerLeave={() => { active.current = false; cancelAnimationFrame(animation.current); animation.current = 0; }}>
+  const lighting = usePointerLighting<HTMLDivElement>();
+  return <div {...lighting} id={id} style={style} className={'metal ' + className}>
     {children}
+  </div>;
+}
+
+function HeroPortrait() {
+  const portraitLighting = usePointerLighting<HTMLDivElement>(1.2);
+  const quoteLighting = usePointerLighting<HTMLQuoteElement>();
+  return <div className="portrait-composition">
+    <div className="portrait-visual">
+      <div {...portraitLighting} className="portrait-frame signature-frame">
+        <img className="portrait-image" src="/assets/portrait-current.png" alt="Paul Sattaur's blue cybernetic profile portrait" width="460" height="460" fetchPriority="high" />
+        <span className="portrait-reflection" aria-hidden="true" />
+        <div className="portrait-caption"><span><span className="tiny-square" /> HUMAN IN THE LOOP</span><Code2 size={20} /></div>
+        <FrameAccents />
+      </div>
+    </div>
+    <blockquote {...quoteLighting} className="portrait-quote">
+      <span className="portrait-quote-label">ENGINEERING PHILOSOPHY</span>
+      <p>Syntax is a tool. <strong>Creativity is the vision.</strong> And engineering is the art of turning that vision into something real.</p>
+    </blockquote>
+    <div className="portrait-foot"><span>FULL STACK. FORWARD THINKING.</span><span>01 / PS</span></div>
   </div>;
 }
 
@@ -221,18 +220,7 @@ export default function App() {
               <p className="hero-description">I build applications that bring automation, data, and AI together—from the interface to the infrastructure.</p>
               <div className="hero-actions"><a href="#projects" className="button button-primary">Explore My Work <ArrowUpRight size={19} /></a><a href="#contact" className="button button-quiet">Get In Touch <ArrowRight size={18} /></a></div>
             </div>
-            <div className="portrait-composition">
-              <div className="portrait-frame">
-                <div className="portrait-corner corner-top" /><div className="portrait-corner corner-bottom" />
-                <img className="portrait-image" src="/assets/portrait-current.png" alt="Paul Sattaur's blue cybernetic profile portrait" width="460" height="460" fetchPriority="high" />
-                <div className="portrait-caption"><span><span className="tiny-square" /> HUMAN IN THE LOOP</span><Code2 size={20} /></div>
-              </div>
-              <blockquote className="portrait-quote">
-                <span className="portrait-quote-label">ENGINEERING PHILOSOPHY</span>
-                <p>Syntax is a tool. <strong>Creativity is the vision.</strong> And engineering is the art of turning that vision into something real.</p>
-              </blockquote>
-              <div className="portrait-foot"><span>FULL STACK. FORWARD THINKING.</span><span>01 / PS</span></div>
-            </div>
+            <HeroPortrait />
           </div>
           <nav className="focus-strip" aria-label="Explore my areas of focus">
             {capabilities.map(({ icon: Icon, title, description, href, motif }) => <Metal className={'focus-card focus-card-' + motif} key={title}>
@@ -306,7 +294,8 @@ export default function App() {
       <section className="opaque process-section" id="process" aria-labelledby="process-title">
         <div className="container">
           <div className="section-header"><div><Eyebrow number="04">How I Build</Eyebrow><h2 id="process-title">Development <span className="text-accent">Process Flow.</span></h2></div><p>Human direction. Connected agents.<br />Visible execution.</p></div>
-          <Metal className="process-panel">
+          <Metal className="process-panel signature-frame">
+            <FrameAccents />
             <ProcessFlow />
           </Metal>
           <div className="process-notes"><p>Cloud planning and a local coding agent work through structured handoffs. I direct the work, define its scope, and follow the results across application services.</p><OutLink href={github + '/SkyCommand-Demo/blob/main/docs/architecture.md'} className="button button-quiet architecture-link">Explore The Architecture <ArrowUpRight size={17} /></OutLink></div>
@@ -343,7 +332,7 @@ export default function App() {
         <div className="container">
           <div className="contact-heading"><Eyebrow number="07">Start A Conversation</Eyebrow><h2 id="contact-title">Let’s Build<br /><span className="text-accent">Something That Matters.</span></h2><p>Have a role, a project, or a system worth improving?<br />I’d like to hear about it.</p></div>
           <div className="contact-layout">
-            <Metal className="location-panel"><LocationMap /></Metal>
+            <Metal className="location-panel signature-frame"><FrameAccents /><LocationMap /></Metal>
             <div className="contact-methods">
               <div className="contact-grid">
                 <Metal className="contact-card"><Mail className="contact-icon" size={22} aria-hidden="true" /><a className="contact-card-link" href={'mailto:' + email} aria-label={'Email ' + email}><span>{email}</span></a><button className="icon-button contact-copy" type="button" aria-label={copied ? 'Email copied' : 'Copy email address'} onClick={copyEmail}>{copied ? <Check size={17} /> : <Copy size={17} />}</button></Metal>

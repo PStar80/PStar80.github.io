@@ -9,11 +9,13 @@ A personal portfolio for full-stack applications, agentic automation, data engin
 - Opaque graphite/navy sections use a faint grid. Alternating scenic sections reveal stationary artwork while foreground content scrolls.
 - Two original backgrounds extend the existing blue cybernetic portrait and neural/workflow profile imagery. [Generation prompts and references](docs/artwork-prompts.md) are retained.
 - Metallic pointer lighting is confined to the hovered card or panel. The regular cursor remains visible; there is no cursor trail or page-wide mouse spotlight.
+- The hero copy and portrait share a top edge. The portrait has a restrained pointer-responsive reflection and up to 1.2 degrees of tilt; its decorative backdrop is scoped to the image. The engineering philosophy quote below uses stationary text with local lighting and a brighter key phrase.
+- A shared silver-blue rim and cyan corner brackets are reserved for the portrait, development process, and contact map. Decorative trim never intercepts their controls. Pointer effects respect reduced motion and reset on exit, cancellation, tab hiding, or window blur.
 - The four home capability cards link to the relevant work, with illuminated icons, compact descriptions, and the shared metallic reflection.
 - The development process is an interactive SVG with directional traces, selectable node descriptions, keyboard exploration, and separate desktop/mobile layouts. Motion can be paused, respects reduced-motion preferences, and stops while the diagram is offscreen or the tab is hidden.
 - Project sections use actual application captures, with a screenshot lightbox and captions describing the visible state.
 - Experience is available in the main navigation and presents a brief, dated career timeline. The site does not serve a downloadable résumé.
-- The header pairs the PS mark with Pstar80 and centers an uppercase menu, including Contact as a regular section link. Smaller screens use a centered, scrollable navigation menu.
+- The header pairs the PS mark with PStar80 and centers an uppercase menu, including Contact as a regular section link. Smaller screens use a centered, scrollable navigation menu.
 - A full-width, flat world map leads the contact area, with three equal-width, full-surface contact links in a horizontal row below it. Narrow screens use a North American map crop and stack the cards. The email copy button remains separate; success is shown by its checkmark with a screen-reader announcement, and copy errors alone display a message.
 - The map uses real geographic outlines, a rectangular latitude/longitude grid, a Toronto city beacon, subtle motion, and Toronto local time. Hovering a visible country reveals its name and a cyan outline. Clicking or tapping a country toggles its selection and keeps the compact keyboard-accessible chooser in sync; the chooser can select countries directly. Its motion can be paused, respects reduced-motion preferences, and stops offscreen or while the tab is hidden.
 - The personal site stays blue/cyan; SkyCommand retains its charcoal/gold product identity.
@@ -43,6 +45,8 @@ npm run preview
 | --- | --- |
 | `src/App.tsx` | Page sections, project galleries, navigation, and card interaction |
 | `src/styles.css` | Visual system and responsive layouts |
+| `src/FrameAccents.tsx`, `src/signature-frame.css` | Shared metallic rim and cyan corner accents for the three featured surfaces |
+| `src/usePointerLighting.ts` | Frame-smoothed local reflection, optional portrait tilt, motion preferences, and cleanup |
 | `src/ProcessFlow.tsx`, `src/process-flow.css` | Shared architecture data, responsive SVG layouts, directional motion, and accessible node exploration |
 | `src/LocationMap.tsx`, `src/location-map.css` | Flat location map, country highlighting and selection, Toronto beacon, restrained motion, accessible controls, responsive framing, and local time |
 | `src/location-map-data.ts`, `scripts/build_location_map.py` | Committed geographic SVG paths and an optional reproducible generator |
