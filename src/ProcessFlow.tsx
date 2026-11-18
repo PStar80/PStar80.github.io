@@ -107,8 +107,7 @@ export default function ProcessFlow() {
       { id: 'capabilities', title: 'Execution Capabilities', box: { x: 20, y: 408, width: 1080, height: 120 } },
       { id: 'endpoints', title: 'Automation Endpoints', box: { x: 20, y: 572, width: 1080, height: 101 } },
     ];
-    return <svg className={'pf-diagram ' + (small ? 'pf-mobile' : 'pf-desktop')} viewBox={small ? '0 0 360 949' : '0 0 1120 690'} role="group" aria-labelledby={prefix + '-title'} aria-describedby={id + '-instructions'}>
-      <title id={prefix + '-title'}>Development Process Flow — explore the connected architecture</title>
+    return <svg className={'pf-diagram ' + (small ? 'pf-mobile' : 'pf-desktop')} viewBox={small ? '0 0 360 949' : '0 0 1120 690'} role="group" aria-label="Development Process Flow — explore the connected architecture" aria-describedby={id + '-instructions'}>
       <defs>
         <linearGradient id={prefix + '-surface'} x1="0" y1="0" x2="1" y2="1"><stop stopColor="#23364a" /><stop offset=".38" stopColor="#142438" /><stop offset="1" stopColor="#0c192a" /></linearGradient>
         <linearGradient id={prefix + '-operator'} x1="0" y1="0" x2="1" y2="1"><stop stopColor="#2a4658" /><stop offset=".46" stopColor="#183044" /><stop offset="1" stopColor="#0d2032" /></linearGradient>

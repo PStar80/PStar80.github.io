@@ -215,8 +215,7 @@ export default function GitHubActivity() {
               }
             }}
           >
-            <svg className="gh-calendar" viewBox={`0 0 ${layout.width} 132`} role="img" aria-labelledby={`${id}-title ${id}-description`}>
-              <title id={`${id}-title`}>PStar80 GitHub Contribution Calendar</title>
+            <svg className="gh-calendar" viewBox={`0 0 ${layout.width} 132`} role="img" aria-label="PStar80 GitHub Contribution Calendar" aria-describedby={`${id}-description`}>
               <desc id={`${id}-description`}>
                 {snapshot.total_contributions.toLocaleString('en-CA')} contributions on {snapshot.active_days} active days,
                 from {dateLabel(snapshot.from)} to {dateLabel(snapshot.through)}. Brighter blue cells indicate more activity.
@@ -237,9 +236,7 @@ export default function GitHubActivity() {
                     className={activeIndex === index ? 'gh-day gh-day-selected' : 'gh-day'}
                     onPointerEnter={() => setActiveIndex(index)}
                     onClick={() => setActiveIndex(index)}
-                  >
-                    <title>{`${dateLabel(day.date)}: ${day.count} ${day.count === 1 ? 'contribution' : 'contributions'}`}</title>
-                  </rect>
+                  />
                 );
               })}
             </svg>
