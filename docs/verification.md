@@ -1,6 +1,29 @@
 # Portfolio Review Checkpoint
 
-## Country Hover And Map Exploration Release
+## Map Selection And Header Refinements
+
+Verified on the published [contact section](https://pstar80.github.io/#contact)
+on **November 18, 2026 (Toronto)**.
+
+- Implementation: [f1f9b6e](https://github.com/PStar80/PStar80.github.io/commit/f1f9b6e5347888ba320703de7dd86398ae8ae22c)
+- GitHub Pages build and deployment: [successful run](https://github.com/PStar80/PStar80.github.io/actions/runs/44273037726)
+- Left-clicking Canada selected it in the country chooser and retained its highlight after the pointer left the map. A second click cleared the selection, label, and chooser value.
+- Selecting Brazil in the chooser and then clicking Brazil on the map cleared the same selection. Clicking Canada followed by Brazil switched the chooser to Brazil. Clicking ocean cleared selection; a dragged gesture did not select a country.
+- The header shows the PS mark and Pstar80 without a subtitle. All seven links display uppercase, and Contact is a regular link with the shared active-section underline.
+- At 1348px, the navigation's horizontal center exactly matched the page center. At 1078px, it was centered within 0.2px and had 122px of clearance from the brand.
+- All three desktop contact cards measured 400px wide and 96px high. Equal widths also held at 1078px apart from fractional pixel rounding, with no email overflow. The narrow cards each measured 297px wide at a 337px viewport.
+- At 899px and 337px, the centered menu opened and Contact could be selected, closing the menu. The short 337px-wide viewport kept the menu inside its available height with vertical scrolling and the first entry reachable.
+- Document scroll width matched client width at 1348px, 1078px, 899px, and 337px. Browser zoom was restored to 100% after checking.
+- TypeScript/Vite and the production deployment passed. Focused independent source review found no actionable regressions. No dependencies or test files were added.
+
+Preview: [selected country, centered header, and equal contact cards](previews/map-selection-header-refinement-20261118.jpg).
+
+Responsive checks used Chromium browser zoom. Touch/pen toggling, multitouch
+cancellation, and non-left-button guards were reviewed in source; physical touch
+devices and Safari were not exercised in this pass. Previous checkpoints below
+describe their respective releases.
+
+## Previous Country Hover And Map Exploration Release
 
 Verified on the published [contact section](https://pstar80.github.io/#contact)
 on **November 18, 2026 (Toronto)**.
