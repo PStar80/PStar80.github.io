@@ -1,0 +1,97 @@
+.gh-activity {
+  min-width: 0;
+  width: 100%;
+  color: #f3f6fb;
+}
+
+.gh-heading-row,
+.gh-chart-footer,
+.gh-source-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+}
+
+.gh-heading-row h3 {
+  margin: 0;
+  font-size: 1.08rem;
+  font-weight: 600;
+  letter-spacing: -.02em;
+}
+
+.gh-profile-link,
+.gh-source-row a {
+  display: inline-flex;
+  align-items: center;
+  gap: 3px;
+  flex-shrink: 0;
+  color: #83c9ff;
+  font-size: .77rem;
+  font-weight: 500;
+  text-decoration: none;
+}
+
+.gh-profile-link:hover,
+.gh-source-row a:hover { color: #b5e9ff; text-decoration: underline; }
+
+.gh-summary {
+  display: flex;
+  gap: 34px;
+  align-items: center;
+  margin: 27px 0 24px;
+}
+
+.gh-summary > div { display: flex; flex-direction: column; gap: 4px; }
+.gh-summary strong { font-size: clamp(1.6rem, 2.6vw, 2.05rem); font-weight: 500; letter-spacing: -.05em; line-height: 1.1; }
+.gh-summary span { color: #b9c6d8; font-size: .74rem; }
+.gh-date-range { margin: 0 0 0 auto; color: #b9c6d8; font-size: .72rem; line-height: 1.6; text-align: right; }
+.gh-date-range span { color: inherit; }
+
+.gh-calendar-scroll {
+  max-width: 100%;
+  min-width: 0;
+  overflow-x: auto;
+  overflow-y: hidden;
+  scrollbar-width: thin;
+  scrollbar-color: #315a7e transparent;
+  overscroll-behavior-x: contain;
+  border-radius: 4px;
+  outline-offset: 5px;
+}
+
+.gh-calendar-scroll:focus-visible,
+.gh-activity a:focus-visible { outline: 2px solid #70cfff; outline-offset: 5px; }
+.gh-calendar { display: block; width: 100%; min-width: 670px; height: auto; overflow: visible; }
+.gh-month-label { font-size: 10px; fill: #afbed2; }
+.gh-weekday-label { font-size: 9px; fill: #829ab5; }
+.gh-day { stroke: rgba(145, 178, 213, .13); stroke-width: .6; }
+.gh-day-selected { stroke: #d4f1ff; stroke-width: 1.5; }
+
+.gh-chart-footer { margin: 10px 0 22px; }
+.gh-day-detail { margin: 0; min-height: 1.4em; color: #b9c6d8; font-size: .72rem; }
+.gh-legend { display: flex; flex-shrink: 0; align-items: center; gap: 4px; }
+.gh-legend span { color: #8ea5be; font-size: .65rem; margin: 0 3px; }
+.gh-legend i { display: block; width: 9px; height: 9px; border-radius: 2px; }
+.gh-source-row { padding-top: 15px; border-top: 1px solid rgba(144, 175, 207, .14); }
+.gh-source-row p { margin: 0; color: #8ea5be; font-size: .65rem; line-height: 1.6; }
+.gh-source-row time { color: #b9c6d8; white-space: nowrap; }
+.gh-source-row a { font-size: .65rem; }
+.gh-source-note { margin: 8px 0 0; color: #8ea5be; font-size: .63rem; line-height: 1.6; }
+.gh-load-state { min-height: 180px; display: flex; align-items: center; color: #b9c6d8; font-size: .85rem; }
+.gh-sr-only { position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip: rect(0, 0, 0, 0); white-space: nowrap; border: 0; }
+
+@media (max-width: 600px) {
+  .gh-heading-row { gap: 12px; }
+  .gh-heading-row h3 { font-size: .95rem; }
+  .gh-profile-link { font-size: .7rem; }
+  .gh-summary { gap: 22px; margin: 24px 0 20px; flex-wrap: wrap; }
+  .gh-summary strong { font-size: 1.8rem; }
+  .gh-date-range { font-size: .65rem; }
+  .gh-chart-footer { align-items: flex-start; flex-direction: column; gap: 12px; }
+  .gh-source-row { align-items: flex-start; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .gh-calendar-scroll { scroll-behavior: auto; }
+}
