@@ -1,17 +1,42 @@
-import { useEffect, useId, useRef, useState } from 'react';
-import { Map as MapIcon, MapPin, Pause, Play } from 'lucide-react';
-import { MAP_VIEWBOX, MAP_COMPACT_VIEWBOX, LAND_PATH, BORDERS_PATH, LAKES_PATH, GRATICULE_PATH, TORONTO_POINT } from './location-map-data';
+import { memo, useCallback, useEffect, useId, useLayoutEffect, useRef, useState } from 'react';
+import type { PointerEvent as ReactPointerEvent } from 'react';
+import { ChevronDown, Map as MapIcon, MapPin, Pause, Play } from 'lucide-react';
+import { MAP_VIEWBOX, MAP_COMPACT_VIEWBOX, LAND_PATH, BORDERS_PATH, LAKES_PATH, GRATICULE_PATH, TORONTO_POINT, COUNTRIES } from './location-map-data';
 import './location-map.css';
 
 const torontoClock = new Intl.DateTimeFormat('en-CA', {
   timeZone: 'America/Toronto', hour: 'numeric', minute: '2-digit', hour12: true, timeZoneName: 'short',
 });
 
+const countryById = new Map(COUNTRIES.map(country => [country.id, country]));
+const countryOptions = [...COUNTRIES].sort((a, b) => a.name.localeCompare(b.name, 'en'));
+const regionalOptions = countryOptions.filter(country => country.regional);
+type PointerPosition = { x: number; y: number };
+type TouchGesture = PointerPosition & { pointerId: number; countryId: string | null; moved: boolean };
+
+// These paths never change. Pointer movement only repositions the HTML label;
+// changing countries updates a single highlight, not the full map geometry.
+const CountryTargets = memo(function CountryTargets() {
+  return <g className="lm-country-targets" aria-hidden="true">
+    {COUNTRIES.map(country => <path key={country.id} d={country.path} data-country-id={country.id} className="lm-country-hit" fillRule="evenodd" />)}
+  </g>;
+});
+
+function countryAt(target: EventTarget | null) {
+  return target instanceof Element ? target.closest('[data-country-id]')?.getAttribute('data-country-id') ?? null : null;
+}
+
 export default function LocationMap() {
   const ref = useRef<HTMLDivElement>(null);
   const stage = useRef<HTMLDivElement>(null);
+  const tooltip = useRef<HTMLDivElement>(null);
+  const pointer = useRef<PointerPosition | null>(null);
+  const touchGesture = useRef<TouchGesture | null>(null);
   const id = 'location-' + useId().replace(/:/g, '');
   const [compact, setCompact] = useState(false);
+  const [selectedId, setSelectedId] = useState<string | null>(null);
+  const [hoveredId, setHoveredId] = useState<string | null>(null);
+  const [hovering, setHovering] = useState(false);
   const [visible, setVisible] = useState(false);
   const [pageVisible, setPageVisible] = useState(true);
   const [reducedMotion, setReducedMotion] = useState(false);
@@ -19,24 +44,106 @@ export default function LocationMap() {
   const [clock, setClock] = useState(() => new Date());
   const clockMinute = useRef(Math.floor(clock.getTime() / 60_000));
   const running = visible && pageVisible && !reducedMotion && !paused;
+  const activeId = hovering ? hoveredId : selectedId;
+  const activeCountry = activeId ? countryById.get(activeId) : undefined;
+  const selectedCountry = selectedId ? countryById.get(selectedId) : undefined;
+
+  const clearHover = useCallback(() => {
+    pointer.current = null;
+    setHoveredId(null);
+    setHovering(false);
+  }, []);
+
+  const positionTooltip = useCallback((position: PointerPosition) => {
+    const container = stage.current;
+    const label = tooltip.current;
+    if (!container || !label) return;
+    const bounds = container.getBoundingClientRect();
+    const x = position.x - bounds.left - container.clientLeft;
+    const y = position.y - bounds.top - container.clientTop;
+    const width = label.offsetWidth;
+    const height = label.offsetHeight;
+    const gap = 15;
+    const inset = 10;
+    const preferredX = x + gap + width > container.clientWidth - inset ? x - width - gap : x + gap;
+    const preferredY = y + gap + height > container.clientHeight - inset ? y - height - gap : y + gap;
+    const left = Math.max(inset, Math.min(preferredX, container.clientWidth - width - inset));
+    const top = Math.max(inset, Math.min(preferredY, container.clientHeight - height - inset));
+    label.style.setProperty('--lm-label-x', `${left}px`);
+    label.style.setProperty('--lm-label-y', `${top}px`);
+  }, []);
+
+  useLayoutEffect(() => {
+    if (hovering && pointer.current) positionTooltip(pointer.current);
+  }, [activeId, hovering, positionTooltip]);
+
+  function handlePointerMove(event: ReactPointerEvent<HTMLDivElement>) {
+    if (event.pointerType === 'touch') {
+      const gesture = touchGesture.current;
+      if (gesture?.pointerId === event.pointerId && Math.hypot(event.clientX - gesture.x, event.clientY - gesture.y) > 8) gesture.moved = true;
+      return;
+    }
+    if (event.pointerType !== 'mouse' && event.pointerType !== 'pen') return;
+    pointer.current = { x: event.clientX, y: event.clientY };
+    setHovering(true);
+    setHoveredId(countryAt(event.target));
+    positionTooltip(pointer.current);
+  }
+
+  function handlePointerDown(event: ReactPointerEvent<HTMLDivElement>) {
+    if (event.pointerType !== 'touch') return;
+    if (!event.isPrimary) { touchGesture.current = null; return; }
+    clearHover();
+    touchGesture.current = { pointerId: event.pointerId, x: event.clientX, y: event.clientY, countryId: countryAt(event.target), moved: false };
+  }
+
+  function handlePointerUp(event: ReactPointerEvent<HTMLDivElement>) {
+    if (event.pointerType !== 'touch') return;
+    const gesture = touchGesture.current;
+    touchGesture.current = null;
+    if (!gesture || gesture.pointerId !== event.pointerId || gesture.moved || Math.hypot(event.clientX - gesture.x, event.clientY - gesture.y) > 8) return;
+    // Touch uses implicit pointer capture; hit-test the release position so a
+    // scroll or a release outside the original country cannot select it.
+    const target = document.elementFromPoint(event.clientX, event.clientY);
+    if (!stage.current?.contains(target) || countryAt(target) !== gesture.countryId) return;
+    setSelectedId(gesture.countryId);
+  }
 
   useEffect(() => {
     const motion = window.matchMedia('(prefers-reduced-motion: reduce)');
     const syncPreferences = () => setReducedMotion(motion.matches);
-    const syncPage = () => setPageVisible(document.visibilityState === 'visible');
+    const syncPage = () => {
+      const isVisible = document.visibilityState === 'visible';
+      setPageVisible(isVisible);
+      if (!isVisible) { clearHover(); touchGesture.current = null; }
+    };
+    const clearOnEscape = (event: KeyboardEvent) => {
+      if (event.key === 'Escape') { clearHover(); setSelectedId(null); touchGesture.current = null; }
+    };
     syncPreferences(); syncPage();
     motion.addEventListener('change', syncPreferences);
     document.addEventListener('visibilitychange', syncPage);
-    const intersection = new IntersectionObserver(([entry]) => setVisible(entry.isIntersecting));
-    const resize = new ResizeObserver(([entry]) => setCompact(entry.contentRect.width < 700));
+    document.addEventListener('keydown', clearOnEscape);
+    const intersection = new IntersectionObserver(([entry]) => {
+      setVisible(entry.isIntersecting);
+      if (!entry.isIntersecting) { clearHover(); touchGesture.current = null; }
+    });
+    const resize = new ResizeObserver(([entry]) => {
+      const isCompact = entry.contentRect.width < 700;
+      setCompact(isCompact);
+      clearHover();
+      touchGesture.current = null;
+      setSelectedId(current => isCompact && current && !countryById.get(current)?.regional ? null : current);
+    });
     if (ref.current) intersection.observe(ref.current);
     if (stage.current) resize.observe(stage.current);
     return () => {
       intersection.disconnect(); resize.disconnect();
       motion.removeEventListener('change', syncPreferences);
       document.removeEventListener('visibilitychange', syncPage);
+      document.removeEventListener('keydown', clearOnEscape);
     };
-  }, []);
+  }, [clearHover]);
 
   useEffect(() => {
     if (!visible || !pageVisible) return;
@@ -57,13 +164,23 @@ export default function LocationMap() {
   return <div className="location-map" ref={ref} data-motion={running ? 'running' : 'paused'} data-view={compact ? 'regional' : 'world'}>
     <div className="lm-toolbar">
       <span className="lm-eyebrow"><MapIcon size={15} aria-hidden="true" /> LOCATION</span>
+      <div className="lm-country-picker">
+        <select aria-label="Explore countries" aria-controls={id + '-map'} value={selectedId ?? ''} onChange={event => {
+          clearHover();
+          setSelectedId(event.target.value || null);
+        }}>
+          <option value="">Explore countries</option>
+          {(compact ? regionalOptions : countryOptions).map(country => <option key={country.id} value={country.id}>{country.name}</option>)}
+        </select>
+        <ChevronDown size={13} aria-hidden="true" />
+      </div>
       {!reducedMotion && <button className="lm-motion-control" type="button" onClick={() => setPaused(!paused)} aria-label={paused ? 'Play location animation' : 'Pause location animation'}>
         {paused ? <Play size={13} aria-hidden="true" /> : <Pause size={13} aria-hidden="true" />}<span>{paused ? 'Play motion' : 'Pause motion'}</span>
       </button>}
     </div>
-    <div ref={stage} className="lm-stage">
-      <svg className="lm-svg" viewBox={compact ? MAP_COMPACT_VIEWBOX : MAP_VIEWBOX} role="img" aria-label={compact ? 'Map of North America highlighting Toronto, Canada' : 'World map highlighting Toronto, Canada'} aria-describedby={id + '-description'}>
-        <desc id={id + '-description'}>{compact ? 'A flat map of North America and the Great Lakes, with Toronto, Ontario, Canada highlighted.' : 'A flat world map with a latitude and longitude grid, highlighting Toronto, Ontario, Canada beside the Great Lakes.'}</desc>
+    <div ref={stage} className="lm-stage" onPointerEnter={handlePointerMove} onPointerMove={handlePointerMove} onPointerDown={handlePointerDown} onPointerUp={handlePointerUp} onPointerCancel={() => { touchGesture.current = null; clearHover(); }} onPointerLeave={event => { if (event.pointerType !== 'touch') clearHover(); }}>
+      <svg id={id + '-map'} className="lm-svg" viewBox={compact ? MAP_COMPACT_VIEWBOX : MAP_VIEWBOX} role="img" aria-label={compact ? 'Map of North America highlighting Toronto, Canada' : 'World map highlighting Toronto, Canada'} aria-describedby={id + '-description'}>
+        <desc id={id + '-description'}>{compact ? 'A flat map of North America and the Great Lakes, with Toronto, Ontario, Canada highlighted.' : 'A flat world map with a latitude and longitude grid, highlighting Toronto, Ontario, Canada beside the Great Lakes.'} Hover or tap a country to see its name, or use the Explore countries selector above the map.</desc>
         <defs>
           <linearGradient id={id + '-ocean'} x1="0" y1="0" x2="1" y2="1"><stop stopColor="#0d2438" /><stop offset="1" stopColor="#071625" /></linearGradient>
           <linearGradient id={id + '-land'} x1="0" y1="0" x2=".7" y2="1"><stop stopColor="#326479" /><stop offset=".55" stopColor="#244c62" /><stop offset="1" stopColor="#18394f" /></linearGradient>
@@ -75,9 +192,11 @@ export default function LocationMap() {
         <path d={GRATICULE_PATH} className="lm-graticule lm-graticule-under" />
         <path d={LAND_PATH} fill={`url(#${id}-land)`} className="lm-land" />
         <path d={BORDERS_PATH} className="lm-borders" />
+        <CountryTargets />
+        {activeCountry && <path d={activeCountry.path} className="lm-country-highlight" fillRule="evenodd" vectorEffect="non-scaling-stroke" aria-hidden="true" />}
         <path d={LAKES_PATH} className="lm-lakes" />
         <path d={GRATICULE_PATH} className="lm-graticule lm-graticule-over" />
-        <rect width="1200" height="480" fill={`url(#${id}-ambient)`} />
+        <rect width="1200" height="480" fill={`url(#${id}-ambient)`} className="lm-ambient" />
         <g className="lm-sweep" aria-hidden="true"><rect width="120" height="480" fill={`url(#${id}-scan)`} /></g>
         <g transform={`translate(${TORONTO_POINT.x} ${TORONTO_POINT.y})`} className="lm-marker">
           <circle r="24" fill={`url(#${id}-beacon)`} />
@@ -95,7 +214,9 @@ export default function LocationMap() {
           <text x="402" y="99" className="lm-country">CANADA</text>
         </g>
       </svg>
+      {activeCountry && <div ref={tooltip} className="lm-country-tooltip" data-anchor={hovering ? 'pointer' : 'selection'} aria-hidden="true">{activeCountry.name}</div>}
     </div>
+    <span className="lm-sr-only" role="status">{selectedCountry ? `${selectedCountry.name} highlighted on the map.` : ''}</span>
     <div className="lm-footer">
       <div className="lm-place"><MapPin size={18} aria-hidden="true" /><p><span>Based in</span><strong>Toronto, Canada</strong></p></div>
       <div className="lm-local-time"><span>LOCAL TIME</span><time dateTime={clock.toISOString()} title="Toronto local time — America/Toronto">{torontoClock.format(clock)}</time></div>
