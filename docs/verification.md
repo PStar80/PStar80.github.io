@@ -1,6 +1,26 @@
 # Portfolio Review Checkpoint
 
-## Curved Toronto Map Release
+## Flat Map And Contact Row Release
+
+Verified on the published [contact section](https://pstar80.github.io/#contact)
+on **November 18, 2026 (Toronto)**.
+
+- Implementation: [7519e3b](https://github.com/PStar80/PStar80.github.io/commit/7519e3b0e69bf6445750c3089b497ccdc0b538f4)
+- GitHub Pages build and deployment: [successful run](https://github.com/PStar80/PStar80.github.io/actions/runs/44265491308)
+- The globe is replaced by a flat world map with straight latitude/longitude grid lines. Its panel spans the contact container, with email, LinkedIn, and GitHub in a horizontal row below. At the 1348px desktop viewport, the panel was 1236px wide and all three contact cards aligned at the same top edge with 96px height.
+- Toronto's beacon, label, local clock, and motion control remain. Pause held all animation transforms unchanged across observations; Space resumed them. Returning home paused the offscreen map. The globe's parallax and circular framing are removed.
+- The email-copy button produced its checkmark state and clipped screen-reader announcement without a visible status row. Points near each card's outside corner resolved to the correct native link, preserving the full-card target.
+- At 674px and 337px, the map used its North America crop and the contact cards stacked beneath it. Toronto's complete label remained inside the map. Document scroll width matched client width at all three tested widths. Zoom was restored to 100%.
+- TypeScript/Vite build passed: JavaScript 120.82 KB gzip, CSS 13.15 KB gzip; no new runtime dependencies. Focused independent source review found no actionable bugs in the projection/crop, SVG IDs, motion gates, clock cleanup, or contact controls.
+
+Previews: [desktop](previews/flat-map-desktop-20261118.jpg) ·
+[narrow screen](previews/flat-map-mobile-20261118.jpg).
+
+Narrow checks used Chromium browser zoom, not physical phones or Safari.
+Reduced-motion and hidden-tab handling were reviewed in source, not exercised
+directly. Earlier checkpoints below describe their respective releases.
+
+## Previous Curved Toronto Map Release
 
 The location-map and contact-cleanup update was verified on the published
 [contact section](https://pstar80.github.io/#contact) on **November 18, 2026 (Toronto)**.
