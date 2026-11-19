@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://pstar80.github.io/sitemap.xml
