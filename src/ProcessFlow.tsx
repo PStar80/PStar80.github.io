@@ -201,7 +201,6 @@ export default function ProcessFlow() {
       <span className="pf-detail-icon" aria-hidden="true">{activeNode ? <activeNode.icon size={21} /> : <Network size={21} />}</span>
       <div className="pf-detail-copy"><span className="pf-detail-title">{activeNode?.title ?? 'Explore the connections'}</span><p>{activeNode?.description ?? 'Point to a node or select it to see its role and connected paths.'}</p></div>
       {selected && <button type="button" className="pf-clear" onClick={() => {
-        const previous = selected;
         setSelected(null);
         setHovered(null);
         setFocused(null);
