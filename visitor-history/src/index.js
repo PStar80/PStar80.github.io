@@ -14,7 +14,7 @@ function response(status, body = null, origin = null) {
   if (origin === PORTFOLIO_ORIGIN) {
     headers.set('Access-Control-Allow-Origin', PORTFOLIO_ORIGIN);
     headers.set('Vary', 'Origin');
-    headers.set('Access-Control-Allow-Methods', 'POST, OPTIONS');
+    headers.set('Access-Control-Allow-Methods', 'GET, POST, OPTIONS');
     headers.set('Access-Control-Allow-Headers', 'Content-Type');
   }
   return new Response(body, { status, headers });
@@ -31,6 +31,45 @@ export default {
     if (request.method === 'GET' && url.pathname === '/health') {
       return response(200, 'ok');
     }
+    // This read endpoint is intentionally NOT authenticated: the portfolio
+    // hides its UI for non-owner viewers, but callers can request these
+    // public GitHub usernames/timestamps directly. Do not add sensitive data.
+    if (url.pathname === '/observations') {
+      const origin = request.headers.get('Origin');
+      if (origin !== PORTFOLIO_ORIGIN) return response(403, 'Forbidden');
+      if (request.method === 'OPTIONS') return response(204, null, origin);
+      if (request.method !== 'GET') return response(405, 'Method not allowed', origin);
+      if (!env.DB) return response(503, 'Database unavailable', origin);
+      const cutoff = Date.now() - RETENTION_MS;
+      const dayAgo = Date.now() - 86_400_000;
+      try {
+        const [recent, summary] = await Promise.all([
+          env.DB.prepare(
+            'SELECT github_login, observed_at_ms FROM giscus_observations ' +
+            'WHERE observed_at_ms >= ? ORDER BY observed_at_ms DESC LIMIT 100'
+          ).bind(cutoff).all(),
+          env.DB.prepare(
+            'SELECT COUNT(*) AS total, COUNT(DISTINCT github_login) AS unique_users, ' +
+            'COALESCE(SUM(CASE WHEN observed_at_ms >= ? THEN 1 ELSE 0 END), 0) AS last_24h ' +
+            'FROM giscus_observations WHERE observed_at_ms >= ?'
+          ).bind(dayAgo, cutoff).first(),
+        ]);
+        const body = JSON.stringify({
+          observations: recent.results || [],
+          summary: {
+            total: summary?.total ?? 0,
+            uniqueUsers: summary?.unique_users ?? 0,
+            last24h: summary?.last_24h ?? 0,
+          },
+        });
+        const result = response(200, body, origin);
+        result.headers.set('Content-Type', 'application/json; charset=utf-8');
+        return result;
+      } catch {
+        return response(503, 'Observation history unavailable', origin);
+      }
+    }
+
     if (url.pathname !== '/observe') return response(404, 'Not found');
 
     const origin = request.headers.get('Origin');
