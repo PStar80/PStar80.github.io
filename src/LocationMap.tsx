@@ -2,6 +2,7 @@ import { memo, useCallback, useEffect, useId, useLayoutEffect, useRef, useState 
 import type { PointerEvent as ReactPointerEvent } from 'react';
 import { ChevronDown, Map as MapIcon, MapPin, Pause, Play } from 'lucide-react';
 import { MAP_VIEWBOX, MAP_COMPACT_VIEWBOX, LAND_PATH, BORDERS_PATH, LAKES_PATH, GRATICULE_PATH, TORONTO_POINT, COUNTRIES } from './location-map-data';
+import CountryPicker from './CountryPicker';
 import './location-map.css';
 
 const torontoClock = new Intl.DateTimeFormat('en-CA', {
@@ -165,16 +166,23 @@ export default function LocationMap() {
   return <div className="location-map" ref={ref} data-motion={running ? 'running' : 'paused'} data-view={compact ? 'regional' : 'world'}>
     <div className="lm-toolbar">
       <span className="lm-eyebrow"><MapIcon size={15} aria-hidden="true" /> LOCATION</span>
-      <div className="lm-country-picker">
-        <select aria-label="Explore countries" aria-controls={id + '-map'} value={selectedId ?? ''} onChange={event => {
+      {compact ? (
+        <div className="lm-country-picker lm-country-native">
+          <select aria-label="Explore countries" aria-controls={id + '-map'} value={selectedId ?? ''} onChange={event => {
+            clearHover();
+            setSelectedId(event.target.value || null);
+          }}>
+            <option value="">Explore countries</option>
+            {regionalOptions.map(country => <option key={country.id} value={country.id}>{country.name}</option>)}
+          </select>
+          <ChevronDown size={13} aria-hidden="true" />
+        </div>
+      ) : (
+        <CountryPicker options={countryOptions} value={selectedId} onChange={value => {
           clearHover();
-          setSelectedId(event.target.value || null);
-        }}>
-          <option value="">Explore countries</option>
-          {(compact ? regionalOptions : countryOptions).map(country => <option key={country.id} value={country.id}>{country.name}</option>)}
-        </select>
-        <ChevronDown size={13} aria-hidden="true" />
-      </div>
+          setSelectedId(value);
+        }} />
+      )}
       {!reducedMotion && <button className="button button-primary lm-motion-control" type="button" onClick={() => setPaused(!paused)} aria-label={paused ? 'Play location animation' : 'Pause location animation'}>
         {paused ? <Play size={13} aria-hidden="true" /> : <Pause size={13} aria-hidden="true" />}<span>{paused ? 'Play motion' : 'Pause motion'}</span>
       </button>}
