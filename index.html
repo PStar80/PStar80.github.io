@@ -23,6 +23,18 @@
     <meta name="twitter:image:alt" content="Paul Sattaur Portfolio - Engineering, AI and Automation, with a luminous blue neural brain." />
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
     <link rel="preload" as="image" href="/assets/portrait-current.png" />
+    <!-- Process the giscus OAuth return before analytics scripts can observe the redirect URL. -->
+    <script id="giscus-oauth-redirect">
+      (() => {
+        const url = new URL(window.location.href);
+        const session = url.searchParams.get('giscus');
+        if (!session) return;
+        url.searchParams.delete('giscus');
+        window.history.replaceState(window.history.state, document.title, url.pathname + url.search + url.hash);
+        try { window.localStorage.setItem('giscus-session', JSON.stringify(session)); }
+        catch { /* The regular giscus sign-in is unavailable if browser storage is blocked. */ }
+      })();
+    </script>
     <!-- Cloudflare Web Analytics: public site token (no server or credentials required) -->
     <script type="module" src="https://static.cloudflareinsights.com/beacon.min.js" data-cf-beacon='{"token":"f5d34195f54943a59d9f9d175a619d75"}'></script>
   </head>
