@@ -1,0 +1,16 @@
+{
+  "name": "pstar80-visitor-history",
+  "private": true,
+  "version": "0.1.0",
+  "type": "module",
+  "scripts": {
+    "dev": "wrangler dev",
+    "deploy": "wrangler deploy",
+    "migrate:local": "wrangler d1 migrations apply pstar80-visitor-checkins --local",
+    "migrate:remote": "wrangler d1 migrations apply pstar80-visitor-checkins --remote",
+    "check": "node --check src/index.js"
+  },
+  "devDependencies": {
+    "wrangler": "^4.0.0"
+  }
+}
