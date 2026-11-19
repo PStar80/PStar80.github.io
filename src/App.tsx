@@ -369,7 +369,7 @@ export default function App() {
               <Eyebrow number="07">Community / GitHub Discussions</Eyebrow>
               <h2 id="discussion-title">Let's Talk About The Work.</h2>
             </div>
-            <p>Questions about SkyCommand, SkyDataStudio, or MacroAnalyzer? Sign in with your GitHub account to comment. No separate account needed.</p>
+            <p>Questions about SkyCommand, SkyDataStudio, or MacroAnalyzer? Sign in with GitHub to comment. Public GitHub usernames and observation times may be logged privately for up to 30 days. No separate account needed.</p>
           </div>
           <Metal className="project-discussion">
             <GiscusDiscussion />

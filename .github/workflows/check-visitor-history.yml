@@ -1,4 +1,4 @@
-name: Validate Optional Visitor History Worker
+name: Validate Lightweight Viewer Observation Worker
 
 on:
   pull_request:
@@ -22,5 +22,5 @@ jobs:
           node-version: '24'
       - name: Check Worker syntax
         run: node --check visitor-history/src/index.js
-      - name: Verify OAuth, privacy, and owner-only access
+      - name: Test observation input, origin guard, retention and privacy
         run: node --test visitor-history/test/*.test.mjs

@@ -1,74 +1,54 @@
-# Optional GitHub visitor check-ins
+# Lightweight GitHub viewer observations
 
-This is a **separate Cloudflare Worker + D1 database**, not part of the GitHub Pages static site. Nothing is recorded unless you explicitly deploy and enable it. The website's existing giscus-based commenting continues to work without it.
+A tiny Cloudflare Worker + existing D1 database collects **best-effort observations** of public GitHub usernames reported by giscus on the PStar80 portfolio. It does **not** run OAuth, verify a new login, create user accounts, or store visitor IP addresses, passwords, emails, access tokens or device identifiers.
 
-## What this records
+**This is an informational log, not an authentication audit.** Browser-originated metadata can be spoofed; a timestamp means the Worker received an observation, not necessarily that GitHub just authenticated that person. Giscus metadata is emitted when its discussion iframe loads (the portfolio initializes it early for an existing giscus session). No data is recorded for anonymous visitors. No new GitHub authorization or visitor opt-in screen is involved.
 
-A visitor deliberately chooses **Continue & record check-in** on the Worker consent page. The Worker uses GitHub's server-side OAuth authorization-code + PKCE flow to verify the public GitHub account, then writes exactly three fields:
+## Components
 
-| Field | Example | Purpose |
-|---|---|---|
-| GitHub numeric user ID | integer | Durable identity across username changes |
-| Public GitHub login | username | Human-readable history |
-| UTC verification time | Unix milliseconds | Time the Worker successfully verified the GitHub identity |
+- **Existing website login:** direct giscus OAuth, unchanged.
+- **Giscus metadata:** viewer login and public GitHub profile URL, validated in the portfolio browser against the giscus iframe and local giscus session presence. Only the username is submitted to the Worker.
+- **Worker:** accepts small JSON posts on `POST /observe` from the portfolio origin, timestamps them on the server, and ignores duplicate usernames within 15 minutes. The HTTP Origin check limits normal browser requests; it **does not authenticate** the caller or make these audit-grade records.
+- **D1:** private `giscus_observations` table with `github_login` and `observed_at_ms`. Cleanup deletes records after 30 days using the existing daily cron.
+- **Owner access:** review the D1 database in **your Cloudflare dashboard**. There is no public history endpoint or custom admin login.
 
-No email, IP address, browser identifier, password or OAuth token is stored **in D1**. The OAuth token is used only in memory to call GitHub `GET /user` and discarded. Cloudflare and GitHub may still process request data operationally according to their policies.
+This avoids a separate GitHub OAuth application, client secret, owner account ID and admin cookie secret.
 
-**Event semantics:** This is a verified **portfolio check-in**, not evidence that the visitor completed the separate giscus OAuth flow, posted a comment, or visited again later. Visitors who choose to proceed directly to giscus aren't included. Existing giscus sessions don't retroactively generate events.
+## Setup with Local Sky
 
-The D1 table is purged after **30 days** by a daily Worker cron and on new check-ins or owner reads. A server-only dashboard shows the 100 most recent check-ins within that window. There is **no browser-supplied event-writing endpoint**.
+1. Keep the existing Cloudflare D1 database **`pstar80-visitor-checkins`** and deployed Worker **`pstar80-visitor-checkins`**. Preserve the real D1 binding from Local Sky's GitHub PR #27; do not re-create infrastructure or roll back the database UUID.
+2. From `visitor-history/`, run `node --check src/index.js` and `node --test test/checkins.test.mjs`. The GitHub Actions verification workflow also runs both commands.
+3. Apply the new migration: `npx wrangler d1 migrations apply pstar80-visitor-checkins --remote`. This adds `giscus_observations`. Historical migration `0001_checkins.sql` stays for D1 migration continuity; its old `visitor_checkins` table is **not used** by this design.
+4. Deploy the revised Worker with `npx wrangler deploy`. Check `https://<actual-worker-host>/health` responds `ok`. The old `/admin`, `/check-in`, and GitHub OAuth routes should no longer be present.
+5. Set GitHub Actions variable `VISITOR_HISTORY_WORKER_URL` to the **HTTPS Worker origin only**, without a path, and redeploy GitHub Pages. Without this variable the portfolio still works normally but no observations are submitted.
+6. Sign in to the portfolio using the existing **Sign in with GitHub** button, then visit or reload the page. The giscus iframe will report the signed-in viewer. Verify that D1 has **one** corresponding username/time row after the event is received. You can also test while viewing Discussion.
+7. Check sign-out, anonymous browsing, country map, discussions/comments, and the blue theme. Ensure normal sign-in remains direct through giscus and no extra OAuth authorization appears.
 
-## Security and privacy
+## View the log privately
 
-- The GitHub authorization callback verifies an unpredictable CSRF state bound to a short-lived, secure, HttpOnly, same-site cookie and exchanges the authorization code with a PKCE verifier.
-- The Worker requests **no additional OAuth scopes**, and uses only the public GitHub ID/login values returned by the authenticated `/user` endpoint.
-- The history page is protected by a **second** GitHub login that checks the **numeric owner account ID on the server**, then issues a signed, secure, HttpOnly cookie valid for 20 minutes.
-- The owner cookie cannot be forged by changing a username or by editing React state. No data endpoint reveals records publicly.
-- No third-party analytics or JavaScript is used on the Worker pages. There is no CORS-enabled visitor logging API.
-- The consent page explains the check-in, retention and data use before a visitor proceeds. It also offers **Continue without check-in** to the existing giscus OAuth.
-- Review your privacy notice and Cloudflare/GitHub account configuration for applicable law before enabling collection publicly.
+In Cloudflare, open **Storage & databases → D1 → pstar80-visitor-checkins → Console** and run:
 
-## Setup — complete these steps before activation
+```sql
+SELECT github_login,
+       datetime(observed_at_ms / 1000, 'unixepoch') AS observed_utc
+FROM giscus_observations
+ORDER BY observed_at_ms DESC
+LIMIT 100;
+```
 
-1. In Cloudflare, create a D1 database named **`pstar80-visitor-checkins`**, and copy its actual database UUID into `visitor-history/wrangler.toml` in place of `REPLACE_WITH_YOUR_D1_DATABASE_ID`. Do **not** invent this value or check a private API credential into Git.
-2. Register **one GitHub OAuth App** under your GitHub account: name e.g. `PStar80 Portfolio Check-ins`, homepage `https://pstar80.github.io/`, callback URL `https://<YOUR-WORKER-HOST>/oauth/callback`. The callback must exactly match your deployed Worker hostname; disable callback wildcard matching. Its Client ID and Client Secret must **not** go in this repository.
-3. Determine your permanent numeric GitHub account ID (the `id` field from `https://api.github.com/users/PStar80`). Use this—not `PStar80` as a text comparison—to authorize the private dashboard.
-4. In the `visitor-history/` directory, install Wrangler with `npm install` (not `npm ci` until a lockfile is committed) and log in to Cloudflare using `npx wrangler login`. Apply the schema: `npx wrangler d1 migrations apply pstar80-visitor-checkins --remote`.
-5. Add the following **Worker secrets** using `npx wrangler secret put NAME` or Cloudflare's Secrets UI (never paste values into ChatGPT or a PR):
-   - `GITHUB_CLIENT_ID` — new GitHub OAuth App Client ID.
-   - `GITHUB_CLIENT_SECRET` — the app's confidential Client Secret.
-   - `OWNER_GITHUB_ID` — your GitHub numeric user ID.
-   - `ADMIN_COOKIE_SECRET` — a securely generated, random 32+ byte secret, preferably a long hexadecimal/base64url string.
-6. Deploy the Worker with `npx wrangler deploy`. Check the actual `https://<YOUR-WORKER-HOST>/check-in` consent page and `/admin` owner sign-in. Confirm the OAuth App's registered callback matches that host exactly.
-7. **Only after** the above works, set the GitHub repository **Actions variable** `VISITOR_HISTORY_WORKER_URL` to the Worker origin, e.g. `https://<YOUR-WORKER-HOST>`. The GitHub Pages build can expose this public origin as `VITE_VISITOR_HISTORY_WORKER_URL`. It is **not** a secret. Without this variable, the navbar retains the original direct giscus flow.
+The console is protected by your Cloudflare account login. Do **not** expose these records through a public Pages endpoint.
 
-Note: Cloudflare secret updates may publish a new Worker version. Keep the Worker and its secrets private until you have completed the setup and verified the consent page.
+## What to remove
 
-### Expected visitor flow after activation
+- Stop the old GitHub OAuth App registration. If an OAuth App was created for visitor check-ins, it is no longer required; delete it only after confirming no other app uses it.
+- Retire the four former Worker secrets (`GITHUB_CLIENT_ID`, `GITHUB_CLIENT_SECRET`, `OWNER_GITHUB_ID`, `ADMIN_COOKIE_SECRET`) **if they were configured**, after replacing the old deployed Worker and verifying the new one.
+- The previous optional consent page, custom owner dashboard and diagnostic panel are removed by this change. No custom account authorization is needed because history is read through the Cloudflare dashboard.
+- Do not delete the current D1 database, existing Worker, or other SkyCommand/portfolio resources.
 
-`Portfolio Sign in with GitHub → Worker consent page → GitHub OAuth check-in → D1 check-in recorded → giscus GitHub OAuth → Portfolio discussion`.
+## Privacy and limits
 
-Someone may decline the optional check-in yet still authorize giscus and comment. On the first visit, GitHub may show **two distinct authorization prompts** (one for the optional read-only check-in and one for giscus commenting). This is deliberate so no giscus token is shared with the portfolio Worker.
+The Discussion section informs visitors that their public GitHub username and observed sign-in activity may be recorded for site operations and retained up to 30 days. This is not an opt-in checkpoint, but visitors remain free to browse anonymously. Review your notice and applicable privacy obligations before enabling collection.
 
-### Private owner history
+No credentials are necessary in GitHub Pages or the public repository. The Worker origin is public configuration, **not** a secret. The old table can be removed separately only after confirming it is empty and no other process references it.
 
-Navigate directly to `https://<YOUR-WORKER-HOST>/admin`. The Worker redirects to a server-verified GitHub owner login if needed; it checks the numeric GitHub ID and then shows public login names and UTC verification times. No admin link is advertised in the regular portfolio navigation, and records never enter the static GitHub Pages bundle.
-
-### Testing and rollback
-
-Before setting the website Actions variable, test:
-- Your own optional check-in: appears once on the dashboard, UTC time is correct.
-- `Continue without check-in`: no entry, giscus still works.
-- Anonymous access to `/admin`: no history returned.
-- A different GitHub account attempting owner login: receives HTTP 403.
-- Signed out / expired session, unexpected OAuth state, denied authorization, and D1 unavailability: no exposure of records.
-- After the configured retention window, records disappear automatically.
-
-To roll back immediately, unset the GitHub Actions variable and rebuild/deploy GitHub Pages. Its login button goes straight to giscus again. The Worker and D1 records are independent and can be disabled or deleted separately. The optional in-browser `?authDiagnostics=1` developer panel remains **diagnostic only**, not a source for these verified records.
-
-### References
-
-- [GitHub OAuth web application flow](https://docs.github.com/en/apps/oauth-apps/building-oauth-apps/authorizing-oauth-apps)
-- [GitHub authenticated user endpoint](https://docs.github.com/en/rest/users/users#get-the-authenticated-user)
-- [Cloudflare Worker secrets](https://developers.cloudflare.com/workers/configuration/secrets/)
-- [Cloudflare D1 migrations](https://developers.cloudflare.com/d1/reference/migrations/)
+**Rollback:** Remove the GitHub Actions variable `VISITOR_HISTORY_WORKER_URL` and redeploy Pages; this disables sending new observations without affecting giscus comments. Disable or delete the Worker independently if no longer wanted.
