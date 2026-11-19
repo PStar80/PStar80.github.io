@@ -9,7 +9,7 @@ type FlowNode = { id: NodeId; title: string; subtitle: string; description: stri
 
 const nodes: FlowNode[] = [
   { id: 'cloud', title: 'Cloud Agent', subtitle: 'Planning & design', description: 'Plans changes with the operator and shares work artifacts through cloud file storage.', icon: Cloud },
-  { id: 'dropbox', title: 'CLOUD FILE STORAGE', subtitle: 'Artifact handoff', description: 'Cloud file storage relays work artifacts between cloud and local agents; the storage provider can vary.', icon: FolderOpen },
+  { id: 'dropbox', title: 'Cloud File Storage', subtitle: 'Artifact handoff', description: 'Cloud file storage relays work artifacts between cloud and local agents; the storage provider can vary.', icon: FolderOpen },
   { id: 'operator', title: 'Operator', subtitle: 'Human direction', description: 'Directs the work, initiates the local agent, and uses the application to follow execution and results.', icon: UserRound },
   { id: 'local', title: 'Local Agent', subtitle: 'Code & execution', description: 'Receives the handoff, works under the operator’s direction, and accesses the shared application services.', icon: Code2 },
   { id: 'app', title: 'React UI / Node.js Core API', subtitle: 'Shared application access', description: 'Connects the operator and local agent to the same execution capabilities through the application interface and core API.', icon: Layers3 },
@@ -55,7 +55,7 @@ export default function ProcessFlow() {
   const [focused, setFocused] = useState<NodeId | null>(null);
   const [selected, setSelected] = useState<NodeId | null>(null);
   const [tabStop, setTabStop] = useState<NodeId>('operator');
-  const [paused, setPaused] = useState(false);
+  const [paused, setPaused] = useState(true);
   const [visible, setVisible] = useState(false);
   const [pageVisible, setPageVisible] = useState(true);
   const [reducedMotion, setReducedMotion] = useState(false);
@@ -72,7 +72,8 @@ export default function ProcessFlow() {
     return () => { observer.disconnect(); media.removeEventListener('change', syncMotion); document.removeEventListener('visibilitychange', syncVisibility); };
   }, []);
 
-  const active = hovered ?? focused ?? selected;
+  // Explicit selection takes priority over transitory hover/keyboard focus.
+  const active = selected ?? hovered ?? focused;
   const activeNode = nodes.find(node => node.id === active);
   const group = activeNode?.group;
   const connected = routes.filter(route => active && (route.from === active || route.to === active || route.from === group || route.to === group));
@@ -93,8 +94,16 @@ export default function ProcessFlow() {
       setTabStop(nextId);
       event.currentTarget.closest('svg')?.querySelector<SVGGElement>(`[data-node="${nextId}"]`)?.focus();
     } else if (event.key === 'Enter' || event.key === ' ') {
-      event.preventDefault(); setSelected(selected === nodeId ? null : nodeId);
-    } else if (event.key === 'Escape') { setSelected(null); }
+      event.preventDefault();
+      setSelected(selected === nodeId ? null : nodeId);
+      // A deselected keyboard node should not remain stuck in the active-detail state.
+      setHovered(null);
+      setFocused(null);
+    } else if (event.key === 'Escape') {
+      setSelected(null);
+      setHovered(null);
+      setFocused(null);
+    }
   }
 
   function renderDiagram(small: boolean) {
@@ -159,7 +168,13 @@ export default function ProcessFlow() {
           className={'pf-node' + (active === node.id ? ' is-active' : '') + (related.has(node.id) ? ' is-related' : '') + (core ? ' pf-core' : '') + (endpoint ? ' pf-endpoint' : '') + (capability ? ' pf-capability' : '')}
           onMouseEnter={() => setHovered(node.id)} onMouseLeave={() => setHovered(null)}
           onFocus={() => { setHovered(null); setFocused(node.id); setTabStop(node.id); }} onBlur={() => setFocused(null)}
-          onClick={() => { setSelected(selected === node.id ? null : node.id); setTabStop(node.id); }}
+          onClick={() => {
+            setSelected(selected === node.id ? null : node.id);
+            // Mouse focus remains after click; release the preview on deselection.
+            setHovered(null);
+            setFocused(null);
+            setTabStop(node.id);
+          }}
           onKeyDown={event => navigate(event, node.id)}>
           <rect x={box.x} y={box.y + 3} width={box.width} height={box.height} rx="11" className="pf-node-shadow" />
           <rect {...box} rx="11" className="pf-node-shell" fill={`url(#${prefix}-${fill})`} stroke={`url(#${prefix}-edge)`} />
@@ -167,7 +182,7 @@ export default function ProcessFlow() {
           <path d={`M${box.x + 14} ${box.y + .7}H${box.x + box.width - 14}`} className="pf-node-rim" stroke={`url(#${prefix}-shine)`} />
           {!stacked && !endpoint && <rect x={iconX - 9} y={iconY - 9} width={iconSize + 18} height={iconSize + 18} rx="10" className="pf-icon-tile" fill={`url(#${prefix}-icon)`} />}
           <Icon x={iconX} y={iconY} width={iconSize} height={iconSize} strokeWidth={1.65} className="pf-node-icon" aria-hidden="true" />
-          <text x={textX} y={titleY} className={'pf-node-title' + (node.id === 'dropbox' ? ' pf-storage-title' : '')} aria-hidden="true">{core && small ? <><tspan x={textX}>React UI /</tspan><tspan x={textX} dy="23">Node.js Core API</tspan></> : node.id === 'dropbox' && small ? <><tspan x={textX}>CLOUD FILE</tspan><tspan x={textX} dy="17">STORAGE</tspan></> : node.title}</text>
+          <text x={textX} y={titleY} className={'pf-node-title' + (node.id === 'dropbox' ? ' pf-storage-title' : '')} aria-hidden="true">{core && small ? <><tspan x={textX}>React UI /</tspan><tspan x={textX} dy="23">Node.js Core API</tspan></> : node.id === 'dropbox' && small ? <><tspan x={textX}>Cloud File</tspan><tspan x={textX} dy="17">Storage</tspan></> : node.title}</text>
           {node.subtitle && <text x={textX} y={core && small ? box.y + 77 : node.id === 'dropbox' && small ? box.y + 77 : stacked ? box.y + 73 : capability ? box.y + (small ? 37 : 43) : box.y + 53} className="pf-node-subtitle" aria-hidden="true">{node.subtitle}</text>}
         </g>;
       })}
@@ -177,19 +192,21 @@ export default function ProcessFlow() {
   return <div ref={ref} className="process-flow" data-motion={running ? 'running' : 'paused'} data-exploring={active ? 'true' : 'false'}>
     <div className="pf-toolbar">
       <span className="pf-eyebrow"><Network size={14} aria-hidden="true" /> CONNECTED BY DESIGN</span>
-      {!reducedMotion && <button type="button" className="pf-motion-control" onClick={() => setPaused(!paused)} aria-label={paused ? 'Play flow animation' : 'Pause flow animation'}>{paused ? <Play size={13} aria-hidden="true" /> : <Pause size={13} aria-hidden="true" />}<span>{paused ? 'Play motion' : 'Pause motion'}</span></button>}
+      {!reducedMotion && <button type="button" className="button button-primary pf-motion-control" onClick={() => setPaused(!paused)} aria-label={paused ? 'Play flow animation' : 'Pause flow animation'}>{paused ? <Play size={13} aria-hidden="true" /> : <Pause size={13} aria-hidden="true" />}<span>{paused ? 'Play motion' : 'Pause motion'}</span></button>}
     </div>
     <p id={id + '-instructions'} className="pf-sr-only">An illustrative development architecture. Cloud Agent connects to Operator and Cloud File Storage. Cloud File Storage connects to Local Agent. Operator initiates Local Agent. Operator and Local Agent access React UI / Node.js Core API, which connects to the Execution Capabilities group, then the Automation Endpoints group. Use the arrow keys to explore nodes, Enter or Space to select one, and Escape to clear selection. Home and End move to the first and last node.</p>
     {renderDiagram(false)}
     {renderDiagram(true)}
-    <div className={'pf-detail' + (activeNode ? ' is-active' : '')}>
+    <div className={'pf-detail' + (activeNode ? ' is-active' : '')} tabIndex={-1}>
       <span className="pf-detail-icon" aria-hidden="true">{activeNode ? <activeNode.icon size={21} /> : <Network size={21} />}</span>
       <div className="pf-detail-copy"><span className="pf-detail-title">{activeNode?.title ?? 'Explore the connections'}</span><p>{activeNode?.description ?? 'Point to a node or select it to see its role and connected paths.'}</p></div>
       {selected && <button type="button" className="pf-clear" onClick={() => {
         const previous = selected;
         setSelected(null);
-        Array.from(ref.current?.querySelectorAll<SVGGElement>(`[data-node="${previous}"]`) ?? [])
-          .find(element => element.getClientRects().length > 0)?.focus();
+        setHovered(null);
+        setFocused(null);
+        // Return focus to a stable, still-visible details region, not the cleared node.
+        ref.current?.querySelector<HTMLElement>('.pf-detail')?.focus();
       }} aria-label="Clear selected node"><X size={17} aria-hidden="true" /></button>}
     </div>
   </div>;
