@@ -45,11 +45,11 @@ export default function LocationMap() {
   const [clock, setClock] = useState(() => new Date());
   const clockMinute = useRef(Math.floor(clock.getTime() / 60_000));
   const running = visible && pageVisible && !reducedMotion && !paused;
-  const activeId = hoveredId ?? selectedId;
-  const activeCountry = activeId ? countryById.get(activeId) : undefined;
   const selectedCountry = selectedId ? countryById.get(selectedId) : undefined;
   const hoveredCountry = hoveredId ? countryById.get(hoveredId) : undefined;
-  const tooltipOnPointer = hovering && hoveredCountry !== undefined;
+  // The locked country's label always stays at bottom-left; a separate hover
+  // tooltip follows the pointer only for a different country.
+  const showHoverTooltip = hovering && hoveredCountry !== undefined && hoveredId !== selectedId;
 
   const clearHover = useCallback(() => {
     pointer.current = null;
@@ -77,8 +77,8 @@ export default function LocationMap() {
   }, []);
 
   useLayoutEffect(() => {
-    if (tooltipOnPointer && pointer.current) positionTooltip(pointer.current);
-  }, [activeId, tooltipOnPointer, positionTooltip]);
+    if (showHoverTooltip && pointer.current) positionTooltip(pointer.current);
+  }, [hoveredId, showHoverTooltip, positionTooltip]);
 
   function handlePointerMove(event: ReactPointerEvent<HTMLDivElement>) {
     const gesture = selectionGesture.current;
@@ -224,7 +224,8 @@ export default function LocationMap() {
           <text x="402" y="99" className="lm-country">CANADA</text>
         </g>
       </svg>
-      {activeCountry && <div ref={tooltip} className="lm-country-tooltip" data-anchor={tooltipOnPointer ? 'pointer' : 'selection'} aria-hidden="true">{activeCountry.name}</div>}
+      {selectedCountry && <div className="lm-country-tooltip" data-anchor="selection" aria-hidden="true">{selectedCountry.name}</div>}
+      {showHoverTooltip && hoveredCountry && <div ref={tooltip} className="lm-country-tooltip" data-anchor="pointer" aria-hidden="true">{hoveredCountry.name}</div>}
     </div>
     <span className="lm-sr-only" role="status">{selectedCountry ? `${selectedCountry.name} highlighted on the map.` : ''}</span>
     <div className="lm-footer">
