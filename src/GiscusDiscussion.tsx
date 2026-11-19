@@ -1,4 +1,5 @@
 import { useEffect, useRef } from 'react';
+import GiscusAuthDiagnostic from './GiscusAuthDiagnostic';
 
 // giscus stores portfolio comments in this repository's GitHub Discussions.
 // Configuration IDs are public embed identifiers, not API credentials.
@@ -19,6 +20,10 @@ const giscusOptions: Record<string, string> = {
 
 export default function GiscusDiscussion() {
   const containerRef = useRef<HTMLDivElement>(null);
+  // An explicit local diagnostic flag is required; ordinary visitors do not
+  // enable giscus metadata emission or render the diagnostic.
+  const diagnosticsEnabled = typeof window !== 'undefined' &&
+    new URLSearchParams(window.location.search).get('authDiagnostics') === '1';
 
   useEffect(() => {
     const container = containerRef.current;
@@ -32,6 +37,7 @@ export default function GiscusDiscussion() {
       for (const [name, value] of Object.entries(giscusOptions)) {
         script.setAttribute(name, value);
       }
+      script.setAttribute('data-emit-metadata', diagnosticsEnabled ? '1' : '0');
       container.appendChild(script);
     };
 
@@ -53,7 +59,10 @@ export default function GiscusDiscussion() {
       observer.disconnect();
       container.replaceChildren();
     };
-  }, []);
+  }, [diagnosticsEnabled]);
 
-  return <div ref={containerRef} className="giscus" aria-label="GitHub-powered project discussion" />;
+  return <>
+    <div ref={containerRef} className="giscus" aria-label="GitHub-powered project discussion" />
+    {diagnosticsEnabled && <GiscusAuthDiagnostic />}
+  </>;
 }
