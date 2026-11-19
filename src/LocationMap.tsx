@@ -14,8 +14,8 @@ const regionalOptions = countryOptions.filter(country => country.regional);
 type PointerPosition = { x: number; y: number };
 type SelectionGesture = PointerPosition & { pointerId: number; countryId: string | null; moved: boolean };
 
-// These paths never change. Pointer movement only repositions the HTML label;
-// changing countries updates a single highlight, not the full map geometry.
+// These paths never change. Selection and hover draw separate overlays without
+// replacing the base map geometry or intercepting country hit targets.
 const CountryTargets = memo(function CountryTargets() {
   return <g className="lm-country-targets" aria-hidden="true">
     {COUNTRIES.map(country => <path key={country.id} d={country.path} data-country-id={country.id} className="lm-country-hit" fillRule="evenodd" />)}
@@ -44,9 +44,11 @@ export default function LocationMap() {
   const [clock, setClock] = useState(() => new Date());
   const clockMinute = useRef(Math.floor(clock.getTime() / 60_000));
   const running = visible && pageVisible && !reducedMotion && !paused;
-  const activeId = hovering ? hoveredId : selectedId;
+  const activeId = hoveredId ?? selectedId;
   const activeCountry = activeId ? countryById.get(activeId) : undefined;
   const selectedCountry = selectedId ? countryById.get(selectedId) : undefined;
+  const hoveredCountry = hoveredId ? countryById.get(hoveredId) : undefined;
+  const tooltipOnPointer = hovering && hoveredCountry !== undefined;
 
   const clearHover = useCallback(() => {
     pointer.current = null;
@@ -74,8 +76,8 @@ export default function LocationMap() {
   }, []);
 
   useLayoutEffect(() => {
-    if (hovering && pointer.current) positionTooltip(pointer.current);
-  }, [activeId, hovering, positionTooltip]);
+    if (tooltipOnPointer && pointer.current) positionTooltip(pointer.current);
+  }, [activeId, tooltipOnPointer, positionTooltip]);
 
   function handlePointerMove(event: ReactPointerEvent<HTMLDivElement>) {
     const gesture = selectionGesture.current;
@@ -103,7 +105,9 @@ export default function LocationMap() {
     const target = document.elementFromPoint(event.clientX, event.clientY);
     if (!stage.current?.contains(target) || countryAt(target) !== gesture.countryId) return;
     clearHover();
-    setSelectedId(current => current === gesture.countryId ? null : gesture.countryId);
+    // Selecting a new country moves the lock; clicking water clears it.
+    // Clicking the same country keeps the existing lock in place.
+    setSelectedId(gesture.countryId);
   }
 
   useEffect(() => {
@@ -177,7 +181,7 @@ export default function LocationMap() {
     </div>
     <div ref={stage} className="lm-stage" onPointerEnter={handlePointerMove} onPointerMove={handlePointerMove} onPointerDown={handlePointerDown} onPointerUp={handlePointerUp} onPointerCancel={() => { selectionGesture.current = null; clearHover(); }} onPointerLeave={event => { if (event.pointerType !== 'touch') { selectionGesture.current = null; clearHover(); } }}>
       <svg id={id + '-map'} className="lm-svg" viewBox={compact ? MAP_COMPACT_VIEWBOX : MAP_VIEWBOX} role="img" aria-label={compact ? 'Map of North America highlighting Toronto, Canada' : 'World map highlighting Toronto, Canada'} aria-describedby={id + '-description'}>
-        <desc id={id + '-description'}>{compact ? 'A flat map of North America and the Great Lakes, with Toronto, Ontario, Canada highlighted.' : 'A flat world map with a latitude and longitude grid, highlighting Toronto, Ontario, Canada beside the Great Lakes.'} Hover a country to see its name; click or tap to select it. Select it again to clear, or use the Explore countries selector above the map.</desc>
+        <desc id={id + '-description'}>{compact ? 'A flat map of North America and the Great Lakes, with Toronto, Ontario, Canada highlighted.' : 'A flat world map with a latitude and longitude grid, highlighting Toronto, Ontario, Canada beside the Great Lakes.'} Hover countries to preview them without changing the locked outline. Click or tap another country to move the lock, or click the ocean to clear it. You can also use the Explore countries selector above the map.</desc>
         <defs>
           <linearGradient id={id + '-ocean'} x1="0" y1="0" x2="1" y2="1"><stop stopColor="#0d2438" /><stop offset="1" stopColor="#071625" /></linearGradient>
           <linearGradient id={id + '-land'} x1="0" y1="0" x2=".7" y2="1"><stop stopColor="#4a97f5" /><stop offset=".55" stopColor="#2f78db" /><stop offset="1" stopColor="#163f86" /></linearGradient>
@@ -190,7 +194,8 @@ export default function LocationMap() {
         <path d={LAND_PATH} fill={`url(#${id}-land)`} className="lm-land" />
         <path d={BORDERS_PATH} className="lm-borders" />
         <CountryTargets />
-        {activeCountry && <path d={activeCountry.path} className="lm-country-highlight" fillRule="evenodd" vectorEffect="non-scaling-stroke" aria-hidden="true" />}
+        {selectedCountry && <path d={selectedCountry.path} className="lm-country-highlight lm-country-selected" fillRule="evenodd" vectorEffect="non-scaling-stroke" aria-hidden="true" />}
+        {hoveredCountry && hoveredId !== selectedId && <path d={hoveredCountry.path} className="lm-country-highlight lm-country-hovered" fillRule="evenodd" vectorEffect="non-scaling-stroke" aria-hidden="true" />}
         <path d={LAKES_PATH} className="lm-lakes" />
         <path d={GRATICULE_PATH} className="lm-graticule lm-graticule-over" />
         <rect width="1200" height="480" fill={`url(#${id}-ambient)`} className="lm-ambient" />
@@ -211,7 +216,7 @@ export default function LocationMap() {
           <text x="402" y="99" className="lm-country">CANADA</text>
         </g>
       </svg>
-      {activeCountry && <div ref={tooltip} className="lm-country-tooltip" data-anchor={hovering ? 'pointer' : 'selection'} aria-hidden="true">{activeCountry.name}</div>}
+      {activeCountry && <div ref={tooltip} className="lm-country-tooltip" data-anchor={tooltipOnPointer ? 'pointer' : 'selection'} aria-hidden="true">{activeCountry.name}</div>}
     </div>
     <span className="lm-sr-only" role="status">{selectedCountry ? `${selectedCountry.name} highlighted on the map.` : ''}</span>
     <div className="lm-footer">

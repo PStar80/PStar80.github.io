@@ -19,6 +19,12 @@
 .lm-borders { fill: none; stroke: #d8ecff; stroke-width: .6; opacity: .58; }
 .lm-country-hit { fill: transparent; stroke: none; pointer-events: fill; cursor: pointer; }
 .lm-country-highlight { fill: rgba(113, 226, 244, .17); stroke: #91e9fa; stroke-width: 1.5px; stroke-linejoin: round; filter: drop-shadow(0 0 3px rgba(81, 214, 243, .38)); }
+
+/* A locked country retains its stronger outline while another country is hovered.
+ * Overlays remain pointer-transparent; CountryTargets still own hit testing. */
+.lm-country-selected { fill: rgba(126, 227, 255, .14); stroke: #e5f7ff; stroke-width: 1.9px; filter: drop-shadow(0 0 4px rgba(81, 196, 255, .65)); }
+.lm-country-hovered { fill: rgba(113, 226, 244, .17); stroke: #91e9fa; }
+
 .lm-lakes { fill: #0d263b; stroke: #c6e6ff; stroke-width: .58; pointer-events: fill; }
 .lm-country-tooltip { position: absolute; z-index: 1; display: flex; align-items: center; gap: 8px; width: max-content; max-width: min(220px, calc(100% - 20px)); padding: 9px 12px; border: 1px solid rgba(125, 225, 247, .55); border-radius: 6px; background: rgba(6, 23, 38, .95); box-shadow: 0 4px 20px rgba(0, 0, 0, .24), 0 0 15px rgba(80, 200, 233, .08); color: #def8ff; font-family: var(--display); font-size: 13px; line-height: 1.4; overflow-wrap: anywhere; pointer-events: none; user-select: none; }
 .lm-country-tooltip::before { content: ''; flex: 0 0 4px; width: 4px; height: 4px; border-radius: 50%; background: #8ce8fa; box-shadow: 0 0 7px rgba(110, 224, 248, .7); }
