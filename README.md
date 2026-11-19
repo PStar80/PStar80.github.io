@@ -1,6 +1,9 @@
 <!-- PStar80 portfolio: shared blue cybernetic visual language with the GitHub profile and SkyCommand public showcase. -->
 <picture>
-  <img src="./public/assets/portfolio-cover.png" width="100%" alt="Paul Sattaur's portfolio artwork: a luminous blue neural network inside a futuristic cybernetic environment. Decorative illustration, not an application screenshot." />
+  <source media="(prefers-reduced-motion: reduce) and (max-width: 650px)" srcset="./docs/brand/hero-mobile-static.svg" />
+  <source media="(prefers-reduced-motion: reduce)" srcset="./docs/brand/hero-static.svg" />
+  <source media="(max-width: 650px)" srcset="./docs/brand/hero-mobile.svg" />
+  <img src="./docs/brand/hero.svg" width="100%" alt="PStar80 Portfolio — Full-Stack Applications. Engineering, AI and Automation. Featured areas: workflow automation, data engineering, data visualization and AI-native applications. Animated cybernetic concept artwork matching the SkyCommand showcase, not an application screenshot." />
 </picture>
 
 <p align="center">
@@ -100,9 +103,9 @@ npm run preview
 | MacroAnalyzer screenshots | Real development captures sourced from its [public repository](https://github.com/PStar80/MacroAnalyzer). Some captures show the in-app title **SkyWeb Analytics**. |
 | Scenic artwork | The original cybernetic and neural backgrounds, plus the owner-approved new communications-core image. See [artwork references](./docs/artwork-prompts.md) for the original pair. |
 | World map | Natural Earth v5.1.2 and Toronto coordinates; [geographic sources and reproduction notes](./docs/map-sources.md) |
-| Portfolio artwork | `public/assets/portfolio-cover.png`, used for GitHub README visual branding and social-sharing previews. |
+| Portfolio banner | `docs/brand/hero*.svg`, adapted from the [SkyCommand-Demo hero artwork](https://github.com/PStar80/SkyCommand-Demo) with portfolio wording, desktop/mobile layouts and reduced-motion alternatives. The site's `public/assets/portfolio-cover.png` continues to provide social-sharing previews. |
 
-**Architecture accuracy:** The illustrated **Cloud Agent → Dropbox artifact relay → Local Agent** is the current documented development handoff, with operator direction. It is not a claim that Dropbox is required to run SkyCommand. Beneath it, the React UI / Node.js Core API, registered Tools, published Workflows, embedded Agents and endpoint groups describe platform capabilities. Access remains subject to configured execution permissions. **Native work-order coordination within SkyCommand is planned for Phase 20, not claimed as delivered.**
+**Architecture accuracy:** The illustrated **Cloud Agent → Cloud File Storage → Local Agent** handoff is provider-neutral; the current development relay uses Dropbox under operator direction. This is not a claim that one cloud storage vendor is required to run SkyCommand. Beneath it, the React UI / Node.js Core API, registered Tools, published Workflows, embedded Agents and endpoint groups describe platform capabilities. Access remains subject to configured execution permissions. **Native work-order coordination within SkyCommand is planned for Phase 20, not claimed as delivered.**
 
 ### Engineering activity data
 
