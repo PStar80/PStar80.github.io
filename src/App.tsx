@@ -3,6 +3,7 @@ import { ArrowUpRight, ArrowRight, ArrowDown, ArrowUp, Menu, X, Github, Linkedin
 import DeferredWidget from './DeferredWidget';
 import GiscusDiscussion from './GiscusDiscussion';
 import GiscusAuthButton from './GiscusAuthButton';
+import UserLog from './UserLog';
 import ProcessFlow from './ProcessFlow';
 
 import FrameAccents from './FrameAccents';
@@ -159,6 +160,10 @@ function DataIllustration() {
 export default function App() {
   const [menuOpen, setMenuOpen] = useState(false);
   const [active, setActive] = useState('home');
+  // Cosmetic client-side visibility: this is not an authentication boundary.
+  const [viewerLogin, setViewerLogin] = useState<string | null>(null);
+  const isOwner = viewerLogin?.toLowerCase() === 'pstar80';
+  const visibleNav = isOwner ? [...nav, ['User Log', 'user-log']] : nav;
   const progressRef = useRef<HTMLDivElement>(null);
   const [shotIndex, setShotIndex] = useState(0);
   const [gallery, setGallery] = useState<{ shots: Shot[]; index: number } | null>(null);
@@ -169,10 +174,10 @@ export default function App() {
 
   useEffect(() => {
     const target = window.location.hash.slice(1);
-    if (!target) return;
+    if (!target || (target === 'user-log' && !isOwner)) return;
     const frame = requestAnimationFrame(() => document.getElementById(target)?.scrollIntoView({ behavior: 'instant', block: 'start' }));
     return () => cancelAnimationFrame(frame);
-  }, []);
+  }, [isOwner]);
 
   useEffect(() => {
     let frame = 0;
@@ -182,7 +187,7 @@ export default function App() {
       const progress = max > 0 ? Math.min(1, Math.max(0, window.scrollY / max)) : 0;
       if (progressRef.current) progressRef.current.style.transform = `scaleX(${progress})`;
       let current = 'home';
-      for (const [, id] of nav) {
+      for (const [, id] of visibleNav) {
         const el = document.getElementById(id);
         if (el && el.getBoundingClientRect().top < window.innerHeight * .35) current = id;
       }
@@ -191,7 +196,7 @@ export default function App() {
     const scroll = () => { if (!frame) frame = requestAnimationFrame(update); };
     update(); window.addEventListener('scroll', scroll, { passive: true }); window.addEventListener('resize', scroll);
     return () => { window.removeEventListener('scroll', scroll); window.removeEventListener('resize', scroll); cancelAnimationFrame(frame); };
-  }, []);
+  }, [isOwner]);
   useEffect(() => () => clearTimeout(copyTimer.current), []);
   useEffect(() => {
     function onEscape(event: KeyboardEvent) { if (event.key === 'Escape' && menuOpen) { setMenuOpen(false); menuRef.current?.focus(); } }
@@ -214,8 +219,8 @@ export default function App() {
       <div className="container header-inner">
         <a href="#home" className="brand" aria-label="PStar80 home" onClick={() => setMenuOpen(false)}><img className="brand-avatar" src="/assets/portrait-current.png" width="48" height="48" alt="" /><span className="brand-name">PStar80</span></a>
         <button ref={menuRef} className="menu-toggle icon-button" aria-expanded={menuOpen} aria-controls="main-navigation" aria-label={menuOpen ? 'Close navigation' : 'Open navigation'} onClick={() => setMenuOpen(!menuOpen)}>{menuOpen ? <X /> : <Menu />}</button>
-        <nav id="main-navigation" className={menuOpen ? 'navigation is-open' : 'navigation'} aria-label="Main navigation">
-          {nav.map(([label, id]) => <a key={id} href={'#' + id} className={active === id ? 'active' : ''} aria-current={active === id ? 'location' : undefined} onClick={() => setMenuOpen(false)}>{label}</a>)}
+        <nav id="main-navigation" className={(menuOpen ? 'navigation is-open' : 'navigation') + (isOwner ? ' with-user-log' : '')} aria-label="Main navigation">
+          {visibleNav.map(([label, id]) => <a key={id} href={'#' + id} className={active === id ? 'active' : ''} aria-current={active === id ? 'location' : undefined} onClick={() => setMenuOpen(false)}>{label}</a>)}
         </nav>
         <GiscusAuthButton />
       </div>
@@ -372,10 +377,20 @@ export default function App() {
             <p>Questions about SkyCommand, SkyDataStudio, or MacroAnalyzer? Sign in with GitHub to comment. Public GitHub usernames and observation times may be logged privately for up to 30 days. No separate account needed.</p>
           </div>
           <Metal className="project-discussion">
-            <GiscusDiscussion />
+            <GiscusDiscussion onViewerIdentified={setViewerLogin} />
           </Metal>
         </div>
       </section>
+
+      {isOwner && <section className="opaque user-log-section" id="user-log" aria-labelledby="user-log-title">
+        <div className="container">
+          <div className="section-header">
+            <div><Eyebrow number="08">Visitor Activity</Eyebrow><h2 id="user-log-title">User <span className="text-accent">Log.</span></h2></div>
+            <p>Recent observations from the existing Cloudflare D1 database.</p>
+          </div>
+          <Metal className="user-log-panel"><UserLog /></Metal>
+        </div>
+      </section>}
     </main>
     <footer className="site-footer"><div className="container footer-inner"><a href="#home" className="footer-brand">Paul Sattaur<span>.</span></a><p>Built With Intent. Always Evolving.</p><span>© {new Date().getFullYear()} Paul Sattaur</span><a href="#home" className="button button-primary back-top" aria-label="Back to top"><ArrowUp size={17} /></a></div></footer>
     {gallery && <Lightbox shots={gallery.shots} index={gallery.index} onClose={() => setGallery(null)} onIndex={index => setGallery({ ...gallery, index })} />}
