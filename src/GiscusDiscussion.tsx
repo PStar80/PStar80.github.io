@@ -34,8 +34,10 @@ function signedInToGiscus() {
   catch { return false; }
 }
 
-export default function GiscusDiscussion() {
+export default function GiscusDiscussion({ onViewerIdentified }: { onViewerIdentified?: (login: string) => void }) {
   const containerRef = useRef<HTMLDivElement>(null);
+  const viewerCallback = useRef(onViewerIdentified);
+  viewerCallback.current = onViewerIdentified;
 
   useEffect(() => {
     const container = containerRef.current;
@@ -62,6 +64,8 @@ export default function GiscusDiscussion() {
       } catch { return; }
       if (sentLogin === login) return;
       sentLogin = login;
+      // Cosmetic client-side UI only; not a server-verifiable owner claim.
+      viewerCallback.current?.(login);
 
       // Best-effort, no credentials or access token. Worker controls the time
       // and records only public username + timestamp, not IP or email.
