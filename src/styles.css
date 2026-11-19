@@ -273,16 +273,19 @@ a.card-foot:focus-visible { outline-offset: -4px; }
 .projects-footer { text-align: center; margin-top: 39px; }
 .muted-link { color: #8fa5be; }
 
+.discussion-section { padding: 32px 0 96px; border-top: 1px solid rgba(103,145,192,.1); }
+.discussion-section .project-discussion { margin-top: 0; }
+
 .project-discussion { margin-top: 48px; padding: 34px 38px 28px; background: linear-gradient(135deg, #131f30, #0a1423 70%); }
 .project-discussion-intro { border-bottom: 1px solid var(--line); margin-bottom: 22px; padding-bottom: 22px; }
 .project-discussion-intro .project-kicker { display: block; color: #8bc4eb; }
-.project-discussion-intro h3 { font-size: clamp(1.5rem, 2.6vw, 2rem); margin-bottom: 8px; }
+.project-discussion-intro h2 { font-size: clamp(1.5rem, 2.6vw, 2rem); margin-bottom: 8px; }
 .project-discussion-intro p { max-width: 800px; font-size: 12px; }
 .project-discussion .giscus { min-height: 180px; }
 .project-discussion .giscus-frame { width: 100%; border: 0; }
 @media (max-width: 640px) {
   .project-discussion { margin-top: 36px; padding: 25px 19px 20px; }
-  .project-discussion-intro h3 { font-size: 24px; }
+  .project-discussion-intro h2 { font-size: 24px; }
   .project-discussion-intro p { font-size: 12px; }
 }
 
@@ -402,10 +405,9 @@ a.card-foot:focus-visible { outline-offset: -4px; }
   .contact-card-link { font-size: 12px; }
 }
 @media (max-width: 1000px) {
-    .header-inner { grid-template-columns: minmax(0, 1fr) auto auto; gap: 12px; }
+  .header-inner { grid-template-columns: minmax(0, 1fr) auto auto; gap: 12px; }
   .github-auth-button { grid-column: 2; }
-  .menu-toggle { grid-column: 3; }
-  .menu-toggle { grid-column: 2; display: inline-flex !important; }
+  .menu-toggle { grid-column: 3; display: inline-flex !important; }
   .navigation { display: none; position: absolute; top: 100%; left: 0; right: 0; grid-column: auto; grid-row: auto; max-height: calc(100dvh - 86px); overflow-y: auto; overscroll-behavior: contain; background: #0a1422; padding: 15px 24px 24px; border-bottom: 1px solid #34475e; flex-direction: column; align-items: stretch; justify-content: flex-start; gap: 1px; box-shadow: 0 15px 20px rgba(0,0,0,.2); }
   .navigation.is-open { display: flex; }
   .navigation > a { font-size: 13px; padding: 13px 4px; }
@@ -588,6 +590,7 @@ a.card-foot:focus-visible { outline-offset: -4px; }
   .data-illustration-top { top: 16px; }
   .data-illustration-top > span:first-child { font-size: 7px; }
   .projects-footer { margin-top: 29px; }
+  .discussion-section { padding: 22px 0 65px; }
   .process-section { padding: 10px 0 70px; }
   .process-section .section-header { padding-top: 55px; }
   .process-section h2 { font-size: 33px; }

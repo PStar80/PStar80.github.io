@@ -26,7 +26,7 @@ const macroShots: Shot[] = [
   { image: '11-dashboard-presentation.png', title: 'Dashboard Presentation', caption: 'The chart-focused presentation view for exploring macroeconomic indicators.' },
 ];
 const nav = [
-  ['Home', 'home'], ['About', 'about'], ['Projects', 'projects'], ['Process', 'process'], ['Activity', 'activity'], ['Experience', 'experience'], ['Contact', 'contact'],
+  ['Home', 'home'], ['About', 'about'], ['Projects', 'projects'], ['Process', 'process'], ['Activity', 'activity'], ['Experience', 'experience'], ['Contact', 'contact'], ['Discussion', 'discussion'],
 ];
 
 const experience = [
@@ -296,14 +296,6 @@ export default function App() {
             </Metal>
           </div>
           <div className="projects-footer"><OutLink href={github + '?tab=repositories'} className="text-link muted-link"><Github size={18} /> View All Repositories <ArrowUpRight size={16} /></OutLink></div>
-          <Metal className="project-discussion" id="discussion">
-            <div className="project-discussion-intro">
-              <span className="project-kicker">COMMUNITY / GITHUB DISCUSSIONS</span>
-              <h3>Let's Talk About The Work.</h3>
-              <p>Questions about SkyCommand, SkyDataStudio, or MacroAnalyzer? Sign in with your GitHub account to comment or react. No separate account needed.</p>
-            </div>
-            <GiscusDiscussion />
-          </Metal>
         </div>
       </section>
 
@@ -359,6 +351,18 @@ export default function App() {
               {copyFailed && <p className="copy-error" role="alert">Please select and copy this address: {email}</p>}
             </div>
           </div>
+        </div>
+      </section>
+      <section className="opaque discussion-section" id="discussion" aria-labelledby="discussion-title">
+        <div className="container">
+          <Metal className="project-discussion">
+            <div className="project-discussion-intro">
+              <Eyebrow number="08">Community / GitHub Discussions</Eyebrow>
+              <h2 id="discussion-title">Let's Talk About The Work.</h2>
+              <p>Questions about SkyCommand, SkyDataStudio, or MacroAnalyzer? Sign in with your GitHub account to comment or react. No separate account needed.</p>
+            </div>
+            <GiscusDiscussion />
+          </Metal>
         </div>
       </section>
     </main>
