@@ -26,7 +26,7 @@ const macroShots: Shot[] = [
   { image: '11-dashboard-presentation.png', title: 'Dashboard Presentation', caption: 'The chart-focused presentation view for exploring macroeconomic indicators.' },
 ];
 const nav = [
-  ['Home', 'home'], ['About', 'about'], ['Projects', 'projects'], ['Process', 'process'], ['Activity', 'activity'], ['Experience', 'experience'], ['Contact', 'contact'], ['Discussion', 'discussion'],
+  ['Home', 'home'], ['About', 'about'], ['Process', 'process'], ['Experience', 'experience'], ['Activity', 'activity'], ['Projects', 'projects'], ['Contact', 'contact'], ['Discussion', 'discussion'],
 ];
 
 const experience = [
@@ -248,24 +248,60 @@ export default function App() {
           <div><Eyebrow number="01">The Builder</Eyebrow><h2 id="about-title">From Interface{' '}<br />To <span className="text-accent">Infrastructure.</span></h2></div>
           <div className="about-copy"><p>I’m a software engineer who enjoys connecting the pieces: thoughtful interfaces, dependable services, and the data that makes them useful.</p><p>My work spans three full-stack applications—workflow automation with <strong>SkyCommand</strong>, data engineering with <strong>SkyDataStudio</strong>, and interactive analytics with <strong>MacroAnalyzer</strong>. Today, I’m bringing agentic AI into that ecosystem through embedded agents, MCP connections, and observable workflows.</p><div className="about-foot"><span>USER EXPERIENCE</span><span className="small-cross">+</span><span>SYSTEMS THINKING</span><span className="small-cross">+</span><span>AI</span></div></div>
         </div>
-      </section>
-
-      <section className="scenic expertise-section" id="expertise" aria-labelledby="expertise-title">
-        <div className="scenic-backdrop cybernetic-backdrop" aria-hidden="true" /><div className="scenic-shade" aria-hidden="true" />
         <div className="container">
-          <div className="scenic-heading"><Eyebrow number="02">Engineering Focus</Eyebrow><h2 id="expertise-title">Three Lanes.<br /><span className="text-accent">One Connected Vision.</span></h2><p>Full-stack thinking, from a single interaction<br className="desktop-break" /> to the systems working behind it.</p></div>
+          <div className="expertise-section" id="expertise" aria-labelledby="expertise-title">
+          <div className="scenic-heading"><Eyebrow>Engineering Focus</Eyebrow><h2 id="expertise-title">Three Lanes.<br /><span className="text-accent">One Connected Vision.</span></h2><p>Full-stack thinking, from a single interaction<br className="desktop-break" /> to the systems working behind it.</p></div>
           <div className="expertise-grid">
             <Metal className="expertise-card"><div className="card-icon"><Workflow /></div><span className="card-index">01</span><h3>Automation & AI</h3><p>Durable workflows, reusable tools, and AI agents connected through clear interfaces and observable execution.</p><div className="tags"><Tag>Node.js</Tag><Tag>Temporal</Tag><Tag>MCP</Tag></div><a className="card-foot" href="#project-skycommand">SkyCommand <ArrowDown size={15} /></a></Metal>
             <Metal className="expertise-card"><div className="card-icon"><Database /></div><span className="card-index">02</span><h3>Data Engineering</h3><p>Trusted data shaped into analytical products through versioned pipelines, transformations, quality, and lineage.</p><div className="tags"><Tag>Python</Tag><Tag>Airflow</Tag><Tag>dbt</Tag></div><a className="card-foot" href="#project-skydatastudio">SkyDataStudio <ArrowDown size={15} /></a></Metal>
             <Metal className="expertise-card"><div className="card-icon"><ChartNoAxesCombined /></div><span className="card-index">03</span><h3>Interactive Experiences</h3><p>Clear interfaces and explorable visualizations that make complex data useful to the person on the other side.</p><div className="tags"><Tag>React</Tag><Tag>ASP.NET Core</Tag><Tag>ECharts</Tag></div><a className="card-foot" href="#project-macroanalyzer">MacroAnalyzer <ArrowDown size={15} /></a></Metal>
           </div>
           <div className="expertise-note"><BrainCircuit size={18} /><span>AI-Native Applications</span><span className="note-rule" /><p>Adaptive intelligence, connected to practical software.</p></div>
+          </div>
+        </div>
+      </section>
+
+      <section className="scenic process-section" id="process" aria-labelledby="process-title">
+        <div className="scenic-backdrop cybernetic-backdrop" aria-hidden="true" /><div className="scenic-shade process-shade" aria-hidden="true" />
+        <div className="container">
+          <div className="section-header"><div><Eyebrow number="02">How I Build</Eyebrow><h2 id="process-title">Development <span className="text-accent">Process Flow.</span></h2></div><p>Human direction. Connected agents.<br />Visible execution.</p></div>
+          <Metal className="process-panel signature-frame">
+            <FrameAccents />
+            <ProcessFlow />
+          </Metal>
+          <div className="process-notes"><p>Cloud planning and a local coding agent work through structured handoffs. I direct the work, define its scope, and follow the results across application services.</p><OutLink href={github + '/SkyCommand-Demo/blob/main/docs/architecture.md'} className="button button-quiet architecture-link">Explore The Architecture <ArrowUpRight size={17} /></OutLink></div>
+        </div>
+      </section>
+
+      <section className="opaque experience-section" id="experience" aria-labelledby="experience-title">
+        <div className="container experience-grid">
+          <div><Eyebrow number="03">Engineering Background</Eyebrow><h2 id="experience-title">Built On{' '}<br /><span className="text-accent">Real Experience.</span></h2><p className="experience-intro">Enterprise problem solving meets independent product development.</p></div>
+          <ol className="experience-list" aria-label="Career timeline">
+            {experience.map(({ icon: Icon, title, organization, start, end, summary, technologies }) => <li className="experience-entry" key={organization}>
+              <div className="experience-entry-heading"><span className="experience-marker" aria-hidden="true"><Icon size={19} /></span><h3>{title}</h3></div>
+              <div className="experience-body">
+                <div className="experience-meta"><span className="experience-organization">{organization}</span><span className="experience-dates"><time dateTime={start}>{start}</time>–{end === 'Present' ? end : <time dateTime={end}>{end}</time>}</span></div>
+                <p>{summary}</p><div className="experience-tech">{technologies}</div>
+              </div>
+            </li>)}
+          </ol>
+        </div>
+      </section>
+
+      <section className="scenic activity-section" id="activity" aria-labelledby="activity-title">
+        <div className="scenic-backdrop neural-backdrop" aria-hidden="true" /><div className="scenic-shade activity-shade" aria-hidden="true" />
+        <div className="container">
+          <div className="scenic-heading"><Eyebrow number="04">Work In Motion</Eyebrow><h2 id="activity-title">Building.<br /><span className="text-accent">One Commit At A Time.</span></h2><p>A window into the work behind the applications.</p></div>
+          <div className="activity-grid">
+            <Metal className="github-profile"><img src="/assets/portrait-current.png" alt="" width="80" height="80" loading="lazy" /><h3>PStar80</h3><span>Paul Sattaur</span><p>Full-stack applications.<br />Agentic automation.<br />A habit of building.</p><OutLink href={github} className="button button-quiet"><Github size={17} /> GitHub Profile <ArrowUpRight size={16} /></OutLink></Metal>
+            <Metal className="activity-panel"><GitHubActivity /></Metal>
+          </div>
         </div>
       </section>
 
       <section className="opaque projects-section" id="projects" aria-labelledby="projects-title">
         <div className="container">
-          <div className="section-header"><div><Eyebrow number="03">Selected Work</Eyebrow><h2 id="projects-title">Built To <span className="text-accent">Do More.</span></h2></div><p>Three applications. A connected ecosystem<br />for work, data, and insight.</p></div>
+          <div className="section-header"><div><Eyebrow number="05">Selected Work</Eyebrow><h2 id="projects-title">Built To <span className="text-accent">Do More.</span></h2></div><p>Three applications. A connected ecosystem<br />for work, data, and insight.</p></div>
           <Metal className="featured-project" id="project-skycommand">
             <div className="featured-overview">
               <div className="project-copy"><span className="featured-label"><span /> FEATURED APPLICATION</span><h3>SkyCommand<span className="gold-dot">.</span></h3><p className="project-category">Workflow Automation & Agentic AI</p><p>Build workflows. Run agents.{' '}<br /><strong>Understand every result.</strong></p><p className="project-description">A full-stack platform bringing reusable tools, durable workflows, and AI agents into one operational interface. Coding agents can also use SkyCommand directly through MCP.</p><EngineeringHighlight>I built shared execution services for the React interface and MCP-connected coding agents, with embedded-agent capabilities scoped by project and agent version. Reusing registered tools and workflows keeps operations consistent and their results inspectable.</EngineeringHighlight><div className="tags"><Tag>React</Tag><Tag>Node.js</Tag><Tag>PostgreSQL</Tag><Tag>Temporal</Tag></div><OutLink href={github + '/SkyCommand-Demo'} className="text-link gold-link">Explore The Public Showcase <ArrowUpRight size={17} /></OutLink><span className="project-source-note">Public Showcase · Private Implementation</span></div>
@@ -299,46 +335,10 @@ export default function App() {
         </div>
       </section>
 
-      <section className="opaque process-section" id="process" aria-labelledby="process-title">
+      <section className="scenic contact-section" id="contact" aria-labelledby="contact-title">
+        <div className="scenic-backdrop communications-backdrop" aria-hidden="true" /><div className="scenic-shade contact-shade" aria-hidden="true" />
         <div className="container">
-          <div className="section-header"><div><Eyebrow number="04">How I Build</Eyebrow><h2 id="process-title">Development <span className="text-accent">Process Flow.</span></h2></div><p>Human direction. Connected agents.<br />Visible execution.</p></div>
-          <Metal className="process-panel signature-frame">
-            <FrameAccents />
-            <ProcessFlow />
-          </Metal>
-          <div className="process-notes"><p>Cloud planning and a local coding agent work through structured handoffs. I direct the work, define its scope, and follow the results across application services.</p><OutLink href={github + '/SkyCommand-Demo/blob/main/docs/architecture.md'} className="button button-quiet architecture-link">Explore The Architecture <ArrowUpRight size={17} /></OutLink></div>
-        </div>
-      </section>
-
-      <section className="scenic activity-section" id="activity" aria-labelledby="activity-title">
-        <div className="scenic-backdrop neural-backdrop" aria-hidden="true" /><div className="scenic-shade activity-shade" aria-hidden="true" />
-        <div className="container">
-          <div className="scenic-heading"><Eyebrow number="05">Work In Motion</Eyebrow><h2 id="activity-title">Building.<br /><span className="text-accent">One Commit At A Time.</span></h2><p>A window into the work behind the applications.</p></div>
-          <div className="activity-grid">
-            <Metal className="github-profile"><img src="/assets/portrait-current.png" alt="" width="80" height="80" loading="lazy" /><h3>PStar80</h3><span>Paul Sattaur</span><p>Full-stack applications.<br />Agentic automation.<br />A habit of building.</p><OutLink href={github} className="button button-quiet"><Github size={17} /> GitHub Profile <ArrowUpRight size={16} /></OutLink></Metal>
-            <Metal className="activity-panel"><GitHubActivity /></Metal>
-          </div>
-        </div>
-      </section>
-
-      <section className="opaque experience-section" id="experience" aria-labelledby="experience-title">
-        <div className="container experience-grid">
-          <div><Eyebrow number="06">Engineering Background</Eyebrow><h2 id="experience-title">Built On{' '}<br /><span className="text-accent">Real Experience.</span></h2><p className="experience-intro">Enterprise problem solving meets independent product development.</p></div>
-          <ol className="experience-list" aria-label="Career timeline">
-            {experience.map(({ icon: Icon, title, organization, start, end, summary, technologies }) => <li className="experience-entry" key={organization}>
-              <div className="experience-entry-heading"><span className="experience-marker" aria-hidden="true"><Icon size={19} /></span><h3>{title}</h3></div>
-              <div className="experience-body">
-                <div className="experience-meta"><span className="experience-organization">{organization}</span><span className="experience-dates"><time dateTime={start}>{start}</time>–{end === 'Present' ? end : <time dateTime={end}>{end}</time>}</span></div>
-                <p>{summary}</p><div className="experience-tech">{technologies}</div>
-              </div>
-            </li>)}
-          </ol>
-        </div>
-      </section>
-
-      <section className="opaque contact-section" id="contact" aria-labelledby="contact-title">
-        <div className="container">
-          <div className="contact-heading"><Eyebrow number="07">Start A Conversation</Eyebrow><h2 id="contact-title">Let’s Build<br /><span className="text-accent">Something That Matters.</span></h2><p>Have a role, a project, or a system worth improving?<br />I’d like to hear about it.</p></div>
+          <div className="contact-heading"><Eyebrow number="06">Start A Conversation</Eyebrow><h2 id="contact-title">Let’s Build<br /><span className="text-accent">Something That Matters.</span></h2><p>Have a role, a project, or a system worth improving?<br />I’d like to hear about it.</p></div>
           <div className="contact-layout">
             <Metal className="location-panel signature-frame"><FrameAccents /><LocationMap /></Metal>
             <div className="contact-methods">
@@ -353,11 +353,12 @@ export default function App() {
           </div>
         </div>
       </section>
+
       <section className="opaque discussion-section" id="discussion" aria-labelledby="discussion-title">
         <div className="container">
           <Metal className="project-discussion">
             <div className="project-discussion-intro">
-              <Eyebrow number="08">Community / GitHub Discussions</Eyebrow>
+              <Eyebrow number="07">Community / GitHub Discussions</Eyebrow>
               <h2 id="discussion-title">Let's Talk About The Work.</h2>
               <p>Questions about SkyCommand, SkyDataStudio, or MacroAnalyzer? Sign in with your GitHub account to comment or react. No separate account needed.</p>
             </div>

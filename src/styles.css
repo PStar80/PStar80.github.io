@@ -160,8 +160,10 @@ p { color: var(--muted); line-height: 1.85; }
 .scenic-backdrop { position: fixed; z-index: -2; inset: 0; width: 100%; height: 100vh; background-size: cover; background-repeat: no-repeat; background-position: center; pointer-events: none; }
 .cybernetic-backdrop { background-image: url('/assets/cybernetic-scene.webp'); }
 .neural-backdrop { background-image: url('/assets/neural-scene.webp'); background-position: right center; }
+.communications-backdrop { background-image: url('/assets/communications-core-scene.avif'), url('/assets/cybernetic-scene.webp'); background-position: center; }
 .scenic-shade { position: absolute; inset: 0; background: linear-gradient(90deg, rgba(4,13,24,.73), rgba(4,13,24,.12) 72%), linear-gradient(0deg, rgba(4,13,24,.58), transparent 65%, rgba(4,13,24,.16)); z-index: -1; pointer-events: none; }
-.expertise-section { padding: 112px 0 58px; }
+.expertise-section { padding: 84px 0 0; }
+.about-section .expertise-section { border-top: 1px solid var(--line); margin-top: 0; }
 .scenic-heading { margin-bottom: 54px; }
 .scenic-heading h2 { text-shadow: 0 2px 24px rgba(2,9,17,.3); }
 .scenic-heading > p { margin-top: 22px; color: #bdcede; font-size: 14px; }
@@ -290,7 +292,8 @@ a.card-foot:focus-visible { outline-offset: -4px; }
 }
 
 
-.process-section { padding: 30px 0 110px; }
+.process-section { padding: 104px 0 110px; }
+.process-shade { background: linear-gradient(90deg, rgba(4,13,24,.82), rgba(4,13,24,.34) 72%), linear-gradient(0deg, rgba(4,13,24,.67), transparent 68%); }
 .process-section .section-header { border-top: 1px solid var(--line); padding-top: 75px; }
 .process-section h2 { font-size: clamp(2rem, 3.3vw, 3rem); }
 .process-panel { padding: 18px; background: linear-gradient(145deg, #102032, #091522 65%); }
@@ -329,7 +332,8 @@ a.card-foot:focus-visible { outline-offset: -4px; }
 .experience-dates { color: #8db9d7; font-family: var(--mono); font-size: 10px; letter-spacing: .03em; line-height: 1.6; white-space: nowrap; }
 .experience-entry p { font-size: 12px; }
 .experience-tech { font-family: var(--mono); font-size: 8px; line-height: 1.9; color: #688eac; margin-top: 15px; }
-.contact-section { padding: 66px 0 48px; }
+.contact-section { padding: 82px 0 100px; }
+.contact-shade { background: linear-gradient(90deg, rgba(4,13,24,.81), rgba(4,13,24,.34) 70%, rgba(4,13,24,.48)), linear-gradient(0deg, rgba(4,13,24,.7), transparent 70%); }
 .contact-section .container { border-top: 1px solid var(--line); padding-top: 83px; }
 .contact-heading { text-align: center; }
 .contact-heading .eyebrow { justify-content: center; }
@@ -539,7 +543,7 @@ a.card-foot:focus-visible { outline-offset: -4px; }
   .scenic-backdrop { background-position: 62% center; }
   .neural-backdrop { background-position: 72% center; }
   .scenic-shade { background: linear-gradient(90deg, rgba(4,13,24,.65), rgba(4,13,24,.28)), linear-gradient(0deg, rgba(4,13,24,.5), transparent); }
-  .expertise-section { padding: 74px 0 36px; }
+  .expertise-section { padding: 51px 0 0; }
   .scenic-heading { margin-bottom: 35px; }
   .scenic-heading > p { font-size: 12px; margin-top: 19px; }
   .expertise-grid { grid-template-columns: 1fr; gap: 17px; }
@@ -591,7 +595,7 @@ a.card-foot:focus-visible { outline-offset: -4px; }
   .data-illustration-top > span:first-child { font-size: 7px; }
   .projects-footer { margin-top: 29px; }
   .discussion-section { padding: 22px 0 65px; }
-  .process-section { padding: 10px 0 70px; }
+  .process-section { padding: 73px 0 70px; }
   .process-section .section-header { padding-top: 55px; }
   .process-section h2 { font-size: 33px; }
   .process-panel { padding: 10px; border-radius: 11px; }
@@ -615,7 +619,7 @@ a.card-foot:focus-visible { outline-offset: -4px; }
   .experience-meta { gap: 4px 10px; }
   .experience-entry p { font-size: 11px; }
   .experience-tech { font-size: 7px; }
-  .contact-section { padding: 25px 0 25px; }
+  .contact-section { padding: 55px 0 63px; }
   .contact-section .container { padding-top: 65px; }
   .contact-heading h2 { font-size: 36px; }
   .contact-heading > p { font-size: 11px; }
