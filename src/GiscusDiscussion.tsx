@@ -9,7 +9,7 @@ const giscusOptions: Record<string, string> = {
   'data-category-id': 'DIC_kwDOVyfkbs4DLdSP',
   'data-mapping': 'pathname',
   'data-strict': '0',
-  'data-reactions-enabled': '1',
+  'data-reactions-enabled': '0',
   'data-emit-metadata': '0',
   'data-input-position': 'bottom',
   'data-theme': 'https://pstar80.github.io/giscus-portfolio.css',

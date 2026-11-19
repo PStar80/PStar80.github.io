@@ -360,18 +360,20 @@ export default function App() {
 
       <section className="opaque discussion-section" id="discussion" aria-labelledby="discussion-title">
         <div className="container">
-          <Metal className="project-discussion">
-            <div className="project-discussion-intro">
+          <div className="section-header discussion-heading">
+            <div>
               <Eyebrow number="07">Community / GitHub Discussions</Eyebrow>
               <h2 id="discussion-title">Let's Talk About The Work.</h2>
-              <p>Questions about SkyCommand, SkyDataStudio, or MacroAnalyzer? Sign in with your GitHub account to comment or react. No separate account needed.</p>
             </div>
+            <p>Questions about SkyCommand, SkyDataStudio, or MacroAnalyzer? Sign in with your GitHub account to comment. No separate account needed.</p>
+          </div>
+          <Metal className="project-discussion">
             <GiscusDiscussion />
           </Metal>
         </div>
       </section>
     </main>
-    <footer className="site-footer"><div className="container footer-inner"><a href="#home" className="footer-brand">Paul Sattaur<span>.</span></a><p>Built With Intent. Always Evolving.</p><span>© {new Date().getFullYear()} Paul Sattaur</span><a href="#home" className="back-top" aria-label="Back to top"><ArrowUp size={17} /></a></div></footer>
+    <footer className="site-footer"><div className="container footer-inner"><a href="#home" className="footer-brand">Paul Sattaur<span>.</span></a><p>Built With Intent. Always Evolving.</p><span>© {new Date().getFullYear()} Paul Sattaur</span><a href="#home" className="button button-primary back-top" aria-label="Back to top"><ArrowUp size={17} /></a></div></footer>
     {gallery && <Lightbox shots={gallery.shots} index={gallery.index} onClose={() => setGallery(null)} onIndex={index => setGallery({ ...gallery, index })} />}
   </>;
 }
