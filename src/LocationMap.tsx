@@ -180,7 +180,7 @@ export default function LocationMap() {
         <desc id={id + '-description'}>{compact ? 'A flat map of North America and the Great Lakes, with Toronto, Ontario, Canada highlighted.' : 'A flat world map with a latitude and longitude grid, highlighting Toronto, Ontario, Canada beside the Great Lakes.'} Hover a country to see its name; click or tap to select it. Select it again to clear, or use the Explore countries selector above the map.</desc>
         <defs>
           <linearGradient id={id + '-ocean'} x1="0" y1="0" x2="1" y2="1"><stop stopColor="#0d2438" /><stop offset="1" stopColor="#071625" /></linearGradient>
-          <linearGradient id={id + '-land'} x1="0" y1="0" x2=".7" y2="1"><stop stopColor="#326479" /><stop offset=".55" stopColor="#244c62" /><stop offset="1" stopColor="#18394f" /></linearGradient>
+          <linearGradient id={id + '-land'} x1="0" y1="0" x2=".7" y2="1"><stop stopColor="#3486d7" /><stop offset=".55" stopColor="#2466b3" /><stop offset="1" stopColor="#153d78" /></linearGradient>
           <radialGradient id={id + '-ambient'} cx="28%" cy="25%" r="65%"><stop stopColor="#6fd7ef" stopOpacity=".1" /><stop offset="1" stopColor="#6fd7ef" stopOpacity="0" /></radialGradient>
           <linearGradient id={id + '-scan'}><stop stopColor="#9de9ff" stopOpacity="0" /><stop offset=".8" stopColor="#9de9ff" stopOpacity=".12" /><stop offset="1" stopColor="#9de9ff" stopOpacity="0" /></linearGradient>
           <radialGradient id={id + '-beacon'}><stop stopColor="#b2f6ff" stopOpacity=".65" /><stop offset=".3" stopColor="#55d2f5" stopOpacity=".24" /><stop offset="1" stopColor="#44bff1" stopOpacity="0" /></radialGradient>

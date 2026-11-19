@@ -335,7 +335,7 @@ export default function App() {
               <div className="companion-body"><span className="project-kicker">INTERACTIVE ANALYTICS</span><h3>MacroAnalyzer</h3><p>A full-stack macroeconomic analytics application with interactive time-series charts, personalized dashboards, saved views, alert rules, and in-app signals.</p><EngineeringHighlight>I paired interactive React charts with a dedicated ASP.NET Core API, migrating analytics and account routes into native C# services. Alert evaluation remains in the operational control plane, keeping the analytics experience separate from ingestion and automation.</EngineeringHighlight><div className="tags"><Tag>React</Tag><Tag>C# / ASP.NET Core</Tag><Tag>PostgreSQL</Tag><Tag>ECharts</Tag></div><OutLink href={github + '/MacroAnalyzer'} className="text-link">Explore The Repository <ArrowUpRight size={17} /></OutLink></div>
             </Metal>
           </div>
-          <div className="projects-footer"><OutLink href={github + '?tab=repositories'} className="text-link muted-link"><Github size={18} /> View All Repositories <ArrowUpRight size={16} /></OutLink></div>
+          <div className="projects-footer"><OutLink href={github + '?tab=repositories'} className="button button-primary"><Github size={18} /> View All Repositories <ArrowUpRight size={16} /></OutLink></div>
         </div>
       </section>
 
