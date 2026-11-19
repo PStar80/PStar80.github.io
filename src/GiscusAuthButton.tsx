@@ -28,21 +28,6 @@ function getGiscusLoginUrl() {
   return `https://giscus.app/api/oauth/authorize?redirect_uri=${encodeURIComponent(returnUrl.toString())}`;
 }
 
-function getOptionalCheckInUrl() {
-  // This is a public, optional build-time URL, NOT an OAuth credential.
-  // With no configured HTTPS origin, all visitors retain the original giscus path.
-  const raw = import.meta.env.VITE_VISITOR_HISTORY_WORKER_URL?.trim();
-  if (!raw) return null;
-  try {
-    const origin = new URL(raw);
-    if (origin.protocol !== 'https:' || origin.username || origin.password ||
-        origin.pathname !== '/' || origin.search || origin.hash) return null;
-    return new URL('/check-in', origin).toString();
-  } catch {
-    return null;
-  }
-}
-
 export default function GiscusAuthButton() {
   const [signedIn, setSignedIn] = useState(hasGiscusSession);
 
@@ -86,12 +71,10 @@ export default function GiscusAuthButton() {
     : <><Github size={16} /><span className="github-auth-desktop">Sign in with GitHub</span><span className="github-auth-mobile">Sign In</span></>;
 
   if (!signedIn) {
-    const checkInUrl = getOptionalCheckInUrl();
     return <a className="button button-primary github-auth-button"
-      href={checkInUrl ?? getGiscusLoginUrl()}
+      href={getGiscusLoginUrl()}
       onClick={saveScrollPosition}
-      aria-label="Sign in with GitHub to comment"
-      title={checkInUrl ? 'Sign in via GitHub with an optional, private check-in' : 'Sign in with GitHub to comment'}>{content}</a>;
+      aria-label="Sign in with GitHub to comment">{content}</a>;
   }
 
   const signOut = () => {
