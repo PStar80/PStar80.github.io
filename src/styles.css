@@ -58,6 +58,9 @@ p { color: var(--muted); line-height: 1.85; }
 .navigation > a.active, .navigation > a:hover { color: #fff; }
 .navigation > a.active::after { transform: scaleX(1); }
 .menu-toggle { grid-column: 3; grid-row: 1; justify-self: end; display: none !important; }
+.github-auth-button { grid-column: 3; grid-row: 1; justify-self: end; min-height: 40px; padding: 10px 14px; gap: 8px; font-size: 11px; white-space: nowrap; }
+.github-auth-mobile { display: none; }
+
 
 .opaque { position: relative; background-color: #0a1321; background-image: linear-gradient(rgba(136, 167, 207, .026) 1px, transparent 1px), linear-gradient(90deg, rgba(136, 167, 207, .026) 1px, transparent 1px); background-size: 64px 64px; }
 .hero-section { padding-top: 86px; background-color: #080f1a; overflow: hidden; }
@@ -399,7 +402,9 @@ a.card-foot:focus-visible { outline-offset: -4px; }
   .contact-card-link { font-size: 12px; }
 }
 @media (max-width: 1000px) {
-  .header-inner { grid-template-columns: minmax(0, 1fr) auto; }
+    .header-inner { grid-template-columns: minmax(0, 1fr) auto auto; gap: 12px; }
+  .github-auth-button { grid-column: 2; }
+  .menu-toggle { grid-column: 3; }
   .menu-toggle { grid-column: 2; display: inline-flex !important; }
   .navigation { display: none; position: absolute; top: 100%; left: 0; right: 0; grid-column: auto; grid-row: auto; max-height: calc(100dvh - 86px); overflow-y: auto; overscroll-behavior: contain; background: #0a1422; padding: 15px 24px 24px; border-bottom: 1px solid #34475e; flex-direction: column; align-items: stretch; justify-content: flex-start; gap: 1px; box-shadow: 0 15px 20px rgba(0,0,0,.2); }
   .navigation.is-open { display: flex; }
@@ -487,6 +492,12 @@ a.card-foot:focus-visible { outline-offset: -4px; }
   .site-header { height: 72px; }
   .brand-mark { width: 39px; height: 39px; border-radius: 10px; }
   .brand-name { font-size: 14px; }
+  .header-inner { gap: 9px; }
+  .github-auth-button { min-height: 36px; padding: 9px 10px; gap: 6px; font-size: 10px; }
+  .github-auth-button svg { width: 14px; height: 14px; }
+  .github-auth-desktop { display: none; }
+  .github-auth-mobile { display: inline; }
+
   .navigation { max-height: calc(100dvh - 72px); }
   .navigation > a { font-size: 14px; padding: 13px 4px; }
   .hero-section { padding-top: 72px; }
