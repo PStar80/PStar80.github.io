@@ -12,7 +12,8 @@ const giscusOptions: Record<string, string> = {
   'data-reactions-enabled': '0',
   'data-emit-metadata': '0',
   'data-input-position': 'bottom',
-  'data-theme': 'https://pstar80.github.io/giscus-portfolio.css',
+  // Bump the CSS URL version when changing the portfolio's iframe-only theme.
+  'data-theme': 'https://pstar80.github.io/giscus-portfolio.css?v=20261119b',
   'data-lang': 'en',
 };
 
