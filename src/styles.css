@@ -155,12 +155,12 @@ p { color: var(--muted); line-height: 1.85; }
 .about-foot { margin-top: 27px; display: flex; flex-wrap: wrap; gap: 13px; font-family: var(--mono); font-size: 10px; letter-spacing: .1em; color: #a3b8cc; align-items: center; }
 .small-cross { color: #4e91c4; font-size: 12px; }
 
-.scenic { position: relative; isolation: isolate; clip-path: inset(0); background: #07131e; border-top: 1px solid #294359; border-bottom: 1px solid #294359; }
+.scenic { position: relative; isolation: isolate; clip-path: inset(0); background: #07131e; border-top: 1px solid #294359; border-bottom: 0; }
 .scenic-backdrop { position: fixed; z-index: -2; inset: 0; width: 100%; height: 100vh; background-size: cover; background-repeat: no-repeat; background-position: center; pointer-events: none; }
 .cybernetic-backdrop { background-image: url('/assets/cybernetic-scene.webp'); }
 .neural-backdrop { background-image: url('/assets/neural-scene.webp'); background-position: right center; }
 .communications-backdrop { background-image: url('/assets/communications-core-scene.avif'), url('/assets/cybernetic-scene.webp'); background-position: center; }
-.scenic-shade { position: absolute; inset: 0; background: linear-gradient(90deg, rgba(4,13,24,.73), rgba(4,13,24,.12) 72%), linear-gradient(0deg, rgba(4,13,24,.58), transparent 65%, rgba(4,13,24,.16)); z-index: -1; pointer-events: none; }
+.scenic-shade { position: absolute; inset: 0; bottom: -1px; background: linear-gradient(90deg, rgba(4,13,24,.73), rgba(4,13,24,.12) 72%), linear-gradient(0deg, rgba(4,13,24,.58), transparent 65%, rgba(4,13,24,.16)); z-index: -1; pointer-events: none; }
 .expertise-section { padding: 84px 0 0; }
 .about-section .expertise-section { border-top: 1px solid var(--line); margin-top: 0; }
 .scenic-heading { margin-bottom: 54px; }
@@ -274,20 +274,15 @@ a.card-foot:focus-visible { outline-offset: -4px; }
 .projects-footer { text-align: center; margin-top: 39px; }
 .muted-link { color: #8fa5be; }
 
-.discussion-section { padding: 32px 0 96px; border-top: 1px solid rgba(103,145,192,.1); }
+.discussion-section { padding: 104px 0 96px; border-top: 1px solid rgba(103,145,192,.1); }
 .discussion-section .project-discussion { margin-top: 0; }
 
-.project-discussion { margin-top: 48px; padding: 34px 38px 28px; background: linear-gradient(135deg, #131f30, #0a1423 70%); }
-.project-discussion-intro { border-bottom: 1px solid var(--line); margin-bottom: 22px; padding-bottom: 22px; }
-.project-discussion-intro .project-kicker { display: block; color: #8bc4eb; }
-.project-discussion-intro h2 { font-size: clamp(1.5rem, 2.6vw, 2rem); margin-bottom: 8px; }
-.project-discussion-intro p { max-width: 800px; font-size: 12px; }
+.project-discussion { margin-top: 48px; padding: 28px 38px 30px; background: linear-gradient(135deg, #131f30, #0a1423 70%); }
+.discussion-heading > p { max-width: 465px; }
 .project-discussion .giscus { min-height: 180px; }
 .project-discussion .giscus-frame { width: 100%; border: 0; }
 @media (max-width: 640px) {
   .project-discussion { margin-top: 36px; padding: 25px 19px 20px; }
-  .project-discussion-intro h2 { font-size: 24px; }
-  .project-discussion-intro p { font-size: 12px; }
 }
 
 
@@ -362,8 +357,7 @@ a.card-foot:focus-visible { outline-offset: -4px; }
 .footer-brand span { color: var(--blue); }
 .footer-inner p { font-size: 9px; margin-left: auto; }
 .footer-inner > span { color: #61758e; font-size: 9px; margin-left: 25px; }
-.back-top { display: flex; align-items: center; justify-content: center; flex-shrink: 0; width: 44px; height: 44px; min-width: 44px; min-height: 44px; border: 1px solid #294057; border-radius: 6px; color: #80accf; }
-.back-top:hover { background: #182c43; }
+.back-top { display: flex; align-items: center; justify-content: center; flex-shrink: 0; width: 44px; height: 44px; min-width: 44px; min-height: 44px; padding: 0; border-radius: 7px; }
 
 .lightbox { border: 1px solid #456783; border-radius: 12px; background: #0b1422; color: #edf6fc; max-width: min(1440px, 94vw); width: 94vw; max-height: 92vh; padding: 0; box-shadow: 0 30px 100px #000; }
 .lightbox::backdrop { background: rgba(1,5,11,.89); backdrop-filter: blur(7px); }
@@ -591,7 +585,7 @@ a.card-foot:focus-visible { outline-offset: -4px; }
   .data-illustration-top { top: 16px; }
   .data-illustration-top > span:first-child { font-size: 8px; }
   .projects-footer { margin-top: 29px; }
-  .discussion-section { padding: 22px 0 65px; }
+  .discussion-section { padding: 74px 0 65px; }
   .process-section { padding: 73px 0 70px; }
   .process-section h2 { font-size: 33px; }
   .process-panel { padding: 10px; border-radius: 11px; }
