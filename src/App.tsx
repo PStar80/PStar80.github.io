@@ -1,12 +1,16 @@
-import { useEffect, useRef, useState, type ReactNode, type CSSProperties } from 'react';
+import { lazy, useEffect, useRef, useState, type ReactNode, type CSSProperties } from 'react';
 import { ArrowUpRight, ArrowRight, ArrowDown, ArrowUp, Menu, X, Github, Linkedin, Mail, Workflow, Database, ChartNoAxesCombined, BrainCircuit, Layers3, Code2, Cpu, Network, ShieldCheck, Expand, ChevronLeft, ChevronRight, Check, Copy, Box, ExternalLink } from 'lucide-react';
-import GitHubActivity from './GitHubActivity';
+import DeferredWidget from './DeferredWidget';
 import GiscusDiscussion from './GiscusDiscussion';
 import GiscusAuthButton from './GiscusAuthButton';
 import ProcessFlow from './ProcessFlow';
-import LocationMap from './LocationMap';
+
 import FrameAccents from './FrameAccents';
 import usePointerLighting from './usePointerLighting';
+
+// Split the heavier interactive modules from the initial portfolio bundle.
+const GitHubActivity = lazy(() => import('./GitHubActivity'));
+const LocationMap = lazy(() => import('./LocationMap'));
 
 const github = 'https://github.com/PStar80';
 const linkedin = 'https://www.linkedin.com/in/paulsattaur/';
@@ -294,7 +298,7 @@ export default function App() {
           <div className="scenic-heading"><Eyebrow number="04">Work In Motion</Eyebrow><h2 id="activity-title">Building.<br /><span className="text-accent">One Commit At A Time.</span></h2><p>A window into the work behind the applications.</p></div>
           <div className="activity-grid">
             <Metal className="github-profile"><img src="/assets/portrait-current.png" alt="" width="80" height="80" loading="lazy" /><h3>PStar80</h3><span>Paul Sattaur</span><p>Full-stack applications.<br />Agentic automation.<br />A habit of building.</p><OutLink href={github} className="button button-quiet"><Github size={17} /> GitHub Profile <ArrowUpRight size={16} /></OutLink></Metal>
-            <Metal className="activity-panel"><GitHubActivity /></Metal>
+            <Metal className="activity-panel"><DeferredWidget kind="activity" label="Loading GitHub activity…"><GitHubActivity /></DeferredWidget></Metal>
           </div>
         </div>
       </section>
@@ -340,7 +344,7 @@ export default function App() {
         <div className="container">
           <div className="contact-heading"><Eyebrow number="06">Start A Conversation</Eyebrow><h2 id="contact-title">Let’s Build<br /><span className="text-accent">Something That Matters.</span></h2><p>Have a role, a project, or a system worth improving?<br />I’d like to hear about it.</p></div>
           <div className="contact-layout">
-            <Metal className="location-panel signature-frame"><FrameAccents /><LocationMap /></Metal>
+            <Metal className="location-panel signature-frame"><FrameAccents /><DeferredWidget kind="map" label="Loading interactive world map…"><LocationMap /></DeferredWidget></Metal>
             <div className="contact-methods">
               <div className="contact-grid">
                 <Metal className="contact-card"><Mail className="contact-icon" size={22} aria-hidden="true" /><a className="contact-card-link" href={'mailto:' + email} aria-label={'Email ' + email}><span>{email}</span></a><button className="icon-button contact-copy" type="button" aria-label={copied ? 'Email copied' : 'Copy email address'} onClick={copyEmail}>{copied ? <Check size={17} /> : <Copy size={17} />}</button></Metal>
