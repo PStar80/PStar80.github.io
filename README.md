@@ -56,6 +56,7 @@ The visual language is shared with the [PStar80 profile README](https://github.c
 
 - **Cloudflare Web Analytics** records basic site traffic using a small public tracking snippet. Analytics is viewed in the site owner's Cloudflare dashboard, not displayed to visitors.
 - **giscus + GitHub Discussions** provide comments, reactions and GitHub sign-in/sign-out. There is no separate portfolio account database or password service.
+- **Optional verified check-ins (disabled by default):** The standalone [Cloudflare Worker + D1 module](./visitor-history/README.md) can, when separately deployed and enabled, offer visitors a disclosed, skippable GitHub identity check-in before continuing to giscus. Only the public GitHub ID/login and verification time are stored for 30 days in a private database; the owner-only history page is authorized server-side. No records are collected by the new module until it is explicitly configured.
 - Contact cards open email, LinkedIn or GitHub; the site does **not** submit a contact form or run a backend API.
 
 ## Local Development
