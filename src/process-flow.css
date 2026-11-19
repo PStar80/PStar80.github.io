@@ -83,3 +83,9 @@
   .process-flow .pf-trace-glow { display: none; }
   .process-flow .pf-route, .process-flow .pf-node-shell, .process-flow .pf-node-rim, .process-flow .pf-detail { transition: none; }
 }
+
+/* The provider-neutral storage label is longer than the former brand name. */
+.pf-storage-title { font-size: 18px; }
+@media (max-width: 700px) {
+  .pf-mobile .pf-storage-title { font-size: 13px; letter-spacing: .1px; }
+}
