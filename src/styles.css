@@ -49,8 +49,7 @@ p { color: var(--muted); line-height: 1.85; }
 .scroll-progress { position: absolute; height: 2px; width: 100%; top: 0; left: 0; transform-origin: left; background: linear-gradient(90deg, #4376f5, #4ad7ed); }
 .header-inner { height: 100%; display: grid; grid-template-columns: minmax(0, 1fr) auto minmax(0, 1fr); align-items: center; gap: 24px; }
 .brand { grid-column: 1; grid-row: 1; justify-self: start; display: flex; gap: 13px; align-items: center; white-space: nowrap; }
-.brand-mark { display: flex; align-items: center; justify-content: center; width: 47px; height: 47px; border: 1px solid #375571; background: linear-gradient(140deg, #1a3049, #0b1729 60%); border-radius: 12px; box-shadow: inset 0 1px 0 rgba(181,219,255,.1); }
-.brand-avatar { display: block; width: calc(100% - 8px); height: calc(100% - 8px); flex: none; border: 1px solid rgba(137, 216, 243, .32); border-radius: 50%; object-fit: cover; box-shadow: 0 0 10px rgba(68, 190, 233, .14); }
+.brand-avatar { display: block; width: 47px; height: 47px; flex: none; border: 2px solid #487ca3; padding: 3px; border-radius: 50%; object-fit: cover; box-shadow: 0 0 0 4px rgba(63,131,180,.09); }
 .brand-name { font-family: var(--display); font-size: 16px; font-weight: 600; line-height: 1.2; }
 .navigation { grid-column: 2; grid-row: 1; display: flex; align-items: center; justify-content: center; gap: 29px; font-size: 12px; font-weight: 500; letter-spacing: .08em; text-transform: uppercase; color: #a7b4c8; }
 .navigation > a { position: relative; display: inline-flex; align-items: center; justify-content: center; min-height: 44px; padding: 13px 0; white-space: nowrap; text-align: center; transition: color .2s; }
@@ -494,7 +493,7 @@ a.card-foot:focus-visible { outline-offset: -4px; }
   html { scroll-padding-top: 80px; }
   .container { width: calc(100% - 40px); }
   .site-header { height: 72px; }
-  .brand-mark { width: 39px; height: 39px; border-radius: 10px; }
+  .brand-avatar { width: 41px; height: 41px; padding: 2px; }
   .brand-name { font-size: 14px; }
   .header-inner { gap: 9px; }
   .github-auth-button { min-height: 36px; padding: 9px 10px; gap: 6px; font-size: 10px; }
