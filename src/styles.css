@@ -294,7 +294,6 @@ a.card-foot:focus-visible { outline-offset: -4px; }
 
 .process-section { padding: 104px 0 110px; }
 .process-shade { background: linear-gradient(90deg, rgba(4,13,24,.82), rgba(4,13,24,.34) 72%), linear-gradient(0deg, rgba(4,13,24,.67), transparent 68%); }
-.process-section .section-header { border-top: 1px solid var(--line); padding-top: 75px; }
 .process-section h2 { font-size: clamp(2rem, 3.3vw, 3rem); }
 .process-panel { padding: 18px; background: linear-gradient(145deg, #102032, #091522 65%); }
 .process-panel::before { background: radial-gradient(ellipse 550px 350px at var(--mx, 50%) var(--my, 50%), rgba(83,146,183,.07), transparent 75%); }
@@ -595,7 +594,6 @@ a.card-foot:focus-visible { outline-offset: -4px; }
   .projects-footer { margin-top: 29px; }
   .discussion-section { padding: 22px 0 65px; }
   .process-section { padding: 73px 0 70px; }
-  .process-section .section-header { padding-top: 55px; }
   .process-section h2 { font-size: 33px; }
   .process-panel { padding: 10px; border-radius: 11px; }
   .process-notes { flex-direction: column; gap: 16px; }
