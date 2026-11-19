@@ -281,6 +281,12 @@ a.card-foot:focus-visible { outline-offset: -4px; }
 .discussion-heading > p { max-width: 465px; }
 .project-discussion .giscus { min-height: 180px; }
 .project-discussion .giscus-frame { width: 100%; border: 0; }
+
+/* The iframe cannot relay its pointer position to the parent card.
+ * Fade the stale outer glow while hovering comments, rather than freezing it. */
+@media (hover: hover) and (pointer: fine) {
+  .project-discussion:has(.giscus-frame:hover)::before { opacity: 0; }
+}
 @media (max-width: 640px) {
   .project-discussion { margin-top: 36px; padding: 25px 19px 20px; }
 }
