@@ -280,18 +280,6 @@ a.card-foot:focus-visible { outline-offset: -4px; }
 .project-discussion .giscus { min-height: 180px; }
 .project-discussion .giscus-frame { width: 100%; border: 0; }
 
-/* Explicit opt-in, in-browser feasibility diagnostic; not an admin dashboard. */
-.giscus-auth-diagnostic { margin-top: 23px; padding: 18px 20px; border: 1px solid rgba(89, 164, 217, .35); border-radius: 8px; background: rgba(10, 29, 47, .9); color: #c8daeb; }
-.giscus-auth-diagnostic-title { margin-bottom: 9px; font: 600 11px/1.5 var(--mono); letter-spacing: .12em; color: #84cdf3; }
-.giscus-auth-diagnostic p { margin: 7px 0; font-size: 12px; line-height: 1.75; }
-.giscus-auth-diagnostic dl { margin: 14px 0 8px; }
-.giscus-auth-diagnostic dl > div { display: flex; flex-wrap: wrap; gap: 5px 18px; padding: 7px 0; border-top: 1px solid rgba(147, 194, 226, .13); }
-.giscus-auth-diagnostic dt { min-width: 160px; color: #93b2ce; font-size: 12px; }
-.giscus-auth-diagnostic dd { margin: 0; font-size: 12px; overflow-wrap: anywhere; }
-.giscus-auth-diagnostic a { color: #8ed7ff; text-decoration: underline; }
-.giscus-auth-diagnostic-note { color: #91a9bd; }
-
-
 /* The iframe cannot relay its pointer position to the parent card.
  * Fade the stale outer glow while hovering comments, rather than freezing it. */
 @media (hover: hover) and (pointer: fine) {
