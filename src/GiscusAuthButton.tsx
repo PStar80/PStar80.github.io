@@ -37,9 +37,10 @@ export default function GiscusAuthButton() {
       if (!stored) return;
       window.sessionStorage.removeItem(SCROLL_KEY);
       const position: { y?: number; at?: number } = JSON.parse(stored);
-      if (typeof position.y !== 'number' || !Number.isFinite(position.y) || position.y < 0 ||
-          typeof position.at !== 'number' || Date.now() - position.at > 300000) return;
-      requestAnimationFrame(() => window.scrollTo({ top: position.y, behavior: 'instant' }));
+      const { y, at } = position;
+      if (typeof y !== 'number' || !Number.isFinite(y) || y < 0 ||
+          typeof at !== 'number' || Date.now() - at > 300000) return;
+      requestAnimationFrame(() => window.scrollTo({ top: y, behavior: 'instant' }));
     } catch { /* Browser storage is optional for scroll restoration. */ }
   }, []);
 
