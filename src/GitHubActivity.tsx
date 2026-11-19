@@ -1,4 +1,5 @@
-import { useEffect, useId, useMemo, useRef, useState } from 'react';
+import { useCallback, useEffect, useId, useMemo, useRef, useState } from 'react';
+import { RefreshCw } from 'lucide-react';
 import type { KeyboardEvent } from 'react';
 import './github-activity.css';
 
@@ -80,52 +81,89 @@ export default function GitHubActivity() {
   const [activeIndex, setActiveIndex] = useState<number | null>(null);
   const calendarRef = useRef<HTMLDivElement>(null);
   const positionedCalendar = useRef(false);
+  const snapshotRef = useRef<Snapshot | null>(null);
+  const activeRequest = useRef<AbortController | null>(null);
+  const mounted = useRef(false);
+  const [refreshing, setRefreshing] = useState(false);
+  const [refreshStatus, setRefreshStatus] = useState('');
+
+  const refreshLatest = useCallback(async (manual: boolean) => {
+    // A manual refresh supersedes an automatic refresh already in progress.
+    activeRequest.current?.abort();
+    const controller = new AbortController();
+    activeRequest.current = controller;
+    if (manual) {
+      setRefreshing(true);
+      setRefreshStatus('Checking GitHub for updated contributions…');
+    }
+    const timeout = window.setTimeout(() => controller.abort(), manual ? 10000 : 4500);
+    try {
+      const query = manual ? `?refresh=${Date.now()}` : '';
+      const [svgResponse, metadataResponse] = await Promise.all([
+        fetch(`${RAW_SOURCE}/engineering-activity-static.svg${query}`, { signal: controller.signal, cache: 'no-store' }),
+        fetch(`${RAW_SOURCE}/engineering-activity.json${query}`, { signal: controller.signal, cache: 'no-store' }),
+      ]);
+      if (!svgResponse.ok || !metadataResponse.ok) throw new Error('GitHub activity source unavailable');
+      const [svg, metadata] = await Promise.all([svgResponse.text(), metadataResponse.json()]);
+      const latest = parseRemoteSnapshot(svg, metadata);
+      if (!mounted.current || controller.signal.aborted) return;
+
+      const previous = snapshotRef.current;
+      if (!previous || snapshotTimestamp(latest.updated_utc) > snapshotTimestamp(previous.updated_utc)) {
+        snapshotRef.current = latest;
+        setSnapshot(latest);
+        setActiveIndex(index => index === null ? null : Math.min(index, latest.days.length - 1));
+        setFailed(false);
+        if (manual) setRefreshStatus(`Updated from GitHub · ${latest.updated_utc} UTC`);
+      } else {
+        setFailed(false);
+        if (manual) setRefreshStatus(`Already showing the latest published snapshot (${latest.updated_utc} UTC).`);
+      }
+    } catch {
+      if (!mounted.current) return;
+      if (manual) {
+        setRefreshStatus(controller.signal.aborted
+          ? 'GitHub activity refresh timed out. Please try again.'
+          : 'Could not refresh GitHub activity. The last available snapshot is preserved.');
+      } else if (!snapshotRef.current) {
+        setFailed(true);
+      }
+    } finally {
+      window.clearTimeout(timeout);
+      if (activeRequest.current === controller) {
+        activeRequest.current = null;
+        if (manual && mounted.current) setRefreshing(false);
+      }
+    }
+  }, []);
 
   useEffect(() => {
+    mounted.current = true;
     const controller = new AbortController();
     async function loadActivity() {
-      let local: Snapshot | null = null;
       try {
         const response = await fetch('/assets/contributions.json', { signal: controller.signal });
         if (!response.ok) throw new Error('Activity snapshot unavailable');
-        const data: Snapshot = await response.json();
-        if (!Array.isArray(data.days) || !data.days.length) throw new Error('Empty activity snapshot');
-        local = data;
-        if (!controller.signal.aborted) setSnapshot(data);
-      } catch {
-        if (controller.signal.aborted) return;
-      }
-      if (controller.signal.aborted) return;
-
-      const refresh = new AbortController();
-      const cancel = () => refresh.abort();
-      controller.signal.addEventListener('abort', cancel, { once: true });
-      const timeout = window.setTimeout(cancel, 4500);
-      try {
-        const [svgResponse, metadataResponse] = await Promise.all([
-          fetch(`${RAW_SOURCE}/engineering-activity-static.svg`, { signal: refresh.signal, cache: 'no-store' }),
-          fetch(`${RAW_SOURCE}/engineering-activity.json`, { signal: refresh.signal, cache: 'no-store' }),
-        ]);
-        if (!svgResponse.ok || !metadataResponse.ok) throw new Error('Activity refresh unavailable');
-        const [svg, metadata] = await Promise.all([svgResponse.text(), metadataResponse.json()]);
-        const latest = parseRemoteSnapshot(svg, metadata);
+        const local: Snapshot = await response.json();
+        if (!Array.isArray(local.days) || !local.days.length) throw new Error('Empty activity snapshot');
         if (!controller.signal.aborted &&
-          (!local || snapshotTimestamp(latest.updated_utc) >= snapshotTimestamp(local.updated_utc))) {
-          setSnapshot(latest);
-          setActiveIndex(index => index === null ? null : Math.min(index, latest.days.length - 1));
+            (!snapshotRef.current || snapshotTimestamp(local.updated_utc) > snapshotTimestamp(snapshotRef.current.updated_utc))) {
+          snapshotRef.current = local;
+          setSnapshot(local);
           setFailed(false);
         }
       } catch {
-        if (!local && !controller.signal.aborted) setFailed(true);
-      } finally {
-        window.clearTimeout(timeout);
-        controller.signal.removeEventListener('abort', cancel);
-        refresh.abort();
+        if (controller.signal.aborted) return;
       }
+      if (!controller.signal.aborted) void refreshLatest(false);
     }
     void loadActivity();
-    return () => controller.abort();
-  }, []);
+    return () => {
+      mounted.current = false;
+      controller.abort();
+      activeRequest.current?.abort();
+    };
+  }, [refreshLatest]);
 
   useEffect(() => {
     if (!snapshot || positionedCalendar.current) return;
@@ -178,7 +216,12 @@ export default function GitHubActivity() {
     <div className="gh-activity">
       <div className="gh-heading-row">
         <h3>Contribution Activity</h3>
+        <button type="button" className="button button-primary gh-refresh-button" onClick={() => void refreshLatest(true)} disabled={refreshing} aria-label="Refresh GitHub contribution activity">
+          <RefreshCw size={15} aria-hidden="true" />
+          {refreshing ? 'Refreshing…' : 'Refresh'}
+        </button>
       </div>
+      {refreshStatus && <p className="gh-refresh-status" role="status" aria-live="polite">{refreshStatus}</p>}
 
       {!snapshot && (
         <p className="gh-load-state" role="status">
