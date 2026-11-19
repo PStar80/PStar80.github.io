@@ -334,7 +334,6 @@ a.card-foot:focus-visible { outline-offset: -4px; }
 .experience-tech { font-family: var(--mono); font-size: 8px; line-height: 1.9; color: #688eac; margin-top: 15px; }
 .contact-section { padding: 82px 0 100px; }
 .contact-shade { background: linear-gradient(90deg, rgba(4,13,24,.81), rgba(4,13,24,.34) 70%, rgba(4,13,24,.48)), linear-gradient(0deg, rgba(4,13,24,.7), transparent 70%); }
-.contact-section .container { border-top: 1px solid var(--line); padding-top: 83px; }
 .contact-heading { text-align: center; }
 .contact-heading .eyebrow { justify-content: center; }
 .contact-heading h2 { font-size: clamp(2.5rem, 4.9vw, 4.4rem); }
@@ -620,7 +619,6 @@ a.card-foot:focus-visible { outline-offset: -4px; }
   .experience-entry p { font-size: 11px; }
   .experience-tech { font-size: 7px; }
   .contact-section { padding: 55px 0 63px; }
-  .contact-section .container { padding-top: 65px; }
   .contact-heading h2 { font-size: 36px; }
   .contact-heading > p { font-size: 11px; }
   .contact-heading .eyebrow { font-size: 7px; gap: 8px; }
