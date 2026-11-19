@@ -6,7 +6,7 @@ workers_dev = true
 [[d1_databases]]
 binding = "DB"
 database_name = "pstar80-visitor-checkins"
-database_id = "REPLACE_WITH_YOUR_D1_DATABASE_ID"
+database_id = "2016867c-3332-4d3d-8d1e-dd6a79d67f87"
 migrations_dir = "migrations"
 
 [triggers]
