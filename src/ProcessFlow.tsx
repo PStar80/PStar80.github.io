@@ -8,8 +8,8 @@ type Box = { x: number; y: number; width: number; height: number };
 type FlowNode = { id: NodeId; title: string; subtitle: string; description: string; icon: LucideIcon; group?: GroupId };
 
 const nodes: FlowNode[] = [
-  { id: 'cloud', title: 'Cloud Agent', subtitle: 'Planning & design', description: 'Plans changes with the operator and supplies work artifacts through the Dropbox handoff.', icon: Cloud },
-  { id: 'dropbox', title: 'Dropbox', subtitle: 'Artifact handoff', description: 'Carries the work artifacts from the cloud agent to the local agent.', icon: FolderOpen },
+  { id: 'cloud', title: 'Cloud Agent', subtitle: 'Planning & design', description: 'Plans changes with the operator and shares work artifacts through cloud file storage.', icon: Cloud },
+  { id: 'dropbox', title: 'CLOUD FILE STORAGE', subtitle: 'Artifact handoff', description: 'Cloud file storage relays work artifacts between cloud and local agents; the storage provider can vary.', icon: FolderOpen },
   { id: 'operator', title: 'Operator', subtitle: 'Human direction', description: 'Directs the work, initiates the local agent, and uses the application to follow execution and results.', icon: UserRound },
   { id: 'local', title: 'Local Agent', subtitle: 'Code & execution', description: 'Receives the handoff, works under the operator’s direction, and accesses the shared application services.', icon: Code2 },
   { id: 'app', title: 'React UI / Node.js Core API', subtitle: 'Shared application access', description: 'Connects the operator and local agent to the same execution capabilities through the application interface and core API.', icon: Layers3 },
@@ -152,7 +152,7 @@ export default function ProcessFlow() {
         const iconX = box.x + (stacked ? 14 : endpoint ? 16 : capability ? 17 : 23);
         const iconY = box.y + (stacked ? 12 : (box.height - iconSize) / 2);
         const textX = stacked ? box.x + 14 : iconX + (endpoint ? 34 : capability ? 37 : 46);
-        const titleY = stacked ? box.y + (endpoint ? 49 : 52) : core && small ? box.y + 31 : endpoint ? box.y + 28 : capability ? box.y + (small ? 21 : 25) : box.y + 32;
+        const titleY = node.id === 'dropbox' && small ? box.y + 40 : stacked ? box.y + (endpoint ? 49 : 52) : core && small ? box.y + 31 : endpoint ? box.y + 28 : capability ? box.y + (small ? 21 : 25) : box.y + 32;
         const fill = node.id === 'operator' ? 'operator' : core ? 'core' : 'surface';
         return <g key={node.id} data-node={node.id} role="button" tabIndex={tabStop === node.id ? 0 : -1}
           aria-label={`${node.title}. ${node.description}`} aria-pressed={selected === node.id}
@@ -167,8 +167,8 @@ export default function ProcessFlow() {
           <path d={`M${box.x + 14} ${box.y + .7}H${box.x + box.width - 14}`} className="pf-node-rim" stroke={`url(#${prefix}-shine)`} />
           {!stacked && !endpoint && <rect x={iconX - 9} y={iconY - 9} width={iconSize + 18} height={iconSize + 18} rx="10" className="pf-icon-tile" fill={`url(#${prefix}-icon)`} />}
           <Icon x={iconX} y={iconY} width={iconSize} height={iconSize} strokeWidth={1.65} className="pf-node-icon" aria-hidden="true" />
-          <text x={textX} y={titleY} className="pf-node-title" aria-hidden="true">{core && small ? <><tspan x={textX}>React UI /</tspan><tspan x={textX} dy="23">Node.js Core API</tspan></> : node.title}</text>
-          {node.subtitle && <text x={textX} y={core && small ? box.y + 77 : stacked ? box.y + 73 : capability ? box.y + (small ? 37 : 43) : box.y + 53} className="pf-node-subtitle" aria-hidden="true">{node.subtitle}</text>}
+          <text x={textX} y={titleY} className={'pf-node-title' + (node.id === 'dropbox' ? ' pf-storage-title' : '')} aria-hidden="true">{core && small ? <><tspan x={textX}>React UI /</tspan><tspan x={textX} dy="23">Node.js Core API</tspan></> : node.id === 'dropbox' && small ? <><tspan x={textX}>CLOUD FILE</tspan><tspan x={textX} dy="17">STORAGE</tspan></> : node.title}</text>
+          {node.subtitle && <text x={textX} y={core && small ? box.y + 77 : node.id === 'dropbox' && small ? box.y + 77 : stacked ? box.y + 73 : capability ? box.y + (small ? 37 : 43) : box.y + 53} className="pf-node-subtitle" aria-hidden="true">{node.subtitle}</text>}
         </g>;
       })}
     </svg>;
@@ -179,7 +179,7 @@ export default function ProcessFlow() {
       <span className="pf-eyebrow"><Network size={14} aria-hidden="true" /> CONNECTED BY DESIGN</span>
       {!reducedMotion && <button type="button" className="pf-motion-control" onClick={() => setPaused(!paused)} aria-label={paused ? 'Play flow animation' : 'Pause flow animation'}>{paused ? <Play size={13} aria-hidden="true" /> : <Pause size={13} aria-hidden="true" />}<span>{paused ? 'Play motion' : 'Pause motion'}</span></button>}
     </div>
-    <p id={id + '-instructions'} className="pf-sr-only">An illustrative development architecture. Cloud Agent connects to Operator and Dropbox. Dropbox connects to Local Agent. Operator initiates Local Agent. Operator and Local Agent access React UI / Node.js Core API, which connects to the Execution Capabilities group, then the Automation Endpoints group. Use the arrow keys to explore nodes, Enter or Space to select one, and Escape to clear selection. Home and End move to the first and last node.</p>
+    <p id={id + '-instructions'} className="pf-sr-only">An illustrative development architecture. Cloud Agent connects to Operator and Cloud File Storage. Cloud File Storage connects to Local Agent. Operator initiates Local Agent. Operator and Local Agent access React UI / Node.js Core API, which connects to the Execution Capabilities group, then the Automation Endpoints group. Use the arrow keys to explore nodes, Enter or Space to select one, and Escape to clear selection. Home and End move to the first and last node.</p>
     {renderDiagram(false)}
     {renderDiagram(true)}
     <div className={'pf-detail' + (activeNode ? ' is-active' : '')}>
