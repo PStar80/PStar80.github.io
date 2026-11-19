@@ -2,6 +2,7 @@ import { useEffect, useRef, useState, type ReactNode, type CSSProperties } from 
 import { ArrowUpRight, ArrowRight, ArrowDown, ArrowUp, Menu, X, Github, Linkedin, Mail, Workflow, Database, ChartNoAxesCombined, BrainCircuit, Layers3, Code2, Cpu, Network, ShieldCheck, Expand, ChevronLeft, ChevronRight, Check, Copy, Box, ExternalLink } from 'lucide-react';
 import GitHubActivity from './GitHubActivity';
 import GiscusDiscussion from './GiscusDiscussion';
+import GiscusAuthButton from './GiscusAuthButton';
 import ProcessFlow from './ProcessFlow';
 import LocationMap from './LocationMap';
 import FrameAccents from './FrameAccents';
@@ -212,6 +213,7 @@ export default function App() {
         <nav id="main-navigation" className={menuOpen ? 'navigation is-open' : 'navigation'} aria-label="Main navigation">
           {nav.map(([label, id]) => <a key={id} href={'#' + id} className={active === id ? 'active' : ''} aria-current={active === id ? 'location' : undefined} onClick={() => setMenuOpen(false)}>{label}</a>)}
         </nav>
+        <GiscusAuthButton />
       </div>
     </header>
     <main id="main">
