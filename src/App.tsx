@@ -1,6 +1,7 @@
 import { useEffect, useRef, useState, type ReactNode, type CSSProperties } from 'react';
 import { ArrowUpRight, ArrowRight, ArrowDown, ArrowUp, Menu, X, Github, Linkedin, Mail, Workflow, Database, ChartNoAxesCombined, BrainCircuit, Layers3, Code2, Cpu, Network, ShieldCheck, Expand, ChevronLeft, ChevronRight, Check, Copy, Box, ExternalLink } from 'lucide-react';
 import GitHubActivity from './GitHubActivity';
+import GiscusDiscussion from './GiscusDiscussion';
 import ProcessFlow from './ProcessFlow';
 import LocationMap from './LocationMap';
 import FrameAccents from './FrameAccents';
@@ -293,6 +294,14 @@ export default function App() {
             </Metal>
           </div>
           <div className="projects-footer"><OutLink href={github + '?tab=repositories'} className="text-link muted-link"><Github size={18} /> View All Repositories <ArrowUpRight size={16} /></OutLink></div>
+          <Metal className="project-discussion" id="discussion">
+            <div className="project-discussion-intro">
+              <span className="project-kicker">COMMUNITY / GITHUB DISCUSSIONS</span>
+              <h3>Let's Talk About The Work.</h3>
+              <p>Questions about SkyCommand, SkyDataStudio, or MacroAnalyzer? Sign in with your GitHub account to comment or react. No separate account needed.</p>
+            </div>
+            <GiscusDiscussion />
+          </Metal>
         </div>
       </section>
 
