@@ -10,7 +10,7 @@ A tiny Cloudflare Worker + existing D1 database collects **best-effort observati
 - **Giscus metadata:** viewer login and public GitHub profile URL, validated in the portfolio browser against the giscus iframe and local giscus session presence. Only the username is submitted to the Worker.
 - **Worker:** accepts small JSON posts on `POST /observe` from the portfolio origin, timestamps them on the server, and ignores duplicate usernames within 15 minutes. The HTTP Origin check limits normal browser requests; it **does not authenticate** the caller or make these audit-grade records.
 - **D1:** private `giscus_observations` table with `github_login` and `observed_at_ms`. Cleanup deletes records after 30 days using the existing daily cron.
-- **Owner access:** review the D1 database in **your Cloudflare dashboard**. There is no public history endpoint or custom admin login.
+- **User Log:** the existing portfolio conditionally displays a ninth section after Discussion when giscus reports the **PStar80** viewer. It reads the Worker’s **GET /observations** endpoint and shows a small summary and recent usernames/timestamps. No extra page or authentication is involved. **The API is publicly callable; hiding the section is cosmetic.**
 
 This avoids a separate GitHub OAuth application, client secret, owner account ID and admin cookie secret.
 
@@ -24,9 +24,11 @@ This avoids a separate GitHub OAuth application, client secret, owner account ID
 6. Sign in to the portfolio using the existing **Sign in with GitHub** button, then visit or reload the page. The giscus iframe will report the signed-in viewer. Verify that D1 has **one** corresponding username/time row after the event is received. You can also test while viewing Discussion.
 7. Check sign-out, anonymous browsing, country map, discussions/comments, and the blue theme. Ensure normal sign-in remains direct through giscus and no extra OAuth authorization appears.
 
-## View the log privately
+## View the log
 
-In Cloudflare, open **Storage & databases → D1 → pstar80-visitor-checkins → Console** and run:
+Sign in through the existing portfolio GitHub button as **PStar80**. After the giscus viewer metadata arrives, the **User Log** menu entry and ninth section appear after Discussion. The section shows total observations (30 days), unique usernames, the last 24 hours, recent entries and a blue Refresh button. The read endpoint, `GET /observations`, returns those fields directly from D1 and is **not private or authenticated**. A third party can request the public usernames/times using a custom HTTP client.
+
+Alternatively, in Cloudflare open **Storage & databases → D1 → pstar80-visitor-checkins → Console** and run:
 
 ```sql
 SELECT github_login,
@@ -36,18 +38,18 @@ ORDER BY observed_at_ms DESC
 LIMIT 100;
 ```
 
-The console is protected by your Cloudflare account login. Do **not** expose these records through a public Pages endpoint.
+The Cloudflare console remains available for maintenance. The portfolio read endpoint intentionally exposes only the recorded public usernames and observation times, at most 100 recent rows, without a security guarantee.
 
 ## What to remove
 
 - Stop the old GitHub OAuth App registration. If an OAuth App was created for visitor check-ins, it is no longer required; delete it only after confirming no other app uses it.
 - Retire the four former Worker secrets (`GITHUB_CLIENT_ID`, `GITHUB_CLIENT_SECRET`, `OWNER_GITHUB_ID`, `ADMIN_COOKIE_SECRET`) **if they were configured**, after replacing the old deployed Worker and verifying the new one.
-- The previous optional consent page, custom owner dashboard and diagnostic panel are removed by this change. No custom account authorization is needed because history is read through the Cloudflare dashboard.
+- The previous optional consent page, custom owner dashboard and diagnostic panel remain removed. The User Log is a normal conditional section within the existing portfolio page.
 - Do not delete the current D1 database, existing Worker, or other SkyCommand/portfolio resources.
 
 ## Privacy and limits
 
-The Discussion section informs visitors that their public GitHub username and observed sign-in activity may be recorded for site operations and retained up to 30 days. This is not an opt-in checkpoint, but visitors remain free to browse anonymously. Review your notice and applicable privacy obligations before enabling collection.
+The Discussion section informs visitors that their public GitHub username and observation time may be recorded for up to 30 days and retrieved through the website’s observation endpoint. The User Log section is shown only to a browser reporting PStar80, but that client-side visibility is not access control. Visitors remain free to browse anonymously. Consider whether this public exposure is appropriate under applicable privacy obligations.
 
 No credentials are necessary in GitHub Pages or the public repository. The Worker origin is public configuration, **not** a secret. The old table can be removed separately only after confirming it is empty and no other process references it.
 

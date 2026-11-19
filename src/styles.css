@@ -56,6 +56,7 @@ p { color: var(--muted); line-height: 1.85; }
 .navigation > a::after { content: ''; position: absolute; height: 2px; left: 0; right: 0; bottom: 4px; background: var(--cyan); transform: scaleX(0); transition: transform .2s; transform-origin: center; }
 .navigation > a.active, .navigation > a:hover { color: #fff; }
 .navigation > a.active::after { transform: scaleX(1); }
+.navigation.with-user-log { gap: 16px; font-size: 11px; }
 .menu-toggle { grid-column: 3; grid-row: 1; justify-self: end; display: none !important; }
 .github-auth-button { grid-column: 3; grid-row: 1; justify-self: end; min-height: 40px; padding: 10px 14px; gap: 8px; font-size: 11px; white-space: nowrap; }
 .github-auth-mobile { display: none; }
@@ -277,6 +278,37 @@ a.card-foot:focus-visible { outline-offset: -4px; }
 
 .project-discussion { margin-top: 48px; padding: 28px 38px 30px; background: linear-gradient(135deg, #131f30, #0a1423 70%); }
 .discussion-heading > p { max-width: 465px; }
+
+/* Ninth section is a visual convenience for the owner, not an access-control boundary. */
+.user-log-section { padding: 102px 0 110px; border-top: 1px solid rgba(103,145,192,.1); }
+.user-log-panel { padding: 30px 36px 35px; background: linear-gradient(135deg, #131f30, #0a1423 70%); }
+.user-log-toolbar { display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 18px; margin-bottom: 24px; }
+.user-log-toolbar h3 { font-size: 21px; color: #edf5fc; margin-bottom: 5px; }
+.user-log-toolbar p, .user-log-content > p { color: #aac1d6; font-size: 12px; }
+.user-log-toolbar .button { min-height: 40px; padding: 10px 16px; font-size: 12px; }
+.user-log-toolbar .button:disabled { opacity: .7; cursor: progress; }
+.user-log-metrics { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 13px; margin-bottom: 24px; }
+.user-log-metrics > div { padding: 20px; background: #10253a; border: 1px solid rgba(109,174,222,.22); border-radius: 8px; display: flex; flex-direction: column; gap: 7px; }
+.user-log-metrics strong { color: #f2faff; font: 600 28px/1.15 var(--display); }
+.user-log-metrics span { color: #98b9d5; font-size: 11px; }
+.user-log-table-wrap { max-height: 420px; overflow: auto; scrollbar-width: thin; scrollbar-color: #387fc4 #0c2238; border: 1px solid rgba(109,174,222,.2); border-radius: 7px; }
+.user-log-table { width: 100%; border-collapse: collapse; color: #c6dbee; font-size: 13px; }
+.user-log-table th, .user-log-table td { text-align: left; padding: 14px 18px; border-bottom: 1px solid rgba(109,174,222,.15); }
+.user-log-table th { position: sticky; top: 0; background: #102238; font-size: 11px; color: #8ecaf4; z-index: 1; }
+.user-log-table tr:last-child td { border-bottom: 0; }
+.user-log-table td a { color: #8ecbff; display: inline-flex; align-items: center; gap: 9px; }
+.user-log-table td a:hover { color: white; text-decoration: underline; }
+.user-log-disclaimer { padding-top: 16px; font-size: 11px !important; }
+.user-log-error { padding: 12px 0; color: #ffc0c0 !important; }
+@media (max-width: 640px) {
+  .user-log-section { padding: 74px 0 75px; }
+  .user-log-panel { padding: 24px 15px; }
+  .user-log-toolbar h3 { font-size: 18px; }
+  .user-log-metrics { grid-template-columns: 1fr; gap: 9px; }
+  .user-log-metrics > div { padding: 12px 16px; }
+  .user-log-table th, .user-log-table td { padding: 12px 10px; font-size: 11px; }
+}
+
 .project-discussion .giscus { min-height: 180px; }
 .project-discussion .giscus-frame { width: 100%; border: 0; }
 
