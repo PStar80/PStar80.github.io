@@ -22,7 +22,7 @@
 
 /* A locked country retains its stronger outline while another country is hovered.
  * Overlays remain pointer-transparent; CountryTargets still own hit testing. */
-.lm-country-selected { fill: rgba(126, 227, 255, .14); stroke: #e5f7ff; stroke-width: 1.9px; filter: drop-shadow(0 0 4px rgba(81, 196, 255, .65)); }
+.lm-country-selected { fill: rgba(113, 226, 244, .17); stroke: #91e9fa; stroke-width: 1.9px; filter: drop-shadow(0 0 4px rgba(81, 214, 243, .52)); }
 .lm-country-hovered { fill: rgba(113, 226, 244, .17); stroke: #91e9fa; }
 
 .lm-lakes { fill: #0d263b; stroke: #c6e6ff; stroke-width: .58; pointer-events: fill; }
