@@ -3,9 +3,6 @@ main = "src/index.js"
 compatibility_date = "2026-11-19"
 workers_dev = true
 
-[vars]
-SITE_ORIGIN = "https://pstar80.github.io"
-
 [[d1_databases]]
 binding = "DB"
 database_name = "pstar80-visitor-checkins"
