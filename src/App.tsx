@@ -254,7 +254,7 @@ export default function App() {
             <p>I’m a full-stack software engineer based in the Greater Toronto Area, with an enterprise programming background and a focus on connecting thoughtful interfaces to dependable services and data. I’ve worked across application integrations, SQL-based systems, backend development, and production troubleshooting. I value maintainability, clear contracts, and software that makes complex systems understandable.</p>
             <p>My toolkit spans <strong>React, TypeScript, C#/.NET, Python, Node.js, PostgreSQL, and Oracle PL/SQL</strong>, with Docker, Temporal, Airflow, and dbt supporting the applications, workflows, and data pipelines behind the experience.</p>
             <p>My independent projects—<strong>SkyCommand</strong>, <strong>SkyDataStudio</strong>, and <strong>MacroAnalyzer</strong>—bring workflow automation, trusted analytical data, and interactive visualization together. Today, I’m extending that work into <strong>AI-native applications</strong>, embedded agents, MCP-connected coding assistants, and observable workflows.</p>
-            <div className="about-foot"><span>USER EXPERIENCE</span><span className="small-cross">+</span><span>SYSTEMS THINKING</span><span className="small-cross">+</span><span>AI</span></div></div>
+          </div>
         </div>
         <div className="container">
           <div className="expertise-section" id="expertise" aria-labelledby="expertise-title">
