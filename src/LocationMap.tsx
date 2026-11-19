@@ -105,9 +105,9 @@ export default function LocationMap() {
     const target = document.elementFromPoint(event.clientX, event.clientY);
     if (!stage.current?.contains(target) || countryAt(target) !== gesture.countryId) return;
     clearHover();
-    // Selecting a new country moves the lock; clicking water clears it.
-    // Clicking the same country keeps the existing lock in place.
-    setSelectedId(gesture.countryId);
+    // Clicking the selected country toggles its lock off. A new country moves
+    // the lock, and clicking water clears it (countryId is null).
+    setSelectedId(current => current === gesture.countryId ? null : gesture.countryId);
   }
 
   useEffect(() => {
@@ -181,7 +181,7 @@ export default function LocationMap() {
     </div>
     <div ref={stage} className="lm-stage" onPointerEnter={handlePointerMove} onPointerMove={handlePointerMove} onPointerDown={handlePointerDown} onPointerUp={handlePointerUp} onPointerCancel={() => { selectionGesture.current = null; clearHover(); }} onPointerLeave={event => { if (event.pointerType !== 'touch') { selectionGesture.current = null; clearHover(); } }}>
       <svg id={id + '-map'} className="lm-svg" viewBox={compact ? MAP_COMPACT_VIEWBOX : MAP_VIEWBOX} role="img" aria-label={compact ? 'Map of North America highlighting Toronto, Canada' : 'World map highlighting Toronto, Canada'} aria-describedby={id + '-description'}>
-        <desc id={id + '-description'}>{compact ? 'A flat map of North America and the Great Lakes, with Toronto, Ontario, Canada highlighted.' : 'A flat world map with a latitude and longitude grid, highlighting Toronto, Ontario, Canada beside the Great Lakes.'} Hover countries to preview them without changing the locked outline. Click or tap another country to move the lock, or click the ocean to clear it. You can also use the Explore countries selector above the map.</desc>
+        <desc id={id + '-description'}>{compact ? 'A flat map of North America and the Great Lakes, with Toronto, Ontario, Canada highlighted.' : 'A flat world map with a latitude and longitude grid, highlighting Toronto, Ontario, Canada beside the Great Lakes.'} Hover countries to preview them without changing the locked outline. Click or tap a country to lock it; click the same country again or click the ocean to clear the lock. Click a different country to move the lock. You can also use the Explore countries selector above the map.</desc>
         <defs>
           <linearGradient id={id + '-ocean'} x1="0" y1="0" x2="1" y2="1"><stop stopColor="#0d2438" /><stop offset="1" stopColor="#071625" /></linearGradient>
           <linearGradient id={id + '-land'} x1="0" y1="0" x2=".7" y2="1"><stop stopColor="#4a97f5" /><stop offset=".55" stopColor="#2f78db" /><stop offset="1" stopColor="#163f86" /></linearGradient>
