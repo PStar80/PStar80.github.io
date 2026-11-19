@@ -1,0 +1,26 @@
+name: Validate Optional Visitor History Worker
+
+on:
+  pull_request:
+    paths:
+      - 'visitor-history/**'
+      - '.github/workflows/check-visitor-history.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  test-worker:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out source
+        uses: actions/checkout@v6
+      - name: Set up Node.js
+        uses: actions/setup-node@v7
+        with:
+          node-version: '24'
+      - name: Check Worker syntax
+        run: node --check visitor-history/src/index.js
+      - name: Verify OAuth, privacy, and owner-only access
+        run: node --test visitor-history/test/*.test.mjs
