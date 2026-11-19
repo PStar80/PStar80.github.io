@@ -212,7 +212,7 @@ export default function App() {
     <header className="site-header">
       <div ref={progressRef} className="scroll-progress" style={{ transform: 'scaleX(0)' }} aria-hidden="true" />
       <div className="container header-inner">
-        <a href="#home" className="brand" aria-label="PStar80 home" onClick={() => setMenuOpen(false)}><span className="brand-mark"><img className="brand-avatar" src="/assets/portrait-current.png" width="36" height="36" alt="" /></span><span className="brand-name">PStar80</span></a>
+        <a href="#home" className="brand" aria-label="PStar80 home" onClick={() => setMenuOpen(false)}><img className="brand-avatar" src="/assets/portrait-current.png" width="48" height="48" alt="" /><span className="brand-name">PStar80</span></a>
         <button ref={menuRef} className="menu-toggle icon-button" aria-expanded={menuOpen} aria-controls="main-navigation" aria-label={menuOpen ? 'Close navigation' : 'Open navigation'} onClick={() => setMenuOpen(!menuOpen)}>{menuOpen ? <X /> : <Menu />}</button>
         <nav id="main-navigation" className={menuOpen ? 'navigation is-open' : 'navigation'} aria-label="Main navigation">
           {nav.map(([label, id]) => <a key={id} href={'#' + id} className={active === id ? 'active' : ''} aria-current={active === id ? 'location' : undefined} onClick={() => setMenuOpen(false)}>{label}</a>)}
@@ -297,7 +297,7 @@ export default function App() {
         <div className="container">
           <div className="scenic-heading"><Eyebrow number="04">Work In Motion</Eyebrow><h2 id="activity-title">Building.<br /><span className="text-accent">One Commit At A Time.</span></h2><p>A window into the work behind the applications.</p></div>
           <div className="activity-grid">
-            <Metal className="github-profile"><img src="/assets/portrait-current.png" alt="" width="80" height="80" loading="lazy" /><h3>PStar80</h3><span>Paul Sattaur</span><p>Full-stack applications.<br />Agentic automation.<br />A habit of building.</p><OutLink href={github} className="button button-quiet"><Github size={17} /> GitHub Profile <ArrowUpRight size={16} /></OutLink></Metal>
+            <Metal className="github-profile"><img src="/assets/portrait-current.png" alt="" width="80" height="80" loading="lazy" /><h3>PStar80</h3><span>Paul Sattaur</span><p>Full-stack applications.<br />Agentic automation.<br />A habit of building.</p><OutLink href={github} className="button button-primary"><Github size={17} /> GitHub Profile <ArrowUpRight size={16} /></OutLink></Metal>
             <Metal className="activity-panel"><DeferredWidget kind="activity" label="Loading GitHub activity…"><GitHubActivity /></DeferredWidget></Metal>
           </div>
         </div>
