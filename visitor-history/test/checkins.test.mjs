@@ -26,6 +26,20 @@ function database() {
           } else throw new Error('Unexpected SQL');
           return { success: true };
         },
+        async all() {
+          if (!sql.startsWith('SELECT github_login, observed_at_ms')) throw new Error('Unexpected SQL read');
+          return { results: rows.filter(row => row.observed_at_ms >= params[0])
+            .slice().sort((a, b) => b.observed_at_ms - a.observed_at_ms).slice(0, 100) };
+        },
+        async first() {
+          if (!sql.startsWith('SELECT COUNT(*) AS total')) throw new Error('Unexpected SQL summary');
+          const inRange = rows.filter(row => row.observed_at_ms >= params[1]);
+          return {
+            total: inRange.length,
+            unique_users: new Set(inRange.map(row => row.github_login)).size,
+            last_24h: inRange.filter(row => row.observed_at_ms >= params[0]).length,
+          };
+        },
       };
     },
   };
@@ -55,7 +69,7 @@ test('observes public username and Worker UTC time; suppresses repeat metadata',
   assert.ok(Math.abs(Date.now() - db.rows[0].observed_at_ms) < 5000);
   assert.deepEqual(Object.keys(db.rows[0]), ['github_login', 'observed_at_ms']);
 });
-test('rejects unauthorized origins, malformed inputs, and public history reads', async () => {
+test('rejects unauthorized origins and malformed inputs', async () => {
   const db = database();
   const env = { DB: db };
   assert.equal((await worker.fetch(visit('PStar80', 'https://untrusted.example'), env)).status, 403);
@@ -64,6 +78,40 @@ test('rejects unauthorized origins, malformed inputs, and public history reads',
   assert.equal((await worker.fetch(request('/observe'), env)).status, 403);
   assert.equal(db.rows.length, 0);
 });
+
+test('reads a capped observation list and summary without a separate login', async () => {
+  const db = database();
+  const env = { DB: db };
+  const day = 86_400_000;
+  db.rows.push({ github_login: 'PStar80', observed_at_ms: Date.now() - 2_000 });
+  db.rows.push({ github_login: 'OtherDev', observed_at_ms: Date.now() - 6 * 3_600_000 });
+  db.rows.push({ github_login: 'PStar80', observed_at_ms: Date.now() - 2 * day });
+  db.rows.push({ github_login: 'expired', observed_at_ms: Date.now() - 40 * day });
+  const res = await worker.fetch(request('/observations', { headers: { Origin: SITE } }), env);
+  assert.equal(res.status, 200);
+  assert.equal(res.headers.get('Access-Control-Allow-Origin'), SITE);
+  const data = await res.json();
+  assert.equal(data.observations.length, 3);
+  assert.equal(data.summary.total, 3);
+  assert.equal(data.summary.uniqueUsers, 2);
+  assert.equal(data.summary.last24h, 2);
+  assert.equal(data.observations[0].github_login, 'PStar80');
+  assert.deepEqual(Object.keys(data.observations[0]), ['github_login', 'observed_at_ms']);
+});
+test('history endpoint rejects other origins and accepts portfolio preflight', async () => {
+  const env = { DB: database() };
+  const denied = await worker.fetch(request('/observations', {
+    headers: { Origin: 'https://other.example' },
+  }), env);
+  assert.equal(denied.status, 403);
+  const preflight = await worker.fetch(request('/observations', {
+    method: 'OPTIONS',
+    headers: { Origin: SITE, 'Access-Control-Request-Method': 'GET' },
+  }), env);
+  assert.equal(preflight.status, 204);
+  assert.match(preflight.headers.get('Access-Control-Allow-Methods'), /GET/);
+});
+
 test('30-day scheduled cleanup removes older observations', async () => {
   const db = database();
   const day = 86_400_000;
