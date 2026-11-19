@@ -104,7 +104,7 @@ export default function CountryPicker({
       const query = now - previous.at < 700 ? previous.text + term : term;
       let index = choices.findIndex(choice => choice.name.toLocaleLowerCase('en').startsWith(query));
       if (index < 0) index = choices.findIndex(choice => choice.name.toLocaleLowerCase('en').startsWith(term));
-      typeahead.current = { text: index < 0 ? '' : query, at: now };
+      typeahead.current = { text: index < 0 ? '' : choices[index].name.toLocaleLowerCase('en').startsWith(query) ? query : term, at: now };
       if (index >= 0) {
         event.preventDefault();
         setActiveIndex(index);
@@ -123,6 +123,7 @@ export default function CountryPicker({
         type="button"
         role="combobox"
         aria-label="Explore countries"
+        aria-describedby={listId + '-instructions'}
         aria-haspopup="listbox"
         aria-expanded={open}
         aria-controls={listId}
@@ -134,6 +135,7 @@ export default function CountryPicker({
         <span className="lm-country-trigger-label">{label}</span>
         <ChevronDown size={15} aria-hidden="true" />
       </button>
+      <span id={listId + '-instructions'} className="lm-sr-only">Use arrow keys, Home, End, Page Up, Page Down, or type a country name to explore choices. Press Enter to select and Escape to close without changing the country.</span>
       {open && (
         <div ref={listRef} id={listId} className="lm-country-listbox" role="listbox" aria-label="Countries">
           {choices.map((choice, index) => (
