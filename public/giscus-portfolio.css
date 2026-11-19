@@ -129,3 +129,56 @@ main .gsc-comment-box-bottom .gsc-comment-box-buttons > button.btn-primary:hover
 main .gsc-comment-box-bottom .gsc-comment-box-buttons > button.btn-primary:disabled {
   background: linear-gradient(110deg, rgb(41 118 223 / 45%), rgb(49 158 200 / 45%));
 }
+
+/* GISCUS PHASE B — Portfolio blue control accents.
+ *
+ * This stylesheet is loaded INSIDE the cross-origin giscus iframe.
+ * Selectors follow the upstream giscus Giscus.tsx markup:
+ *   .gsc-right-header.BtnGroup > .BtnGroup-item--selected > button.btn
+ *
+ * Keep comment submission, authentication, and sorting behavior in giscus.
+ * Customize only presentation; no iframe scripts or pointer interception.
+ */
+main {
+  --color-btn-primary-hover-border: rgb(147 221 255 / 40%);
+  --color-btn-primary-disabled-border: rgb(147 221 255 / 20%);
+  --color-segmented-control-button-bg: #2976df;
+  --color-segmented-control-button-selected-border: rgb(147 221 255 / 40%);
+}
+
+/* Inactive sort options stay unobtrusive; selected Oldest/Newest is visibly blue. */
+main .gsc-comments .gsc-right-header.BtnGroup {
+  background-color: rgb(30 52 78 / 45%);
+  border: 1px solid rgb(103 153 190 / 22%);
+}
+
+main .gsc-comments .gsc-right-header .BtnGroup-item.BtnGroup-item--selected {
+  color: #fff;
+  background: linear-gradient(110deg, #2976df, #319ec8);
+  border-color: rgb(147 221 255 / 35%);
+  box-shadow: inset 0 1px 0 rgb(255 255 255 / 10%);
+}
+
+main .gsc-comments .gsc-right-header .BtnGroup-item.BtnGroup-item--selected > button.btn,
+main .gsc-comments .gsc-right-header .BtnGroup-item.BtnGroup-item--selected > button.btn:hover {
+  color: #fff;
+  background: transparent;
+}
+
+main .gsc-comments .gsc-right-header .BtnGroup-item:not(.BtnGroup-item--selected) > button.btn {
+  color: #b9cce1;
+}
+main .gsc-comments .gsc-right-header .BtnGroup-item:not(.BtnGroup-item--selected) > button.btn:hover {
+  color: #e8f7ff;
+  background: rgb(41 118 223 / 16%);
+}
+
+/* Preserve accessibility while carrying the same blue accent into the editor. */
+main .gsc-right-header button.btn:focus-visible,
+main .gsc-comment-box-tabs button:focus-visible {
+  outline: 2px solid #72dbf3;
+  outline-offset: 2px;
+}
+main .gsc-comment-box-tabs button.color-bg-canvas {
+  box-shadow: inset 0 2px 0 #319ec8;
+}
