@@ -174,8 +174,16 @@ export default function App() {
 
   useEffect(() => {
     const target = window.location.hash.slice(1);
-    if (!target || (target === 'user-log' && !isOwner)) return;
+    if (!target) return;
     const frame = requestAnimationFrame(() => document.getElementById(target)?.scrollIntoView({ behavior: 'instant', block: 'start' }));
+    return () => cancelAnimationFrame(frame);
+  }, []);
+
+  useEffect(() => {
+    // Only the conditional User Log anchor needs a second chance to resolve
+    // when the logged-in viewer identity arrives from giscus.
+    if (!isOwner || window.location.hash !== '#user-log') return;
+    const frame = requestAnimationFrame(() => document.getElementById('user-log')?.scrollIntoView({ behavior: 'instant', block: 'start' }));
     return () => cancelAnimationFrame(frame);
   }, [isOwner]);
 
