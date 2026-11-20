@@ -273,7 +273,7 @@ a.card-foot:focus-visible { outline-offset: -4px; }
 .projects-footer { text-align: center; margin-top: 39px; }
 .muted-link { color: #8fa5be; }
 
-.discussion-section { min-height: calc(100svh - 86px); padding: 104px 0 96px; border-top: 1px solid rgba(103,145,192,.1); }
+.discussion-section { padding: 104px 0 40px; border-top: 1px solid rgba(103,145,192,.1); }
 .discussion-section .project-discussion { margin-top: 0; }
 
 .project-discussion { margin-top: 48px; padding: 28px 38px 30px; background: linear-gradient(135deg, #131f30, #0a1423 70%); }
@@ -310,7 +310,7 @@ a.card-foot:focus-visible { outline-offset: -4px; }
   .user-log-table th, .user-log-table td { padding: 12px 10px; font-size: 11px; }
 }
 
-.project-discussion .giscus { min-height: clamp(440px, 48vw, 610px); }
+.project-discussion .giscus { min-height: 340px; }
 .project-discussion .giscus-frame { width: 100%; border: 0; }
 
 /* The iframe cannot relay its pointer position to the parent card.
@@ -621,8 +621,8 @@ a.card-foot:focus-visible { outline-offset: -4px; }
   .data-illustration-top { top: 16px; }
   .data-illustration-top > span:first-child { font-size: 8px; }
   .projects-footer { margin-top: 29px; }
-  .discussion-section { min-height: calc(100svh - 72px); padding: 74px 0 65px; }
-  .project-discussion .giscus { min-height: 420px; }
+  .discussion-section { padding: 74px 0 32px; }
+  .project-discussion .giscus { min-height: 300px; }
   .process-section { padding: 73px 0 70px; }
   .process-section h2 { font-size: 33px; }
   .process-panel { padding: 10px; border-radius: 11px; }
