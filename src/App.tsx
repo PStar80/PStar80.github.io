@@ -290,7 +290,7 @@ export default function App() {
             <FrameAccents />
             <ProcessFlow />
           </Metal>
-          <div className="process-notes"><p>Cloud planning and a local coding agent work through structured handoffs. I direct the work, define its scope, and follow the results across application services.</p><OutLink href={github + '/SkyCommand-Demo/blob/main/docs/architecture.md'} className="button button-primary architecture-link">Explore The Architecture <ArrowUpRight size={17} /></OutLink></div>
+          <div className="process-notes"><OutLink href={github + '/SkyCommand-Demo/blob/main/docs/architecture.md'} className="button button-primary architecture-link">Explore The Architecture <ArrowUpRight size={17} /></OutLink></div>
         </div>
       </section>
 
