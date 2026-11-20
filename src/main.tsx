@@ -13,6 +13,8 @@ const boot = document.getElementById('portfolio-boot');
 if (boot) {
   const startedAt = performance.now();
   const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  const minimumVisibleMs = 3000; // Let visitors see the holographic intro even on fast loads.
+  const fallbackMs = 3600; // Never wait indefinitely for an external giscus iframe.
   let finished = false;
   let observedFrame: HTMLIFrameElement | null = null;
 
@@ -21,7 +23,7 @@ if (boot) {
     finished = true;
     observer.disconnect();
     window.clearTimeout(fallback);
-    const remaining = reducedMotion ? 0 : Math.max(0, 650 - (performance.now() - startedAt));
+    const remaining = Math.max(0, minimumVisibleMs - (performance.now() - startedAt));
     window.setTimeout(() => {
       requestAnimationFrame(() => requestAnimationFrame(() => {
         boot.classList.add('is-complete');
@@ -38,7 +40,7 @@ if (boot) {
   });
   observer.observe(document.body, { childList: true, subtree: true });
   // The giscus service can be slow, blocked, or unavailable; keep navigation usable.
-  const fallback = window.setTimeout(reveal, 1650);
+  const fallback = window.setTimeout(reveal, fallbackMs);
   // An existing iframe can appear before observation begins on fast loads.
   const existingFrame = document.querySelector<HTMLIFrameElement>('iframe.giscus-frame');
   if (existingFrame) {
