@@ -298,7 +298,6 @@ a.card-foot:focus-visible { outline-offset: -4px; }
 .user-log-table tr:last-child td { border-bottom: 0; }
 .user-log-table td a { color: #8ecbff; display: inline-flex; align-items: center; gap: 9px; }
 .user-log-table td a:hover { color: white; text-decoration: underline; }
-.user-log-disclaimer { padding-top: 16px; font-size: 11px !important; }
 .user-log-error { padding: 12px 0; color: #ffc0c0 !important; }
 @media (max-width: 640px) {
   .user-log-section { padding: 74px 0 75px; }

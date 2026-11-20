@@ -56,7 +56,7 @@ The visual language is shared with the [PStar80 profile README](https://github.c
 
 - **Cloudflare Web Analytics** records basic site traffic using a small public tracking snippet. Analytics is viewed in the site owner's Cloudflare dashboard, not displayed to visitors.
 - **giscus + GitHub Discussions** provide comments, reactions and GitHub sign-in/sign-out. There is no separate portfolio account database or password service.
-- **Lightweight viewer observations:** The existing [Cloudflare Worker + D1 module](./visitor-history/README.md) can record public GitHub usernames and the times giscus metadata was observed for up to 30 days. When giscus reports the `PStar80` viewer, the portfolio shows an additional **User Log** section after Discussion with a summary, recent entries and Refresh. The read endpoint is publicly callable (the conditional UI is not security); this is not a verified sign-in audit. No extra OAuth application or login is needed.
+- **Lightweight viewer observations:** The existing [Cloudflare Worker + D1 module](./visitor-history/README.md) can record public GitHub usernames and the times giscus metadata was observed for up to 30 days. When giscus reports the `PStar80` viewer, the portfolio shows an additional **User Log** section after Discussion with a summary, recent non-owner entries and Refresh. The Worker excludes `PStar80` case-insensitively from the read response and all summary counts without deleting stored observations. The read endpoint is publicly callable (the conditional UI is not security); this is not a verified sign-in audit. No extra OAuth application or login is needed.
 - Contact cards open email, LinkedIn or GitHub; the site does **not** submit a contact form or run a backend API.
 
 ## Local Development

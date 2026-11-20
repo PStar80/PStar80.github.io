@@ -3,6 +3,8 @@
 // login. No extra OAuth, secrets, custom owner auth, or collection of IP/email.
 
 const PORTFOLIO_ORIGIN = 'https://pstar80.github.io';
+// Hide owner observations from the read-only User Log without deleting D1 history.
+const OWNER_LOGIN = 'PStar80';
 const RETENTION_MS = 30 * 86_400_000;
 const DEDUP_MS = 15 * 60_000;
 
@@ -46,13 +48,15 @@ export default {
         const [recent, summary] = await Promise.all([
           env.DB.prepare(
             'SELECT github_login, observed_at_ms FROM giscus_observations ' +
-            'WHERE observed_at_ms >= ? ORDER BY observed_at_ms DESC LIMIT 100'
-          ).bind(cutoff).all(),
+            'WHERE observed_at_ms >= ? AND github_login COLLATE NOCASE <> ? ' +
+            'ORDER BY observed_at_ms DESC LIMIT 100'
+          ).bind(cutoff, OWNER_LOGIN).all(),
           env.DB.prepare(
             'SELECT COUNT(*) AS total, COUNT(DISTINCT github_login) AS unique_users, ' +
             'COALESCE(SUM(CASE WHEN observed_at_ms >= ? THEN 1 ELSE 0 END), 0) AS last_24h ' +
-            'FROM giscus_observations WHERE observed_at_ms >= ?'
-          ).bind(dayAgo, cutoff).first(),
+            'FROM giscus_observations WHERE observed_at_ms >= ? ' +
+            'AND github_login COLLATE NOCASE <> ?'
+          ).bind(dayAgo, cutoff, OWNER_LOGIN).first(),
         ]);
         const body = JSON.stringify({
           observations: recent.results || [],
