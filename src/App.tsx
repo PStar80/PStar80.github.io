@@ -180,11 +180,33 @@ export default function App() {
   }, []);
 
   useEffect(() => {
-    // Only the conditional User Log anchor needs a second chance to resolve
-    // when the logged-in viewer identity arrives from giscus.
-    if (!isOwner || window.location.hash !== '#user-log') return;
-    const frame = requestAnimationFrame(() => document.getElementById('user-log')?.scrollIntoView({ behavior: 'instant', block: 'start' }));
-    return () => cancelAnimationFrame(frame);
+    if (!isOwner) return;
+    let frame = 0;
+    let layoutFrame = 0;
+
+    // The owner-only section mounts after giscus reports the viewer. Defer
+    // scrolling until its layout is committed; also honor refresh and history
+    // navigation to #user-log once the section exists.
+    const alignUserLog = () => {
+      if (window.location.hash !== '#user-log') return;
+      cancelAnimationFrame(frame);
+      cancelAnimationFrame(layoutFrame);
+      frame = requestAnimationFrame(() => {
+        layoutFrame = requestAnimationFrame(() => {
+          document.getElementById('user-log')?.scrollIntoView({ behavior: 'instant', block: 'start' });
+        });
+      });
+    };
+
+    alignUserLog();
+    window.addEventListener('hashchange', alignUserLog);
+    window.addEventListener('pageshow', alignUserLog);
+    return () => {
+      cancelAnimationFrame(frame);
+      cancelAnimationFrame(layoutFrame);
+      window.removeEventListener('hashchange', alignUserLog);
+      window.removeEventListener('pageshow', alignUserLog);
+    };
   }, [isOwner]);
 
   useEffect(() => {
