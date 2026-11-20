@@ -92,8 +92,8 @@ p { color: var(--muted); line-height: 1.85; }
 /* Image-aligned light sources: each eye is independently positioned; the retina glow stays fixed. */
 .portrait-energy-left-eye, .portrait-energy-right-eye { width: 10.7%; height: 7.8%; border-radius: 50%; background: radial-gradient(ellipse at center, rgba(241,255,255,.95) 0%, rgba(137,251,255,.83) 12%, rgba(34,212,255,.57) 29%, rgba(17,157,250,.24) 52%, transparent 76%); filter: drop-shadow(0 0 6px rgba(40,215,255,.52)); }
 .portrait-energy-left-eye { left: 41.2%; top: 41.42%; }
-.portrait-energy-right-eye { left: 60.08%; top: 40.8%; }
-.portrait-energy-forehead { left: 50.3%; top: 29.85%; width: 12.2%; height: 12.2%; border-radius: 50%; background: radial-gradient(circle at center, rgba(242,255,255,.96) 0%, rgba(116,248,255,.82) 13%, rgba(31,205,255,.48) 30%, rgba(12,150,248,.18) 52%, transparent 75%); filter: drop-shadow(0 0 7px rgba(37,205,255,.48)); }
+.portrait-energy-right-eye { left: 59.58%; top: 41.15%; }
+.portrait-energy-forehead { left: 49.9%; top: 30.25%; width: 12.2%; height: 12.2%; border-radius: 50%; background: radial-gradient(circle at center, rgba(242,255,255,.96) 0%, rgba(116,248,255,.82) 13%, rgba(31,205,255,.48) 30%, rgba(12,150,248,.18) 52%, transparent 75%); filter: drop-shadow(0 0 7px rgba(37,205,255,.48)); }
 .portrait-frame::after { content: ''; position: absolute; bottom: 9px; left: 9px; right: 9px; height: 130px; background: linear-gradient(transparent, rgba(4,14,23,.93)); border-radius: 0 0 7px 7px; pointer-events: none; }
 .portrait-caption { position: absolute; z-index: 2; bottom: 31px; left: 28px; right: 28px; display: flex; justify-content: space-between; align-items: center; color: #b8d9ec; font-family: var(--mono); font-size: 9px; letter-spacing: .16em; }
 .portrait-caption > span { display: flex; align-items: center; gap: 9px; }
@@ -548,7 +548,7 @@ a.card-foot:focus-visible { outline-offset: -4px; }
   .portrait-image { aspect-ratio: 1 / 1; }
   /* At the square mobile crop, the iris centers shift slightly toward the image edges. */
   .portrait-energy-left-eye { left: 41.75%; }
-  .portrait-energy-right-eye { left: 59.58%; }
+  .portrait-energy-right-eye { left: 59.08%; }
   .portrait-quote { padding: 16px 17px 18px; }
   .portrait-quote p { font-size: 15px; }
   .portrait-foot { font-size: 6px; padding-top: 12px; }
