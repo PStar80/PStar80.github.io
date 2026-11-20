@@ -19,14 +19,14 @@ This avoids a separate GitHub OAuth application, client secret, owner account ID
 1. Keep the existing Cloudflare D1 database **`pstar80-visitor-checkins`** and deployed Worker **`pstar80-visitor-checkins`**. Preserve the real D1 binding from Local Sky's GitHub PR #27; do not re-create infrastructure or roll back the database UUID.
 2. From `visitor-history/`, run `node --check src/index.js` and `node --test test/checkins.test.mjs`. The GitHub Actions verification workflow also runs both commands.
 3. Apply the new migration: `npx wrangler d1 migrations apply pstar80-visitor-checkins --remote`. This adds `giscus_observations`. Historical migration `0001_checkins.sql` stays for D1 migration continuity; its old `visitor_checkins` table is **not used** by this design.
-4. Deploy the revised Worker with `npx wrangler deploy`. Check `https://<actual-worker-host>/health` responds `ok`. The old `/admin`, `/check-in`, and GitHub OAuth routes should no longer be present.
+4. Deploy the revised Worker with `npx wrangler deploy` (this deployment is also required after future read-query changes; GitHub Pages alone does not deploy the Worker). Check `https://<actual-worker-host>/health` responds `ok`. The old `/admin`, `/check-in`, and GitHub OAuth routes should no longer be present.
 5. Set GitHub Actions variable `VISITOR_HISTORY_WORKER_URL` to the **HTTPS Worker origin only**, without a path, and redeploy GitHub Pages. Without this variable the portfolio still works normally but no observations are submitted.
 6. Sign in to the portfolio using the existing **Sign in with GitHub** button, then visit or reload the page. The giscus iframe will report the signed-in viewer. Verify that D1 has **one** corresponding username/time row after the event is received. You can also test while viewing Discussion.
 7. Check sign-out, anonymous browsing, country map, discussions/comments, and the blue theme. Ensure normal sign-in remains direct through giscus and no extra OAuth authorization appears.
 
 ## View the log
 
-Sign in through the existing portfolio GitHub button as **PStar80**. After the giscus viewer metadata arrives, the **User Log** menu entry and ninth section appear after Discussion. The section shows total observations (30 days), unique usernames, the last 24 hours, recent entries and a blue Refresh button. The read endpoint, `GET /observations`, returns those fields directly from D1 and is **not private or authenticated**. A third party can request the public usernames/times using a custom HTTP client.
+Sign in through the existing portfolio GitHub button as **PStar80**. After the giscus viewer metadata arrives, the **User Log** menu entry and ninth section appear after Discussion. The section shows non-owner observations (30 days), unique usernames, the last 24 hours, recent entries and a blue Refresh button. The read queries exclude `PStar80` case-insensitively from both the rows and all three counts; the existing owner observations remain stored in D1 until their normal 30-day expiry. The read endpoint, `GET /observations`, returns those fields directly from D1 and is **not private or authenticated**. A third party can request the public usernames/times using a custom HTTP client.
 
 Alternatively, in Cloudflare open **Storage & databases → D1 → pstar80-visitor-checkins → Console** and run:
 

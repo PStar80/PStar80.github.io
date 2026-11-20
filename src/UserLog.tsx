@@ -84,6 +84,5 @@ export default function UserLog() {
         </tbody>
       </table>
     </div>}
-    <p className="user-log-disclaimer">Informational, browser-reported viewer observations—not verified login records. Entries may be incomplete or spoofed. The read endpoint is publicly callable even though this section is conditionally shown.</p>
   </div>;
 }
