@@ -56,7 +56,7 @@ p { color: var(--muted); line-height: 1.85; }
 .navigation > a::after { content: ''; position: absolute; height: 2px; left: 0; right: 0; bottom: 4px; background: var(--cyan); transform: scaleX(0); transition: transform .2s; transform-origin: center; }
 .navigation > a.active, .navigation > a:hover { color: #fff; }
 .navigation > a.active::after { transform: scaleX(1); }
-.navigation.with-user-log { gap: 16px; font-size: 11px; }
+.navigation.with-user-log { gap: 12px; }
 .menu-toggle { grid-column: 3; grid-row: 1; justify-self: end; display: none !important; }
 .github-auth-button { grid-column: 3; grid-row: 1; justify-self: end; min-height: 40px; padding: 10px 14px; gap: 8px; font-size: 11px; white-space: nowrap; }
 .github-auth-mobile { display: none; }
@@ -280,7 +280,9 @@ a.card-foot:focus-visible { outline-offset: -4px; }
 .discussion-heading > p { max-width: 465px; }
 
 /* Ninth section is a visual convenience for the owner, not an access-control boundary. */
-.user-log-section { padding: 102px 0 110px; border-top: 1px solid rgba(103,145,192,.1); }
+/* Keep the owner-only destination tall enough while its async observations load,
+ * so the first hash jump (and a refresh at #user-log) cannot stop at Discussion. */
+.user-log-section { min-height: calc(100svh - 86px); padding: 102px 0 110px; border-top: 1px solid rgba(103,145,192,.1); }
 .user-log-panel { padding: 30px 36px 35px; background: linear-gradient(135deg, #131f30, #0a1423 70%); }
 .user-log-toolbar { display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 18px; margin-bottom: 24px; }
 .user-log-toolbar h3 { font-size: 21px; color: #edf5fc; margin-bottom: 5px; }
@@ -300,7 +302,7 @@ a.card-foot:focus-visible { outline-offset: -4px; }
 .user-log-table td a:hover { color: white; text-decoration: underline; }
 .user-log-error { padding: 12px 0; color: #ffc0c0 !important; }
 @media (max-width: 640px) {
-  .user-log-section { padding: 74px 0 75px; }
+  .user-log-section { min-height: calc(100svh - 72px); padding: 74px 0 75px; }
   .user-log-panel { padding: 24px 15px; }
   .user-log-toolbar h3 { font-size: 18px; }
   .user-log-metrics { grid-template-columns: 1fr; gap: 9px; }
@@ -413,6 +415,7 @@ a.card-foot:focus-visible { outline-offset: -4px; }
   .container { width: calc(100% - 72px); }
   .header-inner { gap: 20px; }
   .navigation { gap: 18px; }
+  .navigation.with-user-log { gap: 8px; }
   .hero-grid { gap: 50px; padding: 70px 0 46px; }
   .hero-copy h1 { font-size: 85px; }
   .hero-statement { font-size: 22px; }
@@ -438,6 +441,7 @@ a.card-foot:focus-visible { outline-offset: -4px; }
   .github-auth-button { grid-column: 2; }
   .menu-toggle { grid-column: 3; display: inline-flex !important; }
   .navigation { display: none; position: absolute; top: 100%; left: 0; right: 0; grid-column: auto; grid-row: auto; max-height: calc(100dvh - 86px); overflow-y: auto; overscroll-behavior: contain; background: #0a1422; padding: 15px 24px 24px; border-bottom: 1px solid #34475e; flex-direction: column; align-items: stretch; justify-content: flex-start; gap: 1px; box-shadow: 0 15px 20px rgba(0,0,0,.2); }
+  .navigation.with-user-log { gap: 1px; }
   .navigation.is-open { display: flex; }
   .navigation > a { font-size: 13px; padding: 13px 4px; }
   .navigation > a::after { left: calc(50% - 11px); right: auto; width: 22px; bottom: 4px; }
