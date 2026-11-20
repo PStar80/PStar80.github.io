@@ -55,7 +55,7 @@ export default function ProcessFlow() {
   const [focused, setFocused] = useState<NodeId | null>(null);
   const [selected, setSelected] = useState<NodeId | null>(null);
   const [tabStop, setTabStop] = useState<NodeId>('operator');
-  const [paused, setPaused] = useState(true);
+  const [paused, setPaused] = useState(false);
   const [visible, setVisible] = useState(false);
   const [pageVisible, setPageVisible] = useState(true);
   const [reducedMotion, setReducedMotion] = useState(false);
