@@ -273,7 +273,7 @@ a.card-foot:focus-visible { outline-offset: -4px; }
 .projects-footer { text-align: center; margin-top: 39px; }
 .muted-link { color: #8fa5be; }
 
-.discussion-section { padding: 104px 0 40px; border-top: 1px solid rgba(103,145,192,.1); }
+.discussion-section { padding: 104px 0; border-top: 1px solid rgba(103,145,192,.1); }
 .discussion-section .project-discussion { margin-top: 0; }
 
 .project-discussion { margin-top: 48px; padding: 28px 38px 30px; background: linear-gradient(135deg, #131f30, #0a1423 70%); }
@@ -282,7 +282,7 @@ a.card-foot:focus-visible { outline-offset: -4px; }
 /* Ninth section is a visual convenience for the owner, not an access-control boundary. */
 /* Keep the owner-only destination tall enough while its async observations load,
  * so the first hash jump (and a refresh at #user-log) cannot stop at Discussion. */
-.user-log-section { min-height: calc(100svh - 86px); padding: 102px 0 110px; border-top: 1px solid rgba(103,145,192,.1); }
+.user-log-section { padding: 102px 0; border-top: 1px solid rgba(103,145,192,.1); }
 .user-log-panel { padding: 30px 36px 35px; background: linear-gradient(135deg, #131f30, #0a1423 70%); }
 .user-log-toolbar { display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 18px; margin-bottom: 24px; }
 .user-log-toolbar h3 { font-size: 21px; color: #edf5fc; margin-bottom: 5px; }
@@ -302,7 +302,7 @@ a.card-foot:focus-visible { outline-offset: -4px; }
 .user-log-table td a:hover { color: white; text-decoration: underline; }
 .user-log-error { padding: 12px 0; color: #ffc0c0 !important; }
 @media (max-width: 640px) {
-  .user-log-section { min-height: calc(100svh - 72px); padding: 74px 0 75px; }
+  .user-log-section { padding: 74px 0; }
   .user-log-panel { padding: 24px 15px; }
   .user-log-toolbar h3 { font-size: 18px; }
   .user-log-metrics { grid-template-columns: 1fr; gap: 9px; }
@@ -344,7 +344,7 @@ a.card-foot:focus-visible { outline-offset: -4px; }
 .activity-panel { min-width: 0; padding: 28px; display: flex; align-items: center; background: linear-gradient(135deg, rgba(20,33,51,.98), rgba(7,16,29,.98)); }
 .activity-panel::before { background: radial-gradient(ellipse 450px 350px at var(--mx, 50%) var(--my, 50%), rgba(130,180,208,.09), transparent 75%); }
 
-.experience-section { padding: 112px 0 80px; }
+.experience-section { padding: 112px 0; }
 .experience-grid { display: grid; grid-template-columns: 1fr 1.18fr; gap: 90px; }
 .experience-grid h2 { font-size: clamp(2.3rem, 3.4vw, 3.1rem); }
 .experience-intro { max-width: 290px; font-size: 13px; margin-top: 23px; }
@@ -621,7 +621,7 @@ a.card-foot:focus-visible { outline-offset: -4px; }
   .data-illustration-top { top: 16px; }
   .data-illustration-top > span:first-child { font-size: 8px; }
   .projects-footer { margin-top: 29px; }
-  .discussion-section { padding: 74px 0 32px; }
+  .discussion-section { padding: 74px 0; }
   .project-discussion .giscus { min-height: 300px; }
   .process-section { padding: 73px 0 70px; }
   .process-section h2 { font-size: 33px; }
@@ -633,7 +633,7 @@ a.card-foot:focus-visible { outline-offset: -4px; }
   .github-profile .button { grid-column: 1 / -1; grid-row: 3; justify-self: start; margin-top: 23px; font-size: 10px; }
   .github-profile > span { font-size: 11px; }
   .activity-panel { padding: 24px 20px; }
-  .experience-section { padding: 73px 0 45px; }
+  .experience-section { padding: 73px 0; }
   .experience-grid h2 { font-size: 34px; }
   .experience-grid { gap: 34px; }
   .experience-entry { padding-bottom: 33px; }
