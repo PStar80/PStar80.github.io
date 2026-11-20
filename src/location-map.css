@@ -65,10 +65,11 @@
 /* The motion control inherits the shared blue .button-primary background and hover styles. */
 .lm-motion-control { display: inline-flex; align-items: center; justify-content: center; min-width: 44px; min-height: 44px; gap: 7px; padding: 10px 12px; border-radius: 7px; font-size: 11px; white-space: nowrap; }
 .lm-motion-control:focus-visible { outline-offset: 3px; }
-.lm-stage { position: relative; aspect-ratio: 1200 / 597; margin: 9px 22px 0; overflow: hidden; border: 1px solid rgba(112, 161, 194, .2); border-radius: 5px; background: #0b2032; }
+.lm-stage { position: relative; aspect-ratio: 1200 / 600; margin: 9px 22px 0; overflow: hidden; border: 1px solid rgba(112, 161, 194, .2); border-radius: 5px; background: #071827; }
 .location-map[data-view=regional] .lm-stage { aspect-ratio: 470 / 360; }
 .lm-svg { display: block; width: 100%; height: 100%; overflow: hidden; }
-.lm-land, .lm-borders, .lm-graticule, .lm-ambient, .lm-country-highlight, .lm-sweep, .lm-marker, .lm-city-label { pointer-events: none; }
+.lm-land, .lm-borders, .lm-graticule, .lm-ambient, .lm-country-highlight, .lm-sweep, .lm-marker, .lm-city-label, .lm-world-outline { pointer-events: none; }
+.lm-world-outline { fill: none; stroke: rgba(145, 214, 255, .48); stroke-width: 1.1px; vector-effect: non-scaling-stroke; }
 .lm-land { stroke: #b9dcff; stroke-width: .68; stroke-linejoin: round; paint-order: fill stroke; }
 .lm-borders { fill: none; stroke: #d8ecff; stroke-width: .6; opacity: .58; }
 .lm-country-hit { fill: transparent; stroke: none; pointer-events: fill; cursor: pointer; }

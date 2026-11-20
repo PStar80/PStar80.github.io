@@ -1,7 +1,7 @@
 import { memo, useCallback, useEffect, useId, useLayoutEffect, useRef, useState } from 'react';
 import type { PointerEvent as ReactPointerEvent } from 'react';
 import { ChevronDown, Map as MapIcon, MapPin, Pause, Play } from 'lucide-react';
-import { MAP_VIEWBOX, MAP_COMPACT_VIEWBOX, LAND_PATH, BORDERS_PATH, LAKES_PATH, GRATICULE_PATH, TORONTO_POINT, COUNTRIES } from './location-map-data';
+import { MAP_VIEWBOX, MAP_COMPACT_VIEWBOX, LAND_PATH, BORDERS_PATH, LAKES_PATH, GRATICULE_PATH, WORLD_OUTLINE_PATH, TORONTO_POINT, COUNTRIES } from './location-map-data';
 import CountryPicker from './CountryPicker';
 import './location-map.css';
 
@@ -189,15 +189,17 @@ export default function LocationMap() {
     </div>
     <div ref={stage} className="lm-stage" onPointerEnter={handlePointerMove} onPointerMove={handlePointerMove} onPointerDown={handlePointerDown} onPointerUp={handlePointerUp} onPointerCancel={() => { selectionGesture.current = null; clearHover(); }} onPointerLeave={event => { if (event.pointerType !== 'touch') { selectionGesture.current = null; clearHover(); } }}>
       <svg id={id + '-map'} className="lm-svg" viewBox={compact ? MAP_COMPACT_VIEWBOX : MAP_VIEWBOX} role="img" aria-label={compact ? 'Map of North America highlighting Toronto, Canada' : 'World map highlighting Toronto, Canada'} aria-describedby={id + '-description'}>
-        <desc id={id + '-description'}>{compact ? 'A flat map of North America and the Great Lakes, with Toronto, Ontario, Canada highlighted.' : 'A flat world map with a latitude and longitude grid, highlighting Toronto, Ontario, Canada beside the Great Lakes.'} Hover countries to preview them without changing the locked outline. Click or tap a country to lock it; click the same country again or click the ocean to clear the lock. Click a different country to move the lock. You can also use the Explore countries selector above the map.</desc>
+        <desc id={id + '-description'}>{compact ? 'A flat map of North America and the Great Lakes, with Toronto, Ontario, Canada highlighted.' : 'An Equal Earth projection world map with a curved geographic outline and country boundaries, highlighting Toronto, Ontario, Canada beside the Great Lakes.'} Hover countries to preview them without changing the locked outline. Click or tap a country to lock it; click the same country again or click the ocean to clear the lock. Click a different country to move the lock. You can also use the Explore countries selector above the map.</desc>
         <defs>
           <linearGradient id={id + '-ocean'} x1="0" y1="0" x2="1" y2="1"><stop stopColor="#0d2438" /><stop offset="1" stopColor="#071625" /></linearGradient>
           <linearGradient id={id + '-land'} x1="0" y1="0" x2=".7" y2="1"><stop stopColor="#4a97f5" /><stop offset=".55" stopColor="#2f78db" /><stop offset="1" stopColor="#163f86" /></linearGradient>
           <radialGradient id={id + '-ambient'} cx="28%" cy="25%" r="65%"><stop stopColor="#6fd7ef" stopOpacity=".1" /><stop offset="1" stopColor="#6fd7ef" stopOpacity="0" /></radialGradient>
           <linearGradient id={id + '-scan'}><stop stopColor="#9de9ff" stopOpacity="0" /><stop offset=".8" stopColor="#9de9ff" stopOpacity=".12" /><stop offset="1" stopColor="#9de9ff" stopOpacity="0" /></linearGradient>
           <radialGradient id={id + '-beacon'}><stop stopColor="#b2f6ff" stopOpacity=".65" /><stop offset=".3" stopColor="#55d2f5" stopOpacity=".24" /><stop offset="1" stopColor="#44bff1" stopOpacity="0" /></radialGradient>
+          <clipPath id={id + '-world-clip'}><path d={WORLD_OUTLINE_PATH} /></clipPath>
         </defs>
-        <rect y="-20" width="1200" height="597" fill={`url(#${id}-ocean)`} />
+        <g clipPath={`url(#${id}-world-clip)`}>
+        <rect width="1200" height="600" fill={`url(#${id}-ocean)`} />
         <path d={GRATICULE_PATH} className="lm-graticule lm-graticule-under" />
         <path d={LAND_PATH} fill={`url(#${id}-land)`} className="lm-land" />
         <path d={BORDERS_PATH} className="lm-borders" />
@@ -206,8 +208,8 @@ export default function LocationMap() {
         {hoveredCountry && hoveredId !== selectedId && <path d={hoveredCountry.path} className="lm-country-highlight lm-country-hovered" fillRule="evenodd" vectorEffect="non-scaling-stroke" aria-hidden="true" />}
         <path d={LAKES_PATH} className="lm-lakes" />
         <path d={GRATICULE_PATH} className="lm-graticule lm-graticule-over" />
-        <rect y="-20" width="1200" height="597" fill={`url(#${id}-ambient)`} className="lm-ambient" />
-        <g className="lm-sweep" aria-hidden="true"><rect y="-20" width="120" height="597" fill={`url(#${id}-scan)`} /></g>
+        <rect width="1200" height="600" fill={`url(#${id}-ambient)`} className="lm-ambient" />
+        <g className="lm-sweep" aria-hidden="true"><rect width="120" height="600" fill={`url(#${id}-scan)`} /></g>
         <g transform={`translate(${TORONTO_POINT.x} ${TORONTO_POINT.y})`} className="lm-marker">
           <circle r="24" fill={`url(#${id}-beacon)`} />
           <circle r="9" className="lm-beacon-ring lm-beacon-ring-one" />
@@ -218,10 +220,12 @@ export default function LocationMap() {
           <circle r="1.2" fill="white" />
         </g>
         <g className="lm-city-label" aria-hidden="true">
-          <path d={`M${TORONTO_POINT.x + 7} ${TORONTO_POINT.y - 6}L368 88H388`} className="lm-label-leader" />
-          <rect x="388" y="67" width="118" height="34" rx="7" className="lm-label-back" />
-          <text x="401" y="89" className="lm-city">Toronto, ON</text>
+          <path d={`M${TORONTO_POINT.x + 7} ${TORONTO_POINT.y - 6}L${TORONTO_POINT.x + 21} ${TORONTO_POINT.y - 26}H${TORONTO_POINT.x + 36}`} className="lm-label-leader" />
+          <rect x={TORONTO_POINT.x + 36} y={TORONTO_POINT.y - 55} width="118" height="34" rx="7" className="lm-label-back" />
+          <text x={TORONTO_POINT.x + 49} y={TORONTO_POINT.y - 33} className="lm-city">Toronto, ON</text>
         </g>
+        </g>
+        <path d={WORLD_OUTLINE_PATH} className="lm-world-outline" aria-hidden="true" />
       </svg>
       {selectedCountry && <div className="lm-country-tooltip" data-anchor="selection" aria-hidden="true">{selectedCountry.name}</div>}
       {showHoverTooltip && hoveredCountry && <div ref={tooltip} className="lm-country-tooltip" data-anchor="pointer" aria-hidden="true">{hoveredCountry.name}</div>}

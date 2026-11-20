@@ -1,11 +1,18 @@
 # Contact Map Sources
 
-The contact panel uses a conventional, north-up **equirectangular world map**.
-Its 1200 × 597 coordinate space covers **180°W to 180°E** and **86°N to 90°S**.
-Latitude and longitude form straight grid lines. The compact view crops the
-same map to North America, the Caribbean, northern South America, and the
-western Atlantic, keeping Toronto and its label readable without stretching
-the projection.
+The contact panel uses the **Equal Earth equal-area world projection** at a
+1200 × 600 SVG resolution. Relative areas are preserved: Antarctica is no longer
+artificially stretched across the complete width of a rectangular map. Parallels
+are straight, meridians are curved, and the outer ocean outline follows the
+projection instead of a rectangular latitude crop. The two poles remain straight
+lines, each shorter than the equator, as expected for Equal Earth.
+
+Longitude is cut at the **180° antimeridian**, without a repeated second world.
+The compact view uses the same projection but crops to North America, the
+Caribbean, northern South America, and the western Atlantic. The Toronto marker
+remains tied to its real city-level coordinates.
+
+Projection reference: [Equal Earth, ArcGIS Pro](https://pro.arcgis.com/en/pro-app/latest/help/mapping/properties/equal-earth.htm).
 
 Toronto is the only location marker. The marker represents the city, not a
 home, office, or tracked position.
@@ -30,7 +37,7 @@ document the rights. Made with Natural Earth.
 
 The [City of Toronto's geography overview](https://www.toronto.ca/city-government/data-research-maps/toronto-at-a-glance/)
 places Toronto at **43°39′N, 79°23′W**. Those city-level coordinates become
-43.65, −79.383333… and project to **(335.389, 121.167)** in this view.
+43.65, −79.383333… and project to approximately **(377.944, 119.935)** in this Equal Earth view.
 The data and official source pages were checked on November 18, 2026.
 
 ## Generation
@@ -51,10 +58,10 @@ country interaction can exclude their surfaces.
 
 The application
 does not request geographic data at runtime and does not import a mapping
-library. The optional generator uses **d3-geo 3.1.1** for geographic projection,
-adaptive sampling, antimeridian clipping, and the rectangular latitude crop.
-Polygons that cross the 180° meridian are split at the left and
-right map edges. D3's
+library. The optional generator uses **d3-geo 3.1.1** and `geoEqualEarth()` for geographic
+projection, adaptive sampling, and antimeridian clipping. Polygons crossing
+the 180° meridian appear at opposite sides of the single world outline, without
+creating a repeated world. D3's
 [projection documentation](https://d3js.org/d3-geo/projection) and
 [spherical winding guidance](https://d3js.org/d3-geo) explain those operations.
 
@@ -78,11 +85,16 @@ does not need these optional tools.
 | `ne_110m_lakes.geojson` | `eb02ecc86c82004fccbf979058bfabbbd6c2d07968c7844d38eb1c9152d2ffc9` |
 | `ne_110m_admin_0_countries.geojson` | `6866c877d39cba9c357620878839b336d569f8c662d3cfab4cb1dbe2d39c977f` |
 
-The graticule is generated mathematically at 30° longitude and 15° latitude
-intervals. Its meridians extend to the entire visible map height so that neither
-polar extension has a disconnected grid. The final paths are rounded to one decimal place in the SVG coordinate
-space. This is a stylised, small-scale location illustration; it is not suitable
-for navigation or measuring distances. Country interaction covers the visible
+The graticule is generated along true projected meridians at 30° intervals
+and parallels at 15° intervals, reaching both poles without a disconnected
+rectangular grid. The ocean, countries, Toronto marker, and pointer hit targets
+all share the same projected coordinate system. The committed shapes were
+reprojected from the existing Natural Earth-derived geometry; the optional
+generator can rebuild them from the pinned source files. Coordinates are rounded
+to one decimal place for compact SVGs. This remains a stylised, small-scale
+location illustration, not a navigational map. Country interaction covers the visible
 polygons supplied at this scale, without artificial targets for missing islands
 or microstates. Small islands, boundaries, and shoreline details are generalised
-by the source dataset. The world view now includes Antarctica down to the South Pole, while the northern view retains Greenland's complete coastline at this map scale. At the pole, the flat equirectangular projection naturally stretches Antarctica across the map's full width; this is a polar distortion, not a repeated world. Very small shapes may be difficult to point to directly.
+by the source dataset. The full world view includes Antarctica and Greenland. Equal Earth makes the
+continent areas comparable while keeping the poles as short flat lines; no flat
+world projection eliminates every shape distortion. Very small shapes may be difficult to point to directly.
