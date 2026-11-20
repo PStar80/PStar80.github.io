@@ -35,7 +35,7 @@ export default function LocationMap() {
   const selectionGesture = useRef<SelectionGesture | null>(null);
   const id = 'location-' + useId().replace(/:/g, '');
   const [compact, setCompact] = useState(false);
-  const [selectedId, setSelectedId] = useState<string | null>(null);
+  const [selectedId, setSelectedId] = useState<string | null>('CAN');
   const [hoveredId, setHoveredId] = useState<string | null>(null);
   const [hovering, setHovering] = useState(false);
   const [visible, setVisible] = useState(false);
@@ -197,7 +197,7 @@ export default function LocationMap() {
           <linearGradient id={id + '-scan'}><stop stopColor="#9de9ff" stopOpacity="0" /><stop offset=".8" stopColor="#9de9ff" stopOpacity=".12" /><stop offset="1" stopColor="#9de9ff" stopOpacity="0" /></linearGradient>
           <radialGradient id={id + '-beacon'}><stop stopColor="#b2f6ff" stopOpacity=".65" /><stop offset=".3" stopColor="#55d2f5" stopOpacity=".24" /><stop offset="1" stopColor="#44bff1" stopOpacity="0" /></radialGradient>
         </defs>
-        <rect width="1200" height="480" fill={`url(#${id}-ocean)`} />
+        <rect y="-20" width="1200" height="500" fill={`url(#${id}-ocean)`} />
         <path d={GRATICULE_PATH} className="lm-graticule lm-graticule-under" />
         <path d={LAND_PATH} fill={`url(#${id}-land)`} className="lm-land" />
         <path d={BORDERS_PATH} className="lm-borders" />
@@ -206,8 +206,8 @@ export default function LocationMap() {
         {hoveredCountry && hoveredId !== selectedId && <path d={hoveredCountry.path} className="lm-country-highlight lm-country-hovered" fillRule="evenodd" vectorEffect="non-scaling-stroke" aria-hidden="true" />}
         <path d={LAKES_PATH} className="lm-lakes" />
         <path d={GRATICULE_PATH} className="lm-graticule lm-graticule-over" />
-        <rect width="1200" height="480" fill={`url(#${id}-ambient)`} className="lm-ambient" />
-        <g className="lm-sweep" aria-hidden="true"><rect width="120" height="480" fill={`url(#${id}-scan)`} /></g>
+        <rect y="-20" width="1200" height="500" fill={`url(#${id}-ambient)`} className="lm-ambient" />
+        <g className="lm-sweep" aria-hidden="true"><rect y="-20" width="120" height="500" fill={`url(#${id}-scan)`} /></g>
         <g transform={`translate(${TORONTO_POINT.x} ${TORONTO_POINT.y})`} className="lm-marker">
           <circle r="24" fill={`url(#${id}-beacon)`} />
           <circle r="9" className="lm-beacon-ring lm-beacon-ring-one" />
@@ -219,9 +219,8 @@ export default function LocationMap() {
         </g>
         <g className="lm-city-label" aria-hidden="true">
           <path d={`M${TORONTO_POINT.x + 7} ${TORONTO_POINT.y - 6}L368 88H388`} className="lm-label-leader" />
-          <rect x="388" y="57" width="118" height="56" rx="7" className="lm-label-back" />
-          <text x="401" y="80" className="lm-city">Toronto</text>
-          <text x="402" y="99" className="lm-country">CANADA</text>
+          <rect x="388" y="67" width="118" height="34" rx="7" className="lm-label-back" />
+          <text x="401" y="89" className="lm-city">Toronto, ON</text>
         </g>
       </svg>
       {selectedCountry && <div className="lm-country-tooltip" data-anchor="selection" aria-hidden="true">{selectedCountry.name}</div>}
@@ -229,7 +228,7 @@ export default function LocationMap() {
     </div>
     <span className="lm-sr-only" role="status">{selectedCountry ? `${selectedCountry.name} highlighted on the map.` : ''}</span>
     <div className="lm-footer">
-      <div className="lm-place"><MapPin size={18} aria-hidden="true" /><p><span>Based in</span><strong>Toronto, Canada</strong></p></div>
+      <div className="lm-place"><MapPin size={18} aria-hidden="true" /><p><span>Based in</span><strong>Toronto, ON</strong></p></div>
       <div className="lm-local-time"><span>LOCAL TIME</span><time dateTime={clock.toISOString()} title="Toronto local time — America/Toronto">{torontoClock.format(clock)}</time></div>
     </div>
   </div>;

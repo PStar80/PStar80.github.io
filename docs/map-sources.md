@@ -1,7 +1,7 @@
 # Contact Map Sources
 
 The contact panel uses a conventional, north-up **equirectangular world map**.
-Its 1200 × 480 coordinate space covers **180°W to 180°E** and **80°N to 64°S**.
+Its 1200 × 500 coordinate space covers **180°W to 180°E** and **86°N to 64°S**.
 Latitude and longitude form straight grid lines. The compact view crops the
 same map to North America, the Caribbean, northern South America, and the
 western Atlantic, keeping Toronto and its label readable without stretching
@@ -84,5 +84,4 @@ space. This is a stylised, small-scale location illustration; it is not suitable
 for navigation or measuring distances. Country interaction covers the visible
 polygons supplied at this scale, without artificial targets for missing islands
 or microstates. Small islands, boundaries, and shoreline details are generalised
-by the source dataset. The latitude crop also omits most of Antarctica and the
-northernmost Arctic. Very small shapes may be difficult to point to directly.
+by the source dataset. The latitude crop still omits most of Antarctica, while the northern view now extends far enough to show Greenland's complete coastline at this map scale. Very small shapes may be difficult to point to directly.

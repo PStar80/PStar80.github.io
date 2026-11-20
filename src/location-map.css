@@ -65,7 +65,7 @@
 /* The motion control inherits the shared blue .button-primary background and hover styles. */
 .lm-motion-control { display: inline-flex; align-items: center; justify-content: center; min-width: 44px; min-height: 44px; gap: 7px; padding: 10px 12px; border-radius: 7px; font-size: 11px; white-space: nowrap; }
 .lm-motion-control:focus-visible { outline-offset: 3px; }
-.lm-stage { position: relative; aspect-ratio: 1200 / 480; margin: 9px 22px 0; overflow: hidden; border: 1px solid rgba(112, 161, 194, .2); border-radius: 5px; background: #0b2032; }
+.lm-stage { position: relative; aspect-ratio: 1200 / 500; margin: 9px 22px 0; overflow: hidden; border: 1px solid rgba(112, 161, 194, .2); border-radius: 5px; background: #0b2032; }
 .location-map[data-view=regional] .lm-stage { aspect-ratio: 470 / 360; }
 .lm-svg { display: block; width: 100%; height: 100%; overflow: hidden; }
 .lm-land, .lm-borders, .lm-graticule, .lm-ambient, .lm-country-highlight, .lm-sweep, .lm-marker, .lm-city-label { pointer-events: none; }
@@ -97,8 +97,7 @@
 .lm-marker-point { fill: #aeefff; stroke: #eefcff; stroke-width: .7; }
 .lm-label-leader { fill: none; stroke: #8ccee6; stroke-width: .9; opacity: .8; }
 .lm-label-back { fill: rgba(8, 24, 40, .92); stroke: rgba(122, 188, 219, .45); stroke-width: .75; }
-.lm-city { fill: #e5f6ff; font-family: var(--display); font-size: 20px; font-weight: 500; letter-spacing: -.3px; }
-.lm-country { fill: #88b6cf; font-family: var(--mono); font-size: 11px; letter-spacing: 1.8px; }
+.lm-city { fill: #e5f6ff; font-family: var(--display); font-size: 13px; font-weight: 500; letter-spacing: 0; }
 .lm-footer { display: flex; align-items: center; justify-content: space-between; gap: 18px; min-height: 77px; margin: 0 22px; padding: 17px 0 18px; }
 .lm-place { display: flex; align-items: center; gap: 10px; min-width: 0; }
 .lm-place > svg { color: #79c3e5; }
