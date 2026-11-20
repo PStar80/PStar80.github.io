@@ -89,25 +89,10 @@ export default function GiscusDiscussion({ onViewerIdentified }: { onViewerIdent
       container.appendChild(script);
     };
 
-    // When a visitor already has a giscus session, initialize the iframe
-    // without scrolling so metadata can arrive even before Discussion is seen.
-    // Signed-out visitors still benefit from near-viewport lazy loading.
-    if ((receiver && signedInToGiscus()) || !('IntersectionObserver' in window)) {
-      loadComments();
-      return () => {
-        window.removeEventListener('message', onMetadata);
-        container.replaceChildren();
-      };
-    }
-    const observer = new IntersectionObserver((entries) => {
-      if (entries.some(entry => entry.isIntersecting)) {
-        observer.disconnect();
-        loadComments();
-      }
-    }, { rootMargin: '350px' });
-    observer.observe(container);
+    // Start giscus immediately for both signed-out and signed-in visitors.
+    // The external iframe remains asynchronous, but no viewport gate delays it.
+    loadComments();
     return () => {
-      observer.disconnect();
       window.removeEventListener('message', onMetadata);
       container.replaceChildren();
     };
