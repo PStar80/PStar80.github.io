@@ -1,7 +1,7 @@
 # Contact Map Sources
 
 The contact panel uses a conventional, north-up **equirectangular world map**.
-Its 1200 × 500 coordinate space covers **180°W to 180°E** and **86°N to 64°S**.
+Its 1200 × 597 coordinate space covers **180°W to 180°E** and **86°N to 90°S**.
 Latitude and longitude form straight grid lines. The compact view crops the
 same map to North America, the Caribbean, northern South America, and the
 western Atlantic, keeping Toronto and its label readable without stretching
@@ -79,9 +79,10 @@ does not need these optional tools.
 | `ne_110m_admin_0_countries.geojson` | `6866c877d39cba9c357620878839b336d569f8c662d3cfab4cb1dbe2d39c977f` |
 
 The graticule is generated mathematically at 30° longitude and 15° latitude
-intervals. The final paths are rounded to one decimal place in the SVG coordinate
+intervals. Its meridians extend to the entire visible map height so that neither
+polar extension has a disconnected grid. The final paths are rounded to one decimal place in the SVG coordinate
 space. This is a stylised, small-scale location illustration; it is not suitable
 for navigation or measuring distances. Country interaction covers the visible
 polygons supplied at this scale, without artificial targets for missing islands
 or microstates. Small islands, boundaries, and shoreline details are generalised
-by the source dataset. The latitude crop still omits most of Antarctica, while the northern view now extends far enough to show Greenland's complete coastline at this map scale. Very small shapes may be difficult to point to directly.
+by the source dataset. The world view now includes Antarctica down to the South Pole, while the northern view retains Greenland's complete coastline at this map scale. At the pole, the flat equirectangular projection naturally stretches Antarctica across the map's full width; this is a polar distortion, not a repeated world. Very small shapes may be difficult to point to directly.

@@ -197,7 +197,7 @@ export default function LocationMap() {
           <linearGradient id={id + '-scan'}><stop stopColor="#9de9ff" stopOpacity="0" /><stop offset=".8" stopColor="#9de9ff" stopOpacity=".12" /><stop offset="1" stopColor="#9de9ff" stopOpacity="0" /></linearGradient>
           <radialGradient id={id + '-beacon'}><stop stopColor="#b2f6ff" stopOpacity=".65" /><stop offset=".3" stopColor="#55d2f5" stopOpacity=".24" /><stop offset="1" stopColor="#44bff1" stopOpacity="0" /></radialGradient>
         </defs>
-        <rect y="-20" width="1200" height="500" fill={`url(#${id}-ocean)`} />
+        <rect y="-20" width="1200" height="597" fill={`url(#${id}-ocean)`} />
         <path d={GRATICULE_PATH} className="lm-graticule lm-graticule-under" />
         <path d={LAND_PATH} fill={`url(#${id}-land)`} className="lm-land" />
         <path d={BORDERS_PATH} className="lm-borders" />
@@ -206,8 +206,8 @@ export default function LocationMap() {
         {hoveredCountry && hoveredId !== selectedId && <path d={hoveredCountry.path} className="lm-country-highlight lm-country-hovered" fillRule="evenodd" vectorEffect="non-scaling-stroke" aria-hidden="true" />}
         <path d={LAKES_PATH} className="lm-lakes" />
         <path d={GRATICULE_PATH} className="lm-graticule lm-graticule-over" />
-        <rect y="-20" width="1200" height="500" fill={`url(#${id}-ambient)`} className="lm-ambient" />
-        <g className="lm-sweep" aria-hidden="true"><rect y="-20" width="120" height="500" fill={`url(#${id}-scan)`} /></g>
+        <rect y="-20" width="1200" height="597" fill={`url(#${id}-ambient)`} className="lm-ambient" />
+        <g className="lm-sweep" aria-hidden="true"><rect y="-20" width="120" height="597" fill={`url(#${id}-scan)`} /></g>
         <g transform={`translate(${TORONTO_POINT.x} ${TORONTO_POINT.y})`} className="lm-marker">
           <circle r="24" fill={`url(#${id}-beacon)`} />
           <circle r="9" className="lm-beacon-ring lm-beacon-ring-one" />
